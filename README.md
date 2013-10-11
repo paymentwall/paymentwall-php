@@ -1,18 +1,19 @@
 #About Paymentwall
 [Paymentwall](http://paymentwall.com/?source=gh) is the leading digital payments platform for globally monetizing digital goods and services. Paymentwall assists game publishers, dating sites, rewards sites, SaaS companies and many other verticals to monetize their digital content and services. 
-Merchants can accept payments via Paymentwall using many various payment methods, such as credit cards, debit cards, bank transfers, sms payments, prepaid cards, eWallets, landline payments.
+Merchants can plugin Paymentwall's API to accept payments from over 100 different methods including credit cards, debit cards, bank transfers, SMS/Mobile payments, prepaid cards, eWallets, landline payments and others. 
+
 To sign up for a Paymentwall Merchant Account, [click here](http://paymentwall.com/signup/merchant?source=gh).
 
 #Paymentwall PHP SDK
-This SDK allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods with recurring billing, Cart).
+This SDK allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
 
-To use Paymentwall, all you would need to have is a Paymentwall Merchant Account and a Application set up under your account.
-To create a merchant account and set up an application, you can [sign up here within a minute](http://paymentwall.com/signup/merchant?source=gh).
+To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant Account so you can setup an Application designed for your site.
+To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
 
 
 #Code Sample
 
-Below is a code sample for Digital Goods API with Flexible Widget Call
+Below is a code sample for Digital Goods API with a Flexible Widget Call
 
 ##Initializing Paymentwall
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
@@ -24,7 +25,7 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available inside of your m
 ##Widget Call
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_flexible_widget_call)
 
-Widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, providing the billing data, investigating the payment status via Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
+The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
 <pre><code>$widget = new Paymentwall_Widget();
 echo $widget->getCode(
@@ -48,7 +49,7 @@ echo $widget->getCode(
 ##Pingback Processing
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_pingback_processing)
 
-Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
+The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $productId = $pingback->getProduct()->getId();
