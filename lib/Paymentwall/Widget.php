@@ -7,6 +7,25 @@ class Paymentwall_Widget extends Paymentwall_Base
 	 */
 	const BASE_URL = 'https://api.paymentwall.com/api';
 
+	protected $userId;
+	protected $widgetCode;
+	protected $products;
+	protected $extraParams;
+
+	/**
+	 * @param string $userId identifier of the end-user who is viewing the widget
+	 * @param string $widgetCode e.g. p1 or p1_1, can be found inside of your Paymentwall Merchant account in the Widgets section
+	 * @param array $products array that consists of Paymentwall_Product entities; for Flexible Widget Call use array of 1 product
+	 * @param array $extraParams associative array of additional params that will be included into the widget URL, 
+	 * e.g. 'sign_version' or 'email'. Full list of parameters for each API is available at http://paymentwall.com/documentation
+	 */
+	public function __construct($userId, $widgetCode, $products = array(), $extraParams = array()) {
+		$this->userId = $userId;
+		$this->widgetCode = $widgetCode;
+		$this->extraParams = $extraParams;
+		$this->products = $products;
+	}
+
 	/**
 	 * Get default signature version for this API type
 	 * 
@@ -17,31 +36,27 @@ class Paymentwall_Widget extends Paymentwall_Base
 	}
 
 	/**
-	 * Return URL for the widget based on params supplied
+	 * Return URL for the widget
 	 *
-	 * @param string $userId identifier of the end-user who is viewing the widget
-	 * @param string $widgetCode e.g. p1 or p1_1, can be found inside of your Paymentwall Merchant account in the Widgets section
-	 * @param array $extraParams array of additional params that will be included into the widget URL, e.g. 'sign_version' or 'email'
-	 * @param array $products array that consists of Paymentwall_Product entities; for flexible widget call use array of 1 product
 	 * @return string
 	 */
-	public function getUrl($userId, $widgetCode, $extraParams = array(), $products = array())
+	public function getUrl()
 	{
 		$params = array(
 			'key' => self::getAppKey(),
-			'uid' => $userId,
-			'widget' => $widgetCode
+			'uid' => $this->userId,
+			'widget' => $this->widgetCode
 		);
 
-		$productsNumber = count($products);
+		$productsNumber = count($this->products);
 
 		if (self::getApiType() == self::API_GOODS) {
 
-			if (!empty($products)) {
+			if (!empty($this->products)) {
 
 				if ($productsNumber == 1) {
 
-					$product = current($products);
+					$product = current($this->products);
 
 					$params['amount'] = $product->getAmount();
 					$params['currencyCode'] = $product->getCurrencyCode();
@@ -66,7 +81,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 		} else if (self::getApiType() == self::API_CART) {
 
 			$index = 0;
-			foreach ($products as $product) {
+			foreach ($this->products as $product) {
 				$params['external_ids[' . $index . ']'] = $product->getId();
 
 				if (isset($product->amount)) {
@@ -83,43 +98,39 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		$params['sign_version'] = $signatureVersion = self::getDefaultSignatureVersion();
 
-		if (!empty($extraParams['sign_version'])) {
-			$signatureVersion = $params['sign_version'] = $extraParams['sign_version'];
+		if (!empty($this->extraParams['sign_version'])) {
+			$signatureVersion = $params['sign_version'] = $this->extraParams['sign_version'];
 		}
 
-		$params = array_merge($params, $extraParams);
+		$params = array_merge($params, $this->extraParams);
 		$params['sign'] = $this->calculateSignature($params, self::getSecretKey(), $signatureVersion);
 
-		return self::BASE_URL . '/' . self::buildController($widgetCode) . '?' . http_build_query($params);
+		return self::BASE_URL . '/' . self::buildController($this->widgetCode) . '?' . http_build_query($params);
 	}
 
 	/**
-	 * Return HTML code for the widget based on params supplied
+	 * Return HTML code for the widget
 	 *
-	 * @param string $userId
-	 * @param string $widgetCode
-	 * @param array $extraParams array that consists of addition params, e.g. 'sign_version'
-	 * @param array $products array that consists of PWProduct entities
-	 * @param array $options
+	 * @param array $attributes associative array of additional HTML attributes, e.g. array('width' => '100%')
 	 * @return string
 	 */
-	public function getCode($userId, $widgetCode, $extraParams = array(), $products = array(), $options = array())
+	public function getHtmlCode($attributes = array())
 	{
 
-		$defaultOptions = array(
+		$defaultAttributes = array(
 			'frameborder' => '0',
 			'width' => '750',
 			'height' => '800'
 		);
 
-		$options = array_merge($defaultOptions, $options);
+		$attributes = array_merge($defaultAttributes, $attributes);
 
-		$optionsQuery = '';
-		foreach ($options as $attr => $value) {
-			$optionsQuery .= ' ' . $attr . '="' . $value . '"';
+		$attributesQuery = '';
+		foreach ($attributes as $attr => $value) {
+			$attributesQuery .= ' ' . $attr . '="' . $value . '"';
 		}
 
-		return '<iframe src="' . $this->getUrl($userId, $widgetCode, $extraParams, $products) . '" ' . $optionsQuery . '></iframe>';
+		return '<iframe src="' . $this->getUrl() . '" ' . $attributesQuery . '></iframe>';
 
 	}
 

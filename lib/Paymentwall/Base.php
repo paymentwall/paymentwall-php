@@ -3,7 +3,7 @@
 abstract class Paymentwall_Base
 {
 	/**
-	 * Paymentwall SDK version
+	 * Paymentwall library version
 	 */
 	const VERSION = '1.0.0';
 

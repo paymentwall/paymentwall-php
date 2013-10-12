@@ -19,6 +19,10 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	protected $ipAddress;
 
+	/**
+	 * @param array $parameters array of parameters received by pingback processing script, e.g. $_GET
+	 * @param string $ipAddress IP address from where the pingback request originates, e.g. '127.0.0.1'
+	 */
 	public function __construct(array $parameters, $ipAddress)
 	{
 		$this->parameters = $parameters;
