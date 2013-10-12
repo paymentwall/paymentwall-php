@@ -4,8 +4,8 @@ Merchants can plugin Paymentwall's API to accept payments from over 100 differen
 
 To sign up for a Paymentwall Merchant Account, [click here](http://paymentwall.com/signup/merchant?source=gh).
 
-#Paymentwall PHP SDK
-This SDK allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
+#Paymentwall PHP Library
+This library allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
 
 To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant Account so you can setup an Application designed for your site.
 To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
@@ -27,11 +27,9 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available inside of your m
 
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
-<pre><code>$widget = new Paymentwall_Widget();
-echo $widget->getHtmlCode(
-  'user40012',
-  'p1_1',
-  array('email' => 'user@hostname.com'),
+<pre><code>$widget = new Paymentwall_Widget(
+  'user40012',									// id of the end-user who's making the payment
+  'p1_1',										// widget code, e.g. p1; can be picked inside of your merchant account
   array(
     new Paymentwall_Product(
       'product301',                             // id of the product in your system
@@ -43,8 +41,11 @@ echo $widget->getHtmlCode(
       Paymentwall_Product::PERIOD_TYPE_MONTH,   //               month
       true                                      // recurring
     )
-  )
-);</pre></code>
+  ),
+  array('email' => 'user@hostname.com')			// additional parameters
+);
+echo $widget->getHtmlCode();
+</pre></code>
 
 ##Pingback Processing
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_pingback_processing)
