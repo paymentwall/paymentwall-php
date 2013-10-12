@@ -103,7 +103,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 	 * @param array $options
 	 * @return string
 	 */
-	public function getCode($userId, $widgetCode, $extraParams = array(), $products = array(), $options = array())
+	public function getHtmlCode($userId, $widgetCode, $extraParams = array(), $products = array(), $options = array())
 	{
 
 		$defaultOptions = array(
