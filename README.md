@@ -28,7 +28,7 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available inside of your m
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
 <pre><code>$widget = new Paymentwall_Widget();
-echo $widget->getCode(
+echo $widget->getHtmlCode(
   'user40012',
   'p1_1',
   array('email' => 'user@hostname.com'),
