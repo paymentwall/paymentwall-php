@@ -181,7 +181,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		if ($version == self::SIGNATURE_VERSION_1) {
 			// TODO: throw exception if no uid parameter is present
-			
+
 			$baseString .= isset($params['uid']) ? $params['uid'] : '';
 			$baseString .= $secret;
 
@@ -189,24 +189,24 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		} else {
 
-            if (is_array($params)) {
-                ksort($params);
-                foreach ($params as $p) {
-                    if (is_array($p)) {
-                        ksort($p);
-                    }
-                }
-            }
+			if (is_array($params)) {
+				ksort($params);
+				foreach ($params as &$p) {
+					if (is_array($p)) {
+						ksort($p);
+					}
+				}
+			}
 
-            foreach ($params as $key => $value) {
-                if (is_array($value)) {
-                    foreach ($value as $k => $v) {
-                        $baseString .= $key . '[' . $k . ']' . '=' . $v;
-                    }
-                } else {
-                    $baseString .= $key . '=' . $value;
-                }
-            }
+			foreach ($params as $key => $value) {
+				if (is_array($value)) {
+					foreach ($value as $k => $v) {
+						$baseString .= $key . '[' . $k . ']' . '=' . $v;
+					}
+				} else {
+					$baseString .= $key . '=' . $value;
+				}
+			}
 
 			$baseString .= $secret;
 
