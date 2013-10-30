@@ -225,7 +225,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function getProductPeriodType()
 	{
-		return $this->getParameter('stype');
+		return $this->getParameter('speriod');
 	}
 
 	/**
