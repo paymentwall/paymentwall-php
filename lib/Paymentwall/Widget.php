@@ -103,6 +103,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 		}
 
 		$params = array_merge($params, $this->extraParams);
+
 		$params['sign'] = $this->calculateSignature($params, self::getSecretKey(), $signatureVersion);
 
 		return self::BASE_URL . '/' . self::buildController($this->widgetCode) . '?' . http_build_query($params);
@@ -188,11 +189,25 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		} else {
 
-			ksort($params);
+            if (is_array($params)) {
+                ksort($params);
+                foreach ($params as $p) {
+                    if (is_array($p)) {
+                        ksort($p);
+                    }
+                }
+            }
 
-			foreach ($params as $key => $value) {
-				$baseString .= $key . '=' . $value;
-			}
+            foreach ($params as $key => $value) {
+                if (is_array($value)) {
+                    foreach ($value as $k => $v) {
+                        $baseString .= $key . '[' . $k . ']' . '=' . $v;
+                    }
+                } else {
+                    $baseString .= $key . '=' . $value;
+                }
+            }
+
 			$baseString .= $secret;
 
 			if ($version == self::SIGNATURE_VERSION_2) {
