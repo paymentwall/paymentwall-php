@@ -15,7 +15,7 @@ To install the library in your environment, you can download the [ZIP archive](h
 
 Alternatively, you can run:
 
-  git clone git://github.com/paymentwall/paymentwall-php.git
+  <code>git clone git://github.com/paymentwall/paymentwall-php.git</code>
 
 Then use a code sample below.
 
