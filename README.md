@@ -104,11 +104,12 @@ echo $widget->getUrl();</code></pre>
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
-  $productId = $pingback->getProduct()->getId();
+  $productId = $pingback->getProduct()->getId(); // used in Digital Goods API
+  // $virtualCurrency = $pingback->getVirtualCurrencyAmount(); - Virtual Currency API
   if ($pingback->isDeliverable()) {
-  // deliver the product
+  // deliver the product or virtual currency
   } else if ($pingback->isCancelable()) {
-  // withdraw the product
+  // withdraw the product or virtual currency
   } 
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
