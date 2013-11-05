@@ -13,31 +13,31 @@ To open your merchant account and set up an application, you can [sign up here](
 #Installation
 To install the library in your environment, you can download the [ZIP archive](https://github.com/paymentwall/paymentwall-php/archive/master.zip), unzip it and place into your project.
 
-Alternatively, you can run
+Alternatively, you can run:
 
-	git clone git://github.com/paymentwall/paymentwall-php.git
+  git clone git://github.com/paymentwall/paymentwall-php.git
 
 Then use a code sample below.
 
-#Code Sample
+#Code Samples
 
-Below is a code sample for Digital Goods API with a Flexible Widget Call
+##Digital Goods API
 
-##Initializing Paymentwall
+####Initializing Paymentwall
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
-Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available inside of your merchant account
-Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available inside of your merchant account
+Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 </code></pre>
 
-##Widget Call
+####Widget Call
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_flexible_widget_call)
 
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
 <pre><code>$widget = new Paymentwall_Widget(
-  'user40012',									// id of the end-user who's making the payment
-  'p1_1',										// widget code, e.g. p1; can be picked inside of your merchant account
+  'user40012',                  // id of the end-user who's making the payment
+  'p1_1',                   // widget code, e.g. p1; can be picked inside of your merchant account
   array(
     new Paymentwall_Product(
       'product301',                             // id of the product in your system
@@ -50,10 +50,53 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
       true                                      // recurring
     )
   ),
-  array('email' => 'user@hostname.com')			// additional parameters
+  array('email' => 'user@hostname.com')     // additional parameters
 );
 echo $widget->getHtmlCode();
 </pre></code>
+
+<h2>Virtual Currency API</h2>
+
+<h4>Initializing Paymentwall</h4>
+<pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
+Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
+Paymentwall_Base::setAppKey('0b1552192f37f9dd84150a39be14a5e9'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+</code></pre>
+
+####Widget Call
+<pre><code>$widget = new Paymentwall_Widget(
+  'yeexel', // id of the end-user who's making the payment
+  'p10_1', // widget code, e.g. p1; can be picked inside of your merchant account
+  array(), // array of products - leave blank for Virtual Currency API
+  array('sign_version' => 1) // additional parameters
+);
+echo $widget->getHtmlCode();
+// Now you can embed the iframe with Paymentwall widget into your website
+// &lt;iframe src=&quot;https://api.paymentwall.com/api/ps?key=0b1552192f37f9dd84150a39be14a5e9&amp;uid=yeexel&amp;widget=p10_1&amp;sign_version=1&amp;sign=7c0be7b97bc93de6074eed243c65aa77&quot;  frameborder=&quot;0&quot; width=&quot;750&quot; height=&quot;800&quot;&gt;&lt;/iframe&gt;</code></pre>
+
+
+##Cart API
+
+<h4>Initializing Paymentwall</h4>
+<pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
+Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
+Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+</code></pre>
+
+####Widget Call
+<pre><code>$widget = new Paymentwall_Widget(
+  'yeexel', // id of the end-user who's making the payment
+  'p1_1', // widget code, e.g. p1; can be picked inside of your merchant account,
+  array(
+    new Paymentwall_Product('1', 3.33, 'EUR'), // first product in cart
+    new Paymentwall_Product('2', 7.77, 'EUR')  // second product in cart
+  ),
+  array('evaluation' => '1') // additional params
+);
+echo $widget->getUrl();</code></pre>
+
 
 ##Pingback Processing
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_pingback_processing)
@@ -63,9 +106,9 @@ The Pingback is a webhook notifying about a payment being made. Pingbacks are se
 if ($pingback->validate()) {
   $productId = $pingback->getProduct()->getId();
   if ($pingback->isDeliverable()) {
-	// deliver the product
+  // deliver the product
   } else if ($pingback->isCancelable()) {
-	// withdraw the product
+  // withdraw the product
   } 
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
