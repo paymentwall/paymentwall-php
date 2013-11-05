@@ -36,24 +36,24 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
 <pre><code>$widget = new Paymentwall_Widget(
-  'user40012',                  // id of the end-user who's making the payment
-  'p1_1',                   // widget code, e.g. p1; can be picked inside of your merchant account
-  array(
-    new Paymentwall_Product(
-      'product301',                             // id of the product in your system
-      9.99,                                     // price
-      'USD',                                    // currency code
-      'Gold Membership',                        // product name
-      Paymentwall_Product::TYPE_SUBSCRIPTION,   // this is a time-based product
-      1,                                        // duration is 1
-      Paymentwall_Product::PERIOD_TYPE_MONTH,   //               month
-      true                                      // recurring
-    )
-  ),
-  array('email' => 'user@hostname.com')     // additional parameters
+	'user40012',   // id of the end-user who's making the payment
+	'p1_1',        // widget code, e.g. p1; can be picked inside of your merchant account
+	array(         // product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
+		new Paymentwall_Product(
+			'product301',                           // id of the product in your system
+			9.99,                                   // price
+			'USD',                                  // currency code
+			'Gold Membership',                      // product name
+			Paymentwall_Product::TYPE_SUBSCRIPTION, // this is a time-based product
+			1,                                      // duration is 1
+			Paymentwall_Product::PERIOD_TYPE_MONTH, //               month
+			true                                    // recurring
+		)
+  	),
+	array('email' => 'user@hostname.com')           // additional parameters
 );
 echo $widget->getHtmlCode();
-</pre></code>
+</code></pre>
 
 <h4>Pingback Processing</h4>
 
@@ -71,9 +71,9 @@ if ($pingback->validate()) {
   echo $pingback->getErrorSummary();
 }</pre></code>
 
-<h2>Virtual Currency API</h2>
+##Virtual Currency API
 
-<h4>Initializing Paymentwall</h4>
+####Initializing Paymentwall
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
 Paymentwall_Base::setAppKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
@@ -82,16 +82,15 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
-  'username', // id of the end-user who's making the payment
-  'p10_1', // widget code, e.g. p1; can be picked inside of your merchant account
-  array(), // array of products - leave blank for Virtual Currency API
-  array('email' => 'user@hostname.com') // additional parameters
+	'user40012', // id of the end-user who's making the payment
+	'p1_1',      // widget code, e.g. p1; can be picked inside of your merchant account
+	array(),     // array of products - leave blank for Virtual Currency API
+	array('email' => 'user@hostname.com') // additional parameters
 );
 echo $widget->getHtmlCode();
-// Now you can embed the iframe with Paymentwall widget into your website
-// &lt;iframe src=&quot;https://api.paymentwall.com/api/ps?key=0b1552192f37f9dd84150a39be14a5e9&amp;uid=yeexel&amp;widget=p10_1&amp;sign_version=1&amp;sign=7c0be7b97bc93de6074eed243c65aa77&quot;  frameborder=&quot;0&quot; width=&quot;750&quot; height=&quot;800&quot;&gt;&lt;/iframe&gt;</code></pre>
+</code></pre>
 
-<h4>Pingback Processing</h4>
+####Pingback Processing
 
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
@@ -106,9 +105,9 @@ if ($pingback->validate()) {
   echo $pingback->getErrorSummary();
 }</pre></code>
 
-<h2>Cart API</h2>
+##Cart API
 
-<h4>Initializing Paymentwall</h4>
+####Initializing Paymentwall
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
@@ -117,17 +116,17 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
-  'username', // id of the end-user who's making the payment
-  'p1_1', // widget code, e.g. p1; can be picked inside of your merchant account,
-  array(
-    new Paymentwall_Product('1', 3.33, 'EUR'), // first product in cart
-    new Paymentwall_Product('2', 7.77, 'EUR')  // second product in cart
-  ),
-  array('email' => 'user@hostname.com') // additional params
+	'user40012', // id of the end-user who's making the payment
+	'p1_1',      // widget code, e.g. p1; can be picked inside of your merchant account,
+	array(
+		new Paymentwall_Product('product301', 3.33, 'EUR'), // first product in cart
+		new Paymentwall_Product('product607', 7.77, 'EUR')  // second product in cart
+	),
+	array('email' => 'user@hostname.com') // additional params
 );
 echo $widget->getHtmlCode();</code></pre>
 
-<h4>Pingback Processing</h4>
+####Pingback Processing
 
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
