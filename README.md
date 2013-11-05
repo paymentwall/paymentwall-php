@@ -55,12 +55,28 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 echo $widget->getHtmlCode();
 </pre></code>
 
+<h4>Pingback Processing</h4>
+
+The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
+<pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
+if ($pingback->validate()) {
+  $productId = $pingback->getProduct()->getId();
+  if ($pingback->isDeliverable()) {
+  // deliver the product
+  } else if ($pingback->isCancelable()) {
+  // withdraw the product
+  } 
+  echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
+} else {
+  echo $pingback->getErrorSummary();
+}</pre></code>
+
 <h2>Virtual Currency API</h2>
 
 <h4>Initializing Paymentwall</h4>
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
-Paymentwall_Base::setAppKey('0b1552192f37f9dd84150a39be14a5e9'); // available in your Paymentwall merchant area
+Paymentwall_Base::setAppKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 </code></pre>
 
@@ -75,8 +91,22 @@ echo $widget->getHtmlCode();
 // Now you can embed the iframe with Paymentwall widget into your website
 // &lt;iframe src=&quot;https://api.paymentwall.com/api/ps?key=0b1552192f37f9dd84150a39be14a5e9&amp;uid=yeexel&amp;widget=p10_1&amp;sign_version=1&amp;sign=7c0be7b97bc93de6074eed243c65aa77&quot;  frameborder=&quot;0&quot; width=&quot;750&quot; height=&quot;800&quot;&gt;&lt;/iframe&gt;</code></pre>
 
+<h4>Pingback Processing</h4>
 
-##Cart API
+<pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
+if ($pingback->validate()) {
+  $virtualCurrency = $pingback->getVirtualCurrencyAmount();
+  if ($pingback->isDeliverable()) {
+  // deliver the virtual currency
+  } else if ($pingback->isCancelable()) {
+  // withdraw the virual currency
+  } 
+  echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
+} else {
+  echo $pingback->getErrorSummary();
+}</pre></code>
+
+<h2>Cart API</h2>
 
 <h4>Initializing Paymentwall</h4>
 <pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
@@ -97,19 +127,15 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 );
 echo $widget->getUrl();</code></pre>
 
+<h4>Pingback Processing</h4>
 
-##Pingback Processing
-[Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_pingback_processing)
-
-The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
-  $productId = $pingback->getProduct()->getId(); // used in Digital Goods API
-  // $virtualCurrency = $pingback->getVirtualCurrencyAmount(); - Virtual Currency API
+  $products = $pingback->getProducts();
   if ($pingback->isDeliverable()) {
-  // deliver the product or virtual currency
+  // deliver products from the cart
   } else if ($pingback->isCancelable()) {
-  // withdraw the product or virtual currency
+  // withdraw products from the cart
   } 
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
