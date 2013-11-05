@@ -55,7 +55,7 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 echo $widget->getHtmlCode();
 </code></pre>
 
-<h4>Pingback Processing</h4>
+####Pingback Processing
 
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
 <pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
@@ -69,7 +69,7 @@ if ($pingback->validate()) {
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
-}</pre></code>
+}</code></pre>
 
 ##Virtual Currency API
 
@@ -103,7 +103,7 @@ if ($pingback->validate()) {
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
-}</pre></code>
+}</code></pre>
 
 ##Cart API
 
@@ -139,4 +139,4 @@ if ($pingback->validate()) {
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
-}</pre></code>
+}</code></pre>
