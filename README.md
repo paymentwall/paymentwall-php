@@ -58,7 +58,7 @@ echo $widget->getHtmlCode();
 ####Pingback Processing
 
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
-<pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
+<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $productId = $pingback->getProduct()->getId();
   if ($pingback->isDeliverable()) {
@@ -92,7 +92,7 @@ echo $widget->getHtmlCode();
 
 ####Pingback Processing
 
-<pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
+<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $virtualCurrency = $pingback->getVirtualCurrencyAmount();
   if ($pingback->isDeliverable()) {
@@ -128,7 +128,7 @@ echo $widget->getHtmlCode();</code></pre>
 
 ####Pingback Processing
 
-<pre><code>$pingback = new Paymentwall_Pingback($\_GET, $\_SERVER['REMOTE_ADDR']);
+<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $products = $pingback->getProducts();
   if ($pingback->isDeliverable()) {
