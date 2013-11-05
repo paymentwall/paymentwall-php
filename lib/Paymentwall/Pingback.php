@@ -64,7 +64,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isSignatureValid()
 	{
 		if (self::getApiType() == self::API_VC) {
@@ -88,7 +88,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 			foreach ($signatureParams as $field) {
 				$signatureParamsToSign[$field] = isset($this->parameters[$field]) ? $this->parameters[$field] : null;
 			}
-			
+
 			$this->parameters['sign_version'] = self::SIGNATURE_VERSION_1;
 
 		} else {
@@ -96,7 +96,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 		}
 
 		$signatureCalculated = $this->calculateSignature($signatureParamsToSign, self::getSecretKey(), $this->parameters['sign_version']);
-		
+
 		$signature = isset($this->parameters['sig']) ? $this->parameters['sig'] : null;
 
 		return $signature == $signatureCalculated;
@@ -104,7 +104,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isIpAddressValid()
 	{
 		$ipsWhitelist = array(
@@ -120,7 +120,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isParametersValid()
 	{
 		$errorsNumber = 0;
@@ -244,6 +244,22 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	}
 
 	/**
+	 * @return array Paymentwall_Product
+	 */
+	public function getProducts() {
+		$result = array();
+		$productIds = $this->getParameter('goodsid');
+
+		if (!empty($productIds)) {
+			foreach ($productIds as $Id) {
+				$result[] = new Paymentwall_Product($Id);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Get pingback parameter 'ref'
 	 *
 	 * @return string
@@ -300,14 +316,26 @@ class Paymentwall_Pingback extends Paymentwall_Base
 		unset($params['sig']);
 
 		if ($version == self::SIGNATURE_VERSION_2) {
-			ksort($params);
+			if (is_array($params)) {
+				ksort($params);
+				foreach ($params as &$p) {
+					if (is_array($p)) {
+						ksort($p);
+					}
+				}
+			}
 		}
 
 		foreach ($params as $key => $value) {
-
-			$baseString .= $key . '=' . $value;
-
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					$baseString .= $key . '[' . $k . ']' . '=' . $v;
+				}
+			} else {
+				$baseString .= $key . '=' . $value;
+			}
 		}
+
 		$baseString .= $secret;
 
 		if ($version == self::SIGNATURE_VERSION_3) {
