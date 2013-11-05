@@ -87,7 +87,6 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
-<<<<<<< HEAD
   'yeexel', // id of the end-user who's making the payment
   'p1_1', // widget code, e.g. p1; can be picked inside of your merchant account,
   array(
