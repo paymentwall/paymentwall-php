@@ -82,10 +82,10 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
-  'yeexel', // id of the end-user who's making the payment
+  'username', // id of the end-user who's making the payment
   'p10_1', // widget code, e.g. p1; can be picked inside of your merchant account
   array(), // array of products - leave blank for Virtual Currency API
-  array('sign_version' => 1) // additional parameters
+  array('email' => 'user@hostname.com') // additional parameters
 );
 echo $widget->getHtmlCode();
 // Now you can embed the iframe with Paymentwall widget into your website
@@ -117,15 +117,15 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
-  'yeexel', // id of the end-user who's making the payment
+  'username', // id of the end-user who's making the payment
   'p1_1', // widget code, e.g. p1; can be picked inside of your merchant account,
   array(
     new Paymentwall_Product('1', 3.33, 'EUR'), // first product in cart
     new Paymentwall_Product('2', 7.77, 'EUR')  // second product in cart
   ),
-  array('evaluation' => '1') // additional params
+  array('email' => 'user@hostname.com') // additional params
 );
-echo $widget->getUrl();</code></pre>
+echo $widget->getHtmlCode();</code></pre>
 
 <h4>Pingback Processing</h4>
 

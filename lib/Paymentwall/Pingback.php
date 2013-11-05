@@ -5,7 +5,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	/**
 	 * Pingback types
 	 */
-    const PINGBACK_TYPE_REGULAR = 0;
+	const PINGBACK_TYPE_REGULAR = 0;
 	const PINGBACK_TYPE_GOODWILL = 1;
 	const PINGBACK_TYPE_NEGATIVE = 2;
 
