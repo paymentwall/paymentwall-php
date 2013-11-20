@@ -19,13 +19,13 @@ class Paymentwall_Product
 	/**
 	 * @param string $productId your internal product ID, e.g. product1
 	 * @param float $amount product price, e.g. 9.99
-	 * @param null $currencyCode ISO currency code, e.g. USD
-	 * @param null $name product name
+	 * @param string $currencyCode ISO currency code, e.g. USD
+	 * @param string $name product name
 	 * @param string $productType product type, Paymentwall_Product::TYPE_SUBSCRIPTION for recurring billing, Paymentwall_Product::TYPE_FIXED
 	 * @param int $periodLength product period type, e.g. Paymentwall_Product::PERIOD_TYPE_MONTH
-	 * @param null $periodType product period length, e.g. 3
+	 * @param string $periodType product period length, e.g. 3
 	 * @param bool $recurring if the product recurring
-	 * @param Paymentwall_Product $trialProduct
+	 * @param Paymentwall_Product $trialProduct trial product
 	 */
 	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
 	{
