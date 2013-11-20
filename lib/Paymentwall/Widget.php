@@ -58,6 +58,11 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 					$product = current($this->products);
 
+					if ($product->getTrialProduct() instanceof Paymentwall_Product) {
+						$postTrialProduct = $product;
+						$product = $product->getTrialProduct();
+					}
+
 					$params['amount'] = $product->getAmount();
 					$params['currencyCode'] = $product->getCurrencyCode();
 					$params['ag_name'] = $product->getName();
@@ -68,21 +73,17 @@ class Paymentwall_Widget extends Paymentwall_Base
 						$params['ag_period_length'] = $product->getPeriodLength();
 						$params['ag_period_type'] = $product->getPeriodType();
 						if ($product->isRecurring()) {
+
 							$params['ag_recurring'] = intval($product->isRecurring());
 
-							if ($product->getTrialProduct() instanceof Paymentwall_Product) {
-								$product = $product->getTrialProduct();
-								$postTrialProduct = $product;
-
-								if (isset($postTrialProduct)) {
-									$params['ag_trial'] = 1;
-									$params['ag_post_trial_external_id'] = $postTrialProduct->getId();
-									$params['ag_post_trial_period_length'] = $postTrialProduct->getPeriodLength();
-									$params['ag_post_trial_period_type'] = $postTrialProduct->getPeriodType();
-									$params['ag_post_trial_name'] = $postTrialProduct->getName();
-									$params['post_trial_amount'] = $postTrialProduct->getAmount();
-									$params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
-								}
+							if (isset($postTrialProduct)) {
+								$params['ag_trial'] = 1;
+								$params['ag_post_trial_external_id'] = $postTrialProduct->getId();
+								$params['ag_post_trial_period_length'] = $postTrialProduct->getPeriodLength();
+								$params['ag_post_trial_period_type'] = $postTrialProduct->getPeriodType();
+								$params['ag_post_trial_name'] = $postTrialProduct->getName();
+								$params['post_trial_amount'] = $postTrialProduct->getAmount();
+								$params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
 							}
 
 						}
