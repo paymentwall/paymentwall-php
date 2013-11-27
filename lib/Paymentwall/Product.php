@@ -30,7 +30,7 @@ class Paymentwall_Product
 	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
 	{
 		$this->productId = $productId;
-		$this->amount = $amount;
+		$this->amount = round($amount, 2);
 		$this->currencyCode = $currencyCode;
 		$this->name = $name;
 		$this->productType = $productType;
@@ -38,7 +38,7 @@ class Paymentwall_Product
 		$this->periodType = $periodType;
 		$this->reccuring = $recurring;
 		if ($productType == Paymentwall_Product::TYPE_SUBSCRIPTION && $recurring) {
-	        $this->trialProduct = $trialProduct;
+			$this->trialProduct = $trialProduct;
 		}
 	}
 
