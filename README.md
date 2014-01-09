@@ -24,7 +24,7 @@ Then use a code sample below.
 ##Digital Goods API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
@@ -74,7 +74,7 @@ if ($pingback->validate()) {
 ##Virtual Currency API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
 Paymentwall_Base::setAppKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
@@ -108,7 +108,7 @@ if ($pingback->validate()) {
 ##Cart API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/libs/paymentwall.php');
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
