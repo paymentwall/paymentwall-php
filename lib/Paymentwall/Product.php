@@ -36,10 +36,8 @@ class Paymentwall_Product
 		$this->productType = $productType;
 		$this->periodLength = $periodLength;
 		$this->periodType = $periodType;
-		$this->reccuring = $recurring;
-		if ($productType == Paymentwall_Product::TYPE_SUBSCRIPTION && $recurring) {
-			$this->trialProduct = $trialProduct;
-		}
+		$this->recurring = $recurring;
+		$this->trialProduct = ($productType == Paymentwall_Product::TYPE_SUBSCRIPTION && $recurring) ? $trialProduct : null;
 	}
 
 	/**
@@ -103,7 +101,7 @@ class Paymentwall_Product
 	 */
 	public function isRecurring()
 	{
-		return $this->reccuring;
+		return $this->recurring;
 	}
 
 	/**
