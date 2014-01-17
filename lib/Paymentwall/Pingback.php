@@ -67,6 +67,8 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isSignatureValid()
 	{
+		$signatureParamsToSign = array();
+
 		if (self::getApiType() == self::API_VC) {
 
 			$signatureParams = array('uid', 'currency', 'type', 'ref');
@@ -177,7 +179,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 		if (!empty($this->parameters['type'])) {
 			if (in_array($this->parameters['type'], $pingbackTypes)) {
-				return $this->parameters['type'];
+				return intval($this->parameters['type']);
 			}
 		}
 	}
@@ -288,7 +290,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isDeliverable()
 	{
-		return ($this->getType() == self::PINGBACK_TYPE_REGULAR || $this->getType() == self::PINGBACK_TYPE_GOODWILL);
+		return ($this->getType() === self::PINGBACK_TYPE_REGULAR || $this->getType() === self::PINGBACK_TYPE_GOODWILL);
 	}
 
 	/**
@@ -298,7 +300,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isCancelable()
 	{
-		return $this->getType() == self::PINGBACK_TYPE_NEGATIVE;
+		return $this->getType() === self::PINGBACK_TYPE_NEGATIVE;
 	}
 
 	/**
