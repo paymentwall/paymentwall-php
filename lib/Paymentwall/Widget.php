@@ -194,6 +194,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 	 */
 	protected function calculateSignature($params, $secret, $version)
 	{
+
 		$baseString = '';
 
 		if ($version == self::SIGNATURE_VERSION_1) {
@@ -218,10 +219,10 @@ class Paymentwall_Widget extends Paymentwall_Base
 			foreach ($params as $key => $value) {
 				if (is_array($value)) {
 					foreach ($value as $k => $v) {
-						$baseString .= $key . '[' . $k . ']' . '=' . $v;
+						$baseString .= $key . '[' . $k . ']' . '=' . ($v === false ? '0' : $value);
 					}
 				} else {
-					$baseString .= $key . '=' . $value;
+					$baseString .= $key . '=' . ($value === false ? '0' : $value);
 				}
 			}
 
