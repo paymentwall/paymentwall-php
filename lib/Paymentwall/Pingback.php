@@ -9,6 +9,14 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	const PINGBACK_TYPE_GOODWILL = 1;
 	const PINGBACK_TYPE_NEGATIVE = 2;
 
+	const PINGBACK_TYPE_RISK_UNDER_REVIEW = 200;
+	const PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED = 201;
+	const PINGBACK_TYPE_RISK_REVIEWED_DECLINED = 202;
+
+	const PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION = 12;
+	const PINGBACK_TYPE_SUBSCRIPTION_EXPIRED = 13;
+	const PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED = 14;
+
 	/**
 	 * Pingback parameters, usually $_GET
 	 */
@@ -185,6 +193,25 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	}
 
 	/**
+	 * Get verbal explanation of the informational pingback
+	 *
+	 * @return string
+	 */
+	public function getTypeVerbal() {
+		$pingbackTypes = array(
+			self::PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION => 'user_subscription_cancellation',
+			self::PINGBACK_TYPE_SUBSCRIPTION_EXPIRED => 'user_subscription_expired',
+			self::PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED => 'user_subscription_payment_failed'
+		);
+
+		if (!empty($this->parameters['type'])) {
+			if (array_key_exists($this->parameters['type'], $pingbackTypes)) {
+				return $pingbackTypes[$this->parameters['type']];
+			}
+		}
+	}
+
+	/**
 	 * Get pingback parameter 'uid'
 	 *
 	 * @return string
@@ -290,7 +317,11 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isDeliverable()
 	{
-		return ($this->getType() === self::PINGBACK_TYPE_REGULAR || $this->getType() === self::PINGBACK_TYPE_GOODWILL);
+		return (
+			$this->getType() === self::PINGBACK_TYPE_REGULAR ||
+			$this->getType() === self::PINGBACK_TYPE_GOODWILL ||
+			$this->getType() === self::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
+		);
 	}
 
 	/**
@@ -300,7 +331,19 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isCancelable()
 	{
-		return $this->getType() === self::PINGBACK_TYPE_NEGATIVE;
+		return (
+			$this->getType() === self::PINGBACK_TYPE_NEGATIVE ||
+			$this->getType() === self::PINGBACK_TYPE_RISK_REVIEWED_DECLINED
+		);
+	}
+
+	/**
+	 * Check whether product is under review
+	 *
+	 * @return bool
+	 */
+	public function isUnderReview() {
+		return $this->getType() === self::PINGBACK_TYPE_RISK_UNDER_REVIEW;
 	}
 
 	/**
