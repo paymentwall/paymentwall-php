@@ -179,16 +179,8 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function getType()
 	{
-		$pingbackTypes = array(
-			self::PINGBACK_TYPE_REGULAR,
-			self::PINGBACK_TYPE_GOODWILL,
-			self::PINGBACK_TYPE_NEGATIVE
-		);
-
-		if (!empty($this->parameters['type'])) {
-			if (in_array($this->parameters['type'], $pingbackTypes)) {
-				return intval($this->parameters['type']);
-			}
+		if (isset($this->parameters['type'])) {
+			return intval($this->parameters['type']);
 		}
 	}
 
