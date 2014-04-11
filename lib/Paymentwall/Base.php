@@ -5,7 +5,7 @@ abstract class Paymentwall_Base
 	/**
 	 * Paymentwall library version
 	 */
-	const VERSION = '1.1.0';
+	const VERSION = '1.1.1';
 
 	/**
 	 * URLs for Paymentwall Pro

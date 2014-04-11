@@ -12,13 +12,11 @@ class Paymentwall_Charge
 	}
 
 	public function isCaptured() {
-		return (isset($this->captured)) ? $this->captured : null;
+		return $this->captured;
 	}
 
 	public function isRiskPending() {
-		if (isset($this->risk)) {
-			return ($this->risk == 'pending') ? true : false;
-		}
+		return ($this->risk == 'pending') ? true : false;
 	}
 
 	public function __get($property) {
