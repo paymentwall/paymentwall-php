@@ -44,7 +44,7 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 			9.99,                                   // price
 			'USD',                                  // currency code
 			'Gold Membership',                      // product name
-			Paymentwall_Product::TYPE_SUBSCRIPTION, // this is a time-based product
+			Paymentwall_Product::TYPE_SUBSCRIPTION, // this is a time-based product; for one-time products, use Paymentwall_Product::TYPE_FIXED and omit the following 3 array elements
 			1,                                      // duration is 1
 			Paymentwall_Product::PERIOD_TYPE_MONTH, //               month
 			true                                    // recurring
