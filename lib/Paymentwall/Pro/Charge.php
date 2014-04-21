@@ -1,6 +1,6 @@
 <?php
 
-class Paymentwall_Charge
+class Paymentwall_Pro_Charge
 {
 	public function __construct(array $attr) {
 		$result = new Paymentwall_Pro_HttpWrapper($attr);
