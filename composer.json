@@ -28,5 +28,6 @@
 	},
 	"autoload": {
 		"classmap": ["lib/Paymentwall/"]
-	}
+	},
+	"minimum-stability": "dev"
 }
