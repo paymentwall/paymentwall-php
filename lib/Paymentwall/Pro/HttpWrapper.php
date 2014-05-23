@@ -69,7 +69,15 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 	 * @return array
 	 */
 	public function post() {
-		$response = $this->_handleRequest('POST', self::CHARGE_URL);
+		$params = $this->requestParams;
+
+		$url = self::CHARGE_URL;
+		
+		if (isset($params['period']) && isset($params['period_duration'])) {
+			$url = self::SUBS_URL;
+		}
+		
+		$response = $this->_handleRequest('POST', $url);
 		return $this->_wrapResponseBody($response['body']);
 	}
 
