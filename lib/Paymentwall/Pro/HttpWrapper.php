@@ -106,6 +106,7 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 			CURLOPT_TIMEOUT => 40,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_POSTFIELDS => $this->requestParams,
+			CURLOPT_SSL_VERIFYPEER => false,
 			CURLOPT_HTTPHEADER => array(
 				'X-Apikey: ' . $this->getProApiKey()
 			)
