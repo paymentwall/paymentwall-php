@@ -11,6 +11,7 @@ abstract class Paymentwall_Base
 	 * URLs for Paymentwall Pro
 	 */
 	const CHARGE_URL = 'https://api.paymentwall.com/api/pro/v1/charge';
+	const SUBS_URL = 'https://api.paymentwall.com/api/pro/v1/subscription';
 
 	/**
 	 * API types
