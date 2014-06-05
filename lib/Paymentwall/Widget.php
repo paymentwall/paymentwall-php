@@ -192,7 +192,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 	 * @param int $version Paymentwall Signature Version
 	 * @return string
 	 */
-	protected function calculateSignature($params, $secret, $version)
+	public static function calculateSignature($params, $secret, $version)
 	{
 
 		$baseString = '';
