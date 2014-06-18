@@ -22,8 +22,8 @@ class Paymentwall_Widget extends Paymentwall_Base
 	public function __construct($userId, $widgetCode, $products = array(), $extraParams = array()) {
 		$this->userId = $userId;
 		$this->widgetCode = $widgetCode;
-		$this->extraParams = $extraParams;
 		$this->products = $products;
+		$this->extraParams = $extraParams;
 	}
 
 	/**
@@ -58,6 +58,11 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 					$product = current($this->products);
 
+					if ($product->getTrialProduct() instanceof Paymentwall_Product) {
+						$postTrialProduct = $product;
+						$product = $product->getTrialProduct();
+					}
+
 					$params['amount'] = $product->getAmount();
 					$params['currencyCode'] = $product->getCurrencyCode();
 					$params['ag_name'] = $product->getName();
@@ -68,7 +73,19 @@ class Paymentwall_Widget extends Paymentwall_Base
 						$params['ag_period_length'] = $product->getPeriodLength();
 						$params['ag_period_type'] = $product->getPeriodType();
 						if ($product->isRecurring()) {
+
 							$params['ag_recurring'] = intval($product->isRecurring());
+
+							if (isset($postTrialProduct)) {
+								$params['ag_trial'] = 1;
+								$params['ag_post_trial_external_id'] = $postTrialProduct->getId();
+								$params['ag_post_trial_period_length'] = $postTrialProduct->getPeriodLength();
+								$params['ag_post_trial_period_type'] = $postTrialProduct->getPeriodType();
+								$params['ag_post_trial_name'] = $postTrialProduct->getName();
+								$params['post_trial_amount'] = $postTrialProduct->getAmount();
+								$params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
+							}
+
 						}
 					}
 
@@ -103,6 +120,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 		}
 
 		$params = array_merge($params, $this->extraParams);
+
 		$params['sign'] = $this->calculateSignature($params, self::getSecretKey(), $signatureVersion);
 
 		return self::BASE_URL . '/' . self::buildController($this->widgetCode) . '?' . http_build_query($params);
@@ -174,13 +192,14 @@ class Paymentwall_Widget extends Paymentwall_Base
 	 * @param int $version Paymentwall Signature Version
 	 * @return string
 	 */
-	protected function calculateSignature($params, $secret, $version)
+	public static function calculateSignature($params, $secret, $version)
 	{
+
 		$baseString = '';
 
 		if ($version == self::SIGNATURE_VERSION_1) {
 			// TODO: throw exception if no uid parameter is present
-			
+
 			$baseString .= isset($params['uid']) ? $params['uid'] : '';
 			$baseString .= $secret;
 
@@ -188,11 +207,25 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		} else {
 
-			ksort($params);
+			if (is_array($params)) {
+				ksort($params);
+				foreach ($params as &$p) {
+					if (is_array($p)) {
+						ksort($p);
+					}
+				}
+			}
 
 			foreach ($params as $key => $value) {
-				$baseString .= $key . '=' . $value;
+				if (is_array($value)) {
+					foreach ($value as $k => $v) {
+						$baseString .= $key . '[' . $k . ']' . '=' . ($v === false ? '0' : $value);
+					}
+				} else {
+					$baseString .= $key . '=' . ($value === false ? '0' : $value);
+				}
 			}
+
 			$baseString .= $secret;
 
 			if ($version == self::SIGNATURE_VERSION_2) {

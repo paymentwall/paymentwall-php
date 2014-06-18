@@ -9,6 +9,14 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	const PINGBACK_TYPE_GOODWILL = 1;
 	const PINGBACK_TYPE_NEGATIVE = 2;
 
+	const PINGBACK_TYPE_RISK_UNDER_REVIEW = 200;
+	const PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED = 201;
+	const PINGBACK_TYPE_RISK_REVIEWED_DECLINED = 202;
+
+	const PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION = 12;
+	const PINGBACK_TYPE_SUBSCRIPTION_EXPIRED = 13;
+	const PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED = 14;
+
 	/**
 	 * Pingback parameters, usually $_GET
 	 */
@@ -64,9 +72,11 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isSignatureValid()
 	{
+		$signatureParamsToSign = array();
+
 		if (self::getApiType() == self::API_VC) {
 
 			$signatureParams = array('uid', 'currency', 'type', 'ref');
@@ -88,7 +98,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 			foreach ($signatureParams as $field) {
 				$signatureParamsToSign[$field] = isset($this->parameters[$field]) ? $this->parameters[$field] : null;
 			}
-			
+
 			$this->parameters['sign_version'] = self::SIGNATURE_VERSION_1;
 
 		} else {
@@ -96,7 +106,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 		}
 
 		$signatureCalculated = $this->calculateSignature($signatureParamsToSign, self::getSecretKey(), $this->parameters['sign_version']);
-		
+
 		$signature = isset($this->parameters['sig']) ? $this->parameters['sig'] : null;
 
 		return $signature == $signatureCalculated;
@@ -104,7 +114,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isIpAddressValid()
 	{
 		$ipsWhitelist = array(
@@ -120,7 +130,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 	/**
 	 * @return bool
-	 */ 
+	 */
 	public function isParametersValid()
 	{
 		$errorsNumber = 0;
@@ -169,15 +179,26 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function getType()
 	{
+		if (isset($this->parameters['type'])) {
+			return intval($this->parameters['type']);
+		}
+	}
+
+	/**
+	 * Get verbal explanation of the informational pingback
+	 *
+	 * @return string
+	 */
+	public function getTypeVerbal() {
 		$pingbackTypes = array(
-			self::PINGBACK_TYPE_REGULAR,
-			self::PINGBACK_TYPE_GOODWILL,
-			self::PINGBACK_TYPE_NEGATIVE
+			self::PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION => 'user_subscription_cancellation',
+			self::PINGBACK_TYPE_SUBSCRIPTION_EXPIRED => 'user_subscription_expired',
+			self::PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED => 'user_subscription_payment_failed'
 		);
 
 		if (!empty($this->parameters['type'])) {
-			if (in_array($this->parameters['type'], $pingbackTypes)) {
-				return $this->parameters['type'];
+			if (array_key_exists($this->parameters['type'], $pingbackTypes)) {
+				return $pingbackTypes[$this->parameters['type']];
 			}
 		}
 	}
@@ -225,7 +246,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function getProductPeriodType()
 	{
-		return $this->getParameter('stype');
+		return $this->getParameter('speriod');
 	}
 
 	/**
@@ -241,6 +262,22 @@ class Paymentwall_Pingback extends Paymentwall_Base
 			$this->getProductPeriodLength(),
 			$this->getProductPeriodType()
 		);
+	}
+
+	/**
+	 * @return array Paymentwall_Product
+	 */
+	public function getProducts() {
+		$result = array();
+		$productIds = $this->getParameter('goodsid');
+
+		if (!empty($productIds)) {
+			foreach ($productIds as $Id) {
+				$result[] = new Paymentwall_Product($Id);
+			}
+		}
+
+		return $result;
 	}
 
 	/**
@@ -272,7 +309,11 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isDeliverable()
 	{
-		return ($this->getType() == self::PINGBACK_TYPE_REGULAR || $this->getType() == self::PINGBACK_TYPE_GOODWILL);
+		return (
+			$this->getType() === self::PINGBACK_TYPE_REGULAR ||
+			$this->getType() === self::PINGBACK_TYPE_GOODWILL ||
+			$this->getType() === self::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
+		);
 	}
 
 	/**
@@ -282,7 +323,19 @@ class Paymentwall_Pingback extends Paymentwall_Base
 	 */
 	public function isCancelable()
 	{
-		return $this->getType() == self::PINGBACK_TYPE_NEGATIVE;
+		return (
+			$this->getType() === self::PINGBACK_TYPE_NEGATIVE ||
+			$this->getType() === self::PINGBACK_TYPE_RISK_REVIEWED_DECLINED
+		);
+	}
+
+	/**
+	 * Check whether product is under review
+	 *
+	 * @return bool
+	 */
+	public function isUnderReview() {
+		return $this->getType() === self::PINGBACK_TYPE_RISK_UNDER_REVIEW;
 	}
 
 	/**
@@ -300,14 +353,26 @@ class Paymentwall_Pingback extends Paymentwall_Base
 		unset($params['sig']);
 
 		if ($version == self::SIGNATURE_VERSION_2) {
-			ksort($params);
+			if (is_array($params)) {
+				ksort($params);
+				foreach ($params as &$p) {
+					if (is_array($p)) {
+						ksort($p);
+					}
+				}
+			}
 		}
 
 		foreach ($params as $key => $value) {
-
-			$baseString .= $key . '=' . $value;
-
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					$baseString .= $key . '[' . $k . ']' . '=' . $v;
+				}
+			} else {
+				$baseString .= $key . '=' . $value;
+			}
 		}
+
 		$baseString .= $secret;
 
 		if ($version == self::SIGNATURE_VERSION_3) {

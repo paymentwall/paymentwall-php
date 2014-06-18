@@ -5,7 +5,13 @@ abstract class Paymentwall_Base
 	/**
 	 * Paymentwall library version
 	 */
-	const VERSION = '1.0.0';
+	const VERSION = '1.1.1';
+
+	/**
+	 * URLs for Paymentwall Pro
+	 */
+	const CHARGE_URL = 'https://api.paymentwall.com/api/pro/v1/charge';
+	const SUBS_URL = 'https://api.paymentwall.com/api/pro/v1/subscription';
 
 	/**
 	 * API types
@@ -50,6 +56,12 @@ abstract class Paymentwall_Base
 	public static $secretKey;
 
 	/**
+	 * Paymentwall Pro API Key
+	 * @param string $proApiKey
+	 */
+	public static $proApiKey;
+
+	/**
 	 * @param int $apiType API type, Paymentwall_Base::API_VC for Virtual Currency, Paymentwall_Base::API_GOODS for Digital Goods
 	 * Paymentwall_Base::API_CART for Cart, more details at http://paymentwall.com/documentation
 	 */ 
@@ -87,6 +99,17 @@ abstract class Paymentwall_Base
 	public static function getSecretKey()
 	{
 		return self::$secretKey;
+	}
+
+	/**
+	 * @param string $proApiKey API key used for Pro authentication
+	 */
+	public static function setProApiKey($proApiKey) {
+		self::$proApiKey = $proApiKey;
+	}
+
+	public static function getProApiKey() {
+		return self::$proApiKey;
 	}
 
 	/**

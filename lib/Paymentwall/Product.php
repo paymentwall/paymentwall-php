@@ -17,27 +17,27 @@ class Paymentwall_Product
 	const PERIOD_TYPE_YEAR = 'year';
 
 	/**
-	 * Construct Paymentwall product object
-	 *
 	 * @param string $productId your internal product ID, e.g. product1
 	 * @param float $amount product price, e.g. 9.99
 	 * @param string $currencyCode ISO currency code, e.g. USD
 	 * @param string $name product name
-	 * @param string $productType product type, Paymentwall_Product::TYPE_SUBSCRIPTION for recurring billing, Paymentwall_Product::TYPE_FIXED for
+	 * @param string $productType product type, Paymentwall_Product::TYPE_SUBSCRIPTION for recurring billing, Paymentwall_Product::TYPE_FIXED
 	 * @param int $periodLength product period type, e.g. Paymentwall_Product::PERIOD_TYPE_MONTH
 	 * @param string $periodType product period length, e.g. 3
 	 * @param bool $recurring if the product recurring
+	 * @param Paymentwall_Product $trialProduct trial product
 	 */
-	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false)
+	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
 	{
 		$this->productId = $productId;
-		$this->amount = $amount;
+		$this->amount = round($amount, 2);
 		$this->currencyCode = $currencyCode;
 		$this->name = $name;
 		$this->productType = $productType;
 		$this->periodLength = $periodLength;
 		$this->periodType = $periodType;
-		$this->reccuring = $recurring;
+		$this->recurring = $recurring;
+		$this->trialProduct = ($productType == Paymentwall_Product::TYPE_SUBSCRIPTION && $recurring) ? $trialProduct : null;
 	}
 
 	/**
@@ -101,6 +101,14 @@ class Paymentwall_Product
 	 */
 	public function isRecurring()
 	{
-		return $this->reccuring;
+		return $this->recurring;
+	}
+
+	/**
+	 * @return Paymentwall_Product trial product
+	 */
+	public function getTrialProduct()
+	{
+		return $this->trialProduct;
 	}
 }

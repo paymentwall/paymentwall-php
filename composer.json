@@ -1,0 +1,33 @@
+{
+	"name": "paymentwall/paymentwall-php",
+	"description": "Paymentwall PHP Library. Paymentwall is the leading digital payments platform for globally monetizing digital goods and services.",
+	"type": "library",
+	"homepage": "http://paymentwall.com?source=gh",
+	"keywords": [
+		"paymentwall",
+		"api", 
+		"payments",
+		"carrier billing",
+		"credit cards",
+		"alternative payments",
+		"monetization",
+		"recurring billing",
+		"payment processing"
+	],
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Paymentwall Team",
+			"email": "devsupport@paymentwall.com"
+		}
+	],
+	"require": {
+		"php": ">=5.2",
+		"ext-curl": "*",
+		"ext-json": "*"
+	},
+	"autoload": {
+		"classmap": ["lib/Paymentwall/"]
+	},
+	"minimum-stability": "dev"
+}
