@@ -352,7 +352,7 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 		unset($params['sig']);
 
-		if ($version == self::SIGNATURE_VERSION_2) {
+		if ($version == self::SIGNATURE_VERSION_2 or $version == self::SIGNATURE_VERSION_3) {
 			if (is_array($params)) {
 				ksort($params);
 				foreach ($params as &$p) {
