@@ -352,32 +352,34 @@ class Paymentwall_Pingback extends Paymentwall_Base
 
 		unset($params['sig']);
 
-		if ($version == self::SIGNATURE_VERSION_2 or $version == self::SIGNATURE_VERSION_3) {
-			if (is_array($params)) {
-				ksort($params);
-				foreach ($params as &$p) {
-					if (is_array($p)) {
-						ksort($p);
-					}
-				}
-			}
-		}
-
-		foreach ($params as $key => $value) {
-			if (is_array($value)) {
-				foreach ($value as $k => $v) {
-					$baseString .= $key . '[' . $k . ']' . '=' . $v;
-				}
-			} else {
-				$baseString .= $key . '=' . $value;
-			}
-		}
-
-		$baseString .= $secret;
-
-		if ($version == self::SIGNATURE_VERSION_3) {
-			return hash('sha256', $baseString);
-		}
+	        if (is_array($params)) {
+	            ksort($params);
+	
+	            if ($version == self::SIGNATURE_VERSION_2) {
+	                foreach ($params as &$p) {
+	                    if (is_array($p)) {
+	                        ksort($p);
+	                    }
+	                }
+	            }
+	
+	            foreach ($params as $key => $value) {
+	                if (is_array($value)) {
+	                    ksort($value);
+	                    foreach ($value as $k => $v) {
+	                        $baseString .= $key . '[' . $k . ']' . '=' . $v;
+	                    }
+	                } else {
+	                    $baseString .= $key . '=' . $value;
+	                }
+	            }
+	
+	            $baseString .= $secret;
+	
+	            if ($version == self::SIGNATURE_VERSION_3) {
+	                return hash('sha256', $baseString);
+	            }
+	        }
 
 		return md5($baseString);
 
