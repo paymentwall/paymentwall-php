@@ -217,6 +217,9 @@ class Paymentwall_Widget extends Paymentwall_Base
 			}
 
 			foreach ($params as $key => $value) {
+				if (!isset($value)) {
+					continue;
+				}
 				if (is_array($value)) {
 					foreach ($value as $k => $v) {
 						$baseString .= $key . '[' . $k . ']' . '=' . ($v === false ? '0' : $value);
