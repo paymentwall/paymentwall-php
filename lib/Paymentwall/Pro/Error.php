@@ -57,7 +57,7 @@ class Paymentwall_Pro_Error
 				'message' => 'Sorry, internal error occured'
 			)
 		);
-		die(json_encode($result));
+		return json_encode($result);
 	}
 
 	public static function getPublicData($properties) {
