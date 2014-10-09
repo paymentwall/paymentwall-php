@@ -137,7 +137,7 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 				return Paymentwall_Pro_Error::wrapError($response);
 			}
 		} else {
-			return Paymentwall_Pro_Error::wrapInternalError($response);
+			return Paymentwall_Pro_Error::wrapInternalError();
 		}
 	}
 
