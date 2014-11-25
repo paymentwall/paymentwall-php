@@ -25,19 +25,18 @@ class Paymentwall_Pro_Error
 	const CHARGE_WRONG_EXP_DATE = 3006;
 	const CHARGE_WRONG_CURRENCY = 3007;
 	const CHARGE_EMPTY_FIELDS = 3008;
-	const CHARGE_WRONG_CVV = 3009;
-	const CHARGE_WRONG_PIN = 3010;
 	const CHARGE_WRONG_TOKEN = 3111;
 	const CHARGE_CARD_NUMBER_ERROR = 3101;
 	const CHARGE_CARD_NUMBER_EXPIRED = 3102;
 	const CHARGE_UNSUPPORTED_CARD = 3103;
 	const CHARGE_UNSUPPORTED_COUNTRY = 3104;
-	const CHARGE_CVV_ERROR = 3008;
 	const CHARGE_BILLING_ADDRESS_ERROR = 3009;
 	const CHARGE_BANK_DECLINE = 3010;
 	const CHARGE_INSUFFICIENT_FUNDS = 3011;
 	const CHARGE_GATEWAY_DECLINE = 3012;
 	const CHARGE_FRAUD_SUSPECTED = 3013;
+	const CHARGE_CVV_ERROR = 3014;
+	const CHARGE_WRONG_PIN = 3015;
 	const CHARGE_FAILED = 3200;
 	const CHARGE_ALREADY_REFUNDED = 3201;
 	const CHARGE_CANCEL_FAILED = 3202;
@@ -84,7 +83,6 @@ class Paymentwall_Pro_Error
 		self::CHARGE_WRONG_EXP_DATE                     => array('field' => 'cc-expiry'),
 		self::CHARGE_WRONG_CURRENCY                     => array('field' => ''),
 		self::CHARGE_EMPTY_FIELDS                       => array('field' => ''),
-		self::CHARGE_WRONG_CVV                          => array('field' => 'cc-cvv'),
 		self::CHARGE_WRONG_PIN                          => array('field' => ''),
 		self::CHARGE_WRONG_TOKEN                        => array('field' => ''),
 		self::CHARGE_CARD_NUMBER_ERROR                  => array('field' => 'cc-number'),
