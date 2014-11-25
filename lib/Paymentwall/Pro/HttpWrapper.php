@@ -78,7 +78,7 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 		}
 		
 		$response = $this->_handleRequest('POST', $url);
-		return $this->_wrapResponseBody($response['body']);
+		return $this->_wrapResponseBody($this->_removeBOM($response['body']));
 	}
 
 	/**
@@ -139,6 +139,10 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 		} else {
 			return Paymentwall_Pro_Error::wrapInternalError();
 		}
+	}
+
+	private function _removeBOM($str = '') {
+		return preg_replace('/\x{FEFF}/u', '', $str);
 	}
 
 }
