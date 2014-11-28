@@ -73,8 +73,8 @@ abstract class Paymentwall_Base
 				'subscription' 	=> self::getProApiBaseUrl() . 'pro/v1/subscription'
 			),
 			self::PRO_API_VERSION_2 => array(
-				'charge' 		=> self::getProApiBaseUrl() . 'brick/v1/charge',
-				'subscription' 	=> self::getProApiBaseUrl() . 'brick/v1/subscription'
+				'charge' 		=> self::getProApiBaseUrl() . 'pro/v2/charge',
+				'subscription' 	=> self::getProApiBaseUrl() . 'pro/v2/subscription'
 			)
 		);
 
