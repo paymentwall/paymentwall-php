@@ -8,12 +8,6 @@ abstract class Paymentwall_Base
 	const VERSION = '1.1.1';
 
 	/**
-	 * URLs for Paymentwall Pro
-	 */
-	const CHARGE_URL = 'https://api.paymentwall.com/api/pro/v1/charge';
-	const SUBS_URL = 'https://api.paymentwall.com/api/pro/v1/subscription';
-
-	/**
 	 * API types
 	 */
 	const API_VC = 1;
@@ -35,6 +29,9 @@ abstract class Paymentwall_Base
 	const SIGNATURE_VERSION_2 = 2;
 	const SIGNATURE_VERSION_3 = 3;
 
+	const PRO_API_VERSION_1 = 1;
+	const PRO_API_VERSION_2 = 2;
+
 	protected $errors = array();
 
 	/**
@@ -55,11 +52,34 @@ abstract class Paymentwall_Base
 	 */
 	public static $secretKey;
 
+	public static $proApiBaseUrl = 'https://api.paymentwall.com/api/';
+
+	/**
+	 * Paymentwall Pro API Version
+	 * @param string $proApiVersion
+	 */
+	public static $proApiVersion;
+
 	/**
 	 * Paymentwall Pro API Key
 	 * @param string $proApiKey
 	 */
 	public static $proApiKey;
+
+	public static function getUrlByApiVersion($apiVersion) {
+		$map = array(
+			self::PRO_API_VERSION_1 => array(
+				'charge' 		=> self::getProApiBaseUrl() . 'pro/v1/charge',
+				'subscription' 	=> self::getProApiBaseUrl() . 'pro/v1/subscription'
+			),
+			self::PRO_API_VERSION_2 => array(
+				'charge' 		=> self::getProApiBaseUrl() . 'brick/v1/charge',
+				'subscription' 	=> self::getProApiBaseUrl() . 'brick/v1/subscription'
+			)
+		);
+
+		return $map[$apiVersion];
+	}
 
 	/**
 	 * @param int $apiType API type, Paymentwall_Base::API_VC for Virtual Currency, Paymentwall_Base::API_GOODS for Digital Goods
@@ -110,6 +130,22 @@ abstract class Paymentwall_Base
 
 	public static function getProApiKey() {
 		return self::$proApiKey;
+	}
+
+	public static function setProApiVersion($proApiVersion = self::PRO_API_VERSION_1) {
+		self::$proApiVersion = $proApiVersion;
+	}
+
+	public static function getProApiVersion() {
+		return self::$proApiVersion;
+	}
+
+	public static function setProApiBaseUrl($proApiBaseUrl) {
+		self::$proApiBaseUrl = $proApiBaseUrl;
+	}
+
+	public static function getProApiBaseUrl() {
+		return self::$proApiBaseUrl;
 	}
 
 	/**

@@ -45,6 +45,8 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 			$this->appendToErrors('curl extension is missing');
 		}
 
+		$this->apiUrl = self::getUrlByApiVersion(self::getProApiVersion());
+
 		$this->curl = curl_init();
 	}
 
@@ -71,10 +73,10 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 	public function post() {
 		$params = $this->requestParams;
 
-		$url = self::CHARGE_URL;
+		$url = $this->apiUrl['charge'];
 		
 		if (isset($params['period']) && isset($params['period_duration'])) {
-			$url = self::SUBS_URL;
+			$url = $this->apiUrl['subscription'];
 		}
 		
 		$response = $this->_handleRequest('POST', $url);
