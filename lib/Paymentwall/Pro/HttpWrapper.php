@@ -38,7 +38,7 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 
 		if (!empty($attributes)) {
 			$this->requestParams = $attributes;
-			$this->requestParams['browser_ip'] = '8.8.8.8';//$ipAddress;
+			$this->requestParams['browser_ip'] = $ipAddress;
 		}
 
 		if (!extension_loaded('curl')) {
