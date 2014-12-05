@@ -58,7 +58,7 @@ abstract class Paymentwall_Base
 	 * Paymentwall Pro API Version
 	 * @param string $proApiVersion
 	 */
-	public static $proApiVersion;
+	public static $proApiVersion = self::PRO_API_VERSION_1;
 
 	/**
 	 * Paymentwall Pro API Key
@@ -132,7 +132,7 @@ abstract class Paymentwall_Base
 		return self::$proApiKey;
 	}
 
-	public static function setProApiVersion($proApiVersion = self::PRO_API_VERSION_1) {
+	public static function setProApiVersion($proApiVersion) {
 		self::$proApiVersion = $proApiVersion;
 	}
 

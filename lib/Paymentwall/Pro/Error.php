@@ -157,8 +157,8 @@ class Paymentwall_Pro_Error
 			return array(
 				'success' => 0,
 				'error' => array(
-					'message' => $properties[self::ERROR][self::ERROR_MESSAGE],
-					'field' => self::getFieldFromMessages($properties[self::ERROR][self::ERROR_CODE])
+					'message' => isset($properties[self::ERROR][self::ERROR_MESSAGE]) ? $properties[self::ERROR][self::ERROR_MESSAGE] : $properties[self::ERROR]['message'],
+					'field' => isset($properties[self::ERROR][self::ERROR_CODE]) ? self::getFieldFromMessages($properties[self::ERROR][self::ERROR_CODE]) : ''
 				)
 			);
 		} else if (isset($properties[self::RISK]) && $properties[self::RISK] == self::RISK_PENDING) {

@@ -34,11 +34,11 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 	 */
 	public function __construct($attributes) {
 
-		$ipAddress = $_SERVER['REMOTE_ADDR'];
+		$ipAddress = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '0.0.0.0';
 
 		if (!empty($attributes)) {
 			$this->requestParams = $attributes;
-			$this->requestParams['browser_ip'] = $ipAddress;
+			$this->requestParams['browser_ip'] = '8.8.8.8';//$ipAddress;
 		}
 
 		if (!extension_loaded('curl')) {
