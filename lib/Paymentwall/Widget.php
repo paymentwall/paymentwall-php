@@ -5,7 +5,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 	/**
 	 * Widget call URL
 	 */
-	const BASE_URL = 'https://api.paymentwall.com/api';
+	const BASE_URL = 'https://wallapi.my/api';
 
 	protected $userId;
 	protected $widgetCode;

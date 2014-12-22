@@ -11,12 +11,16 @@ class Paymentwall_Pro_Charge
 		return Paymentwall_Pro_Error::getPublicData($this->properties);
 	}
 
+	public function isCharged() {
+		return $this->object == 'charge';
+	}
+
 	public function isCaptured() {
 		return $this->captured;
 	}
 
 	public function isRiskPending() {
-		return ($this->risk == 'pending') ? true : false;
+		return $this->risk == 'pending';
 	}
 
 	public function __get($property) {

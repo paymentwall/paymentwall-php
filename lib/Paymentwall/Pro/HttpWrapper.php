@@ -93,6 +93,16 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 	 */
 	public function delete() {}
 
+	public function tokenize() {
+		$params = $this->requestParams;
+
+		$url = $this->resolveTokenizationUrlByPublicKey($params['public_key'], $this->apiUrl);
+
+		$response = $this->_handleRequest('POST', $url);
+
+		return json_decode($this->_removeBOM($response['body']), true);
+	}
+
 	/**
 	 * Do HTTP request 
 	 *
@@ -141,6 +151,10 @@ class Paymentwall_Pro_HttpWrapper extends Paymentwall_Base
 		} else {
 			return Paymentwall_Pro_Error::wrapInternalError();
 		}
+	}
+
+	private function resolveTokenizationUrlByPublicKey($publicKey = '', $apiUrlSet = array()) {
+		return strpos($publicKey, 't_') === 0 ? $apiUrlSet['token_test'] : $apiUrlSet['token'];
 	}
 
 	private function _removeBOM($str = '') {

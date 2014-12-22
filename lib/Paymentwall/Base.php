@@ -8,6 +8,11 @@ abstract class Paymentwall_Base
 	const VERSION = '1.1.1';
 
 	/**
+	 * Tokenization API end-point
+	 */
+	const TOKENIZATION_URL = 'https://pwgateway.com/api/token';
+
+	/**
 	 * API types
 	 */
 	const API_VC = 1;
@@ -74,7 +79,9 @@ abstract class Paymentwall_Base
 			),
 			self::PRO_API_VERSION_2 => array(
 				'charge' 		=> self::getProApiBaseUrl() . 'pro/v2/charge',
-				'subscription' 	=> self::getProApiBaseUrl() . 'pro/v2/subscription'
+				'subscription' 	=> self::getProApiBaseUrl() . 'pro/v2/subscription',
+				'token'         => self::TOKENIZATION_URL,
+				'token_test'    => self::getProApiBaseUrl() . 'brick/token'
 			)
 		);
 

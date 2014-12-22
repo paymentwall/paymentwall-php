@@ -16,4 +16,6 @@ require_once(dirname(__FILE__) . '/Paymentwall/Pro/HttpWrapper.php');
 
 require_once(dirname(__FILE__) . '/Paymentwall/Pro/Charge.php');
 
+require_once (dirname(__FILE__)) . '/Paymentwall/Pro/OneTimeToken.php';
+
 require_once(dirname(__FILE__) . '/Paymentwall/Pro/Error.php');
