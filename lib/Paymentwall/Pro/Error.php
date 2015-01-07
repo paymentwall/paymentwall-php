@@ -26,6 +26,9 @@ class Paymentwall_Pro_Error
 	const CHARGE_WRONG_CURRENCY = 3007;
 	const CHARGE_EMPTY_FIELDS = 3008;
 	const CHARGE_WRONG_TOKEN = 3111;
+	const CHARGE_WRONG_ONE_TIME_TOKEN = 3112;
+	const CHARGE_WRONG_TEST_CREDENTIALS = 3113;
+	const CHARGE_TOKEN_DELETED = 3114;
 	const CHARGE_CARD_NUMBER_ERROR = 3101;
 	const CHARGE_CARD_NUMBER_EXPIRED = 3102;
 	const CHARGE_UNSUPPORTED_CARD = 3103;
@@ -85,6 +88,9 @@ class Paymentwall_Pro_Error
 		self::CHARGE_EMPTY_FIELDS                       => array('field' => ''),
 		self::CHARGE_WRONG_PIN                          => array('field' => ''),
 		self::CHARGE_WRONG_TOKEN                        => array('field' => ''),
+		self::CHARGE_WRONG_ONE_TIME_TOKEN               => array('field' => ''),
+		self::CHARGE_WRONG_TEST_CREDENTIALS             => array('field' => ''),
+		self::CHARGE_TOKEN_DELETED                      => array('field' => ''),
 		self::CHARGE_CARD_NUMBER_ERROR                  => array('field' => 'cc-number'),
 		self::CHARGE_CARD_NUMBER_EXPIRED                => array('field' => 'cc-number'),
 		self::CHARGE_UNSUPPORTED_CARD                   => array('field' => 'cc-number'),
