@@ -140,3 +140,93 @@ if ($pingback->validate()) {
 } else {
   echo $pingback->getErrorSummary();
 }</code></pre>
+
+##Brick
+
+####Initializing Paymentwall
+<pre><code>Paymentwall_Config::getInstance()->set(array(
+	'public_key' => 'YOUR_PUBLIC_KEY',
+	'private_key' => 'YOUR_PRIVATE_KEY'
+));</code></pre>
+
+####Create a one-time token
+<pre><code>$tokenModel = new Paymentwall_OneTimeToken();
+$token =  $tokenModel->create(array(
+	'public_key' => Paymentwall_Config::getInstance()->getPublicKey(),
+	'card[number]' => '4242424242424242',
+	'card[exp_month]' => '11',
+	'card[exp_year]' => '19',
+	'card[cvv]' => '123'
+));</code></pre>
+
+####Charge
+<pre><code>$chargeModel = new Paymentwall_Charge();
+$charge = $chargeModel->create(array(
+	'token' => $token->getToken(),
+	'email' => $_POST['email'],
+	'currency' => 'USD',
+	'amount' => 10,
+	'fingerprint' => $_POST['fingerprint']
+));
+
+$response = $charge->getPublicData();
+
+if ($charge->isSuccessful()) {
+	if ($charge->isCaptured()) {
+		// deliver s product
+	} elseif ($charge->isUnderReview()) {
+		// decide on risk charge
+	}
+} else {
+	$errors = json_decode($response, true);
+	echo $errors['error']['code'];
+	echo $errors['error']['message'];
+}
+
+echo $response; // need for JS communication</code></pre>
+
+####Charge - refund
+
+<pre><code>$chargeModel = new Paymentwall_Charge('CHARGE_ID');
+$charge = $chargeModel->refund();
+
+echo $charge->isRefunded();</code></pre>
+
+####Subscription
+
+<pre><code>$subscriptionModel = new Paymentwall_Subscription();
+$subscription = $subscriptionModel->create(array(
+	'token' => $token->getToken(),
+	'email' => $_POST['email'],
+	'currency' => 'USD',
+	'amount' => 10,
+	'fingerprint' => $_POST['fingerprint'],
+	'plan' => 'product_123',
+	'period' => 'week',
+	'period_duration' => 2
+));
+
+echo $subscription->getId();</code></pre>
+
+####Subscription - cancel
+
+<pre><code>$subscriptionModel = new Paymentwall_Subscription('SUBSCRIPTION_ID');
+$subscription = $subscriptionModel->cancel();
+
+echo $subscription->isActive();</code></pre>
+
+###Signature calculation - Widget
+
+<pre><code>$widgetSignatureModel = new Paymentwall_Signature_Widget();
+echo $widgetSignatureModel->calculate(
+	array(), // widget params
+	2 // signature version
+);</code></pre>
+
+###Singature calculation - Pingback
+
+<pre><code>$pingbackSignatureModel = new Paymentwall_Signature_Pingback();
+echo $pingbackSignatureModel->calculate(
+	array(), // pingback params
+	1 // signature version
+);</code></pre>
