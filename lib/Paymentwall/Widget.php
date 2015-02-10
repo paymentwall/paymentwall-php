@@ -222,7 +222,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 				}
 				if (is_array($value)) {
 					foreach ($value as $k => $v) {
-						$baseString .= $key . '[' . $k . ']' . '=' . ($v === false ? '0' : $value);
+						$baseString .= $key . '[' . $k . ']' . '=' . ($v === false ? '0' : $v);
 					}
 				} else {
 					$baseString .= $key . '=' . ($value === false ? '0' : $value);
