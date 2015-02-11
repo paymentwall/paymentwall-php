@@ -166,7 +166,8 @@ $charge = $chargeModel->create(array(
 	'email' => $_POST['email'],
 	'currency' => 'USD',
 	'amount' => 10,
-	'fingerprint' => $_POST['fingerprint']
+	'fingerprint' => $_POST['fingerprint'],
+	'description' => 'Order #123'
 ));
 
 $response = $charge->getPublicData();
@@ -202,6 +203,7 @@ $subscription = $subscriptionModel->create(array(
 	'amount' => 10,
 	'fingerprint' => $_POST['fingerprint'],
 	'plan' => 'product_123',
+	'description' => 'Order #123',
 	'period' => 'week',
 	'period_duration' => 2
 ));
