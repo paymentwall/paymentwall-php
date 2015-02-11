@@ -19,7 +19,7 @@ Alternatively, you can run:
 
 Then use a code sample below.
 
-#Code Samples
+#Code Samples 
 
 ##Digital Goods API
 

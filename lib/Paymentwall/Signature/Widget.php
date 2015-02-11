@@ -33,7 +33,7 @@ class Paymentwall_Signature_Widget extends Paymentwall_Signature_Abstract
 	{
 		foreach ($params as $key => $value) {
 			if (!isset($value)) {
-				continue;
+				continue; 
 			}
 			if (is_array($value)) {
 				foreach ($value as $k => $v) {
