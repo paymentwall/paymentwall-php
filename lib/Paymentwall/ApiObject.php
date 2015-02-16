@@ -47,6 +47,10 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';
 	}
 
+	public function getProperties() {
+		return $this->properties;
+	}
+
 	protected function setPropertiesFromResponse($response = '')
 	{
 		if (!empty($response)) {

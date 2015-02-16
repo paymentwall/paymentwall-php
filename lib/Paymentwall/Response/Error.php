@@ -17,6 +17,8 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 	const CHARGE_WRONG_ONE_TIME_TOKEN = 3112;
 	const CHARGE_WRONG_TEST_CREDENTIALS = 3113;
 	const CHARGE_TOKEN_DELETED = 3114;
+	CONST CHARGE_WRONG_MIN_AMOUNT = 3115;
+	CONST CHARGE_WRONG_MAX_AMOUNT = 3116;
 	const CHARGE_CARD_NUMBER_ERROR = 3101;
 	const CHARGE_CARD_NUMBER_EXPIRED = 3102;
 	const CHARGE_UNSUPPORTED_CARD = 3103;
@@ -25,9 +27,7 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 	const CHARGE_BANK_DECLINE = 3010;
 	const CHARGE_INSUFFICIENT_FUNDS = 3011;
 	const CHARGE_GATEWAY_DECLINE = 3012;
-	const CHARGE_FRAUD_SUSPECTED = 3013;
 	const CHARGE_CVV_ERROR = 3014;
-	const CHARGE_WRONG_PIN = 3015;
 	const CHARGE_FAILED = 3200;
 	const CHARGE_ALREADY_REFUNDED = 3201;
 	const CHARGE_CANCEL_FAILED = 3202;
@@ -54,10 +54,7 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 	const API_KEY_MISSED = 4006;
 	const API_KEY_INVALID = 4007;
 	const API_DECRYPTION_FAILED = 4008;
-	const API_WRONG_SIGNATURE = 4009;
-	const API_NOT_ACTIVATED = 4010;
 	const USER_BANNED = 5000;
-	const PARAMETER_WRONG_COUNTRY_CODE = 6001;
 
 	static $errorCodes = array(
 		self::GENERAL_INTERNAL,
@@ -76,6 +73,8 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 		self::CHARGE_WRONG_ONE_TIME_TOKEN,
 		self::CHARGE_WRONG_TEST_CREDENTIALS,
 		self::CHARGE_TOKEN_DELETED,
+		self::CHARGE_WRONG_MIN_AMOUNT,
+		self::CHARGE_WRONG_MAX_AMOUNT,
 		self::CHARGE_CARD_NUMBER_ERROR,
 		self::CHARGE_CARD_NUMBER_EXPIRED,
 		self::CHARGE_UNSUPPORTED_CARD,
