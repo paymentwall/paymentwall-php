@@ -83,7 +83,6 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 		self::CHARGE_BANK_DECLINE,
 		self::CHARGE_INSUFFICIENT_FUNDS,
 		self::CHARGE_GATEWAY_DECLINE,
-		self::CHARGE_FRAUD_SUSPECTED,
 		self::CHARGE_FAILED,
 		self::CHARGE_ALREADY_REFUNDED,
 		self::CHARGE_CANCEL_FAILED,
@@ -110,10 +109,7 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 		self::API_KEY_MISSED,
 		self::API_KEY_INVALID,
 		self::API_DECRYPTION_FAILED,
-		self::API_WRONG_SIGNATURE,
-		self::API_NOT_ACTIVATED,
-		self::USER_BANNED,
-		self::PARAMETER_WRONG_COUNTRY_CODE
+		self::USER_BANNED
 	);
 
 	public function process()
