@@ -68,7 +68,6 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 		self::CHARGE_WRONG_EXP_DATE,
 		self::CHARGE_WRONG_CURRENCY,
 		self::CHARGE_EMPTY_FIELDS,
-		self::CHARGE_WRONG_PIN,
 		self::CHARGE_WRONG_TOKEN,
 		self::CHARGE_WRONG_ONE_TIME_TOKEN,
 		self::CHARGE_WRONG_TEST_CREDENTIALS,
