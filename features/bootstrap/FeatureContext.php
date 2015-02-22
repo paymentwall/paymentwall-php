@@ -31,6 +31,7 @@ class FeatureContext extends BehatContext
     {
         $this->useContext('pingback', new PingbackContext(array()));
         $this->useContext('widget', new WidgetContext(array()));
+        $this->useContext('charge', new ChargeContext(array()));
     }
 
     /**
@@ -38,7 +39,7 @@ class FeatureContext extends BehatContext
      */
     public function publicKey($publicKey)
     {
-        Paymentwall_Base::setAppKey($publicKey); 
+        Paymentwall_Base::setAppKey($publicKey);
     }
 
     /**
@@ -47,6 +48,16 @@ class FeatureContext extends BehatContext
     public function secretKey($secretKey)
     {
         Paymentwall_Base::setSecretKey($secretKey);
+    }
+
+    /**
+     * @Given /^Private key "([^"]*)"$/
+     */
+    public function privateKey($privateKey)
+    {
+        Paymentwall_Config::getInstance()->set(array(
+            'private_key' => $privateKey
+        ));
     }
 
     /**

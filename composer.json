@@ -6,7 +6,7 @@
 	"homepage": "http://paymentwall.com?source=gh",
 	"keywords": [
 		"paymentwall",
-		"api", 
+		"api",
 		"payments",
 		"carrier billing",
 		"credit cards",
@@ -25,7 +25,11 @@
 	"require": {
 		"php": ">=5.2",
 		"ext-curl": "*",
-		"ext-json": "*"
+		"ext-json": "*",
+		"behat/behat": "2.4.*@stable"
+	},
+	"config": {
+		"bin-dir": "bin/"
 	},
 	"autoload": {
 		"classmap": ["lib/Paymentwall/"]
