@@ -160,8 +160,8 @@ $token =  $tokenModel->create(array(
 ));</code></pre>
 
 ####Charge
-<pre><code>$chargeModel = new Paymentwall_Charge();
-$charge = $chargeModel->create(array(
+<pre><code>$charge = new Paymentwall_Charge();
+$charge->create(array(
 	'token' => $token->getToken(),
 	'email' => $_POST['email'],
 	'currency' => 'USD',
@@ -188,15 +188,15 @@ echo $response; // need for JS communication</code></pre>
 
 ####Charge - refund
 
-<pre><code>$chargeModel = new Paymentwall_Charge('CHARGE_ID');
-$charge = $chargeModel->refund();
+<pre><code>$charge = new Paymentwall_Charge('CHARGE_ID');
+$charge->refund();
 
 echo $charge->isRefunded();</code></pre>
 
 ####Subscription
 
-<pre><code>$subscriptionModel = new Paymentwall_Subscription();
-$subscription = $subscriptionModel->create(array(
+<pre><code>$subscription = new Paymentwall_Subscription();
+$subscription->create(array(
 	'token' => $token->getToken(),
 	'email' => $_POST['email'],
 	'currency' => 'USD',
@@ -212,8 +212,8 @@ echo $subscription->getId();</code></pre>
 
 ####Subscription - cancel
 
-<pre><code>$subscriptionModel = new Paymentwall_Subscription('SUBSCRIPTION_ID');
-$subscription = $subscriptionModel->cancel();
+<pre><code>$subscription = new Paymentwall_Subscription('SUBSCRIPTION_ID');
+$subscription->cancel();
 
 echo $subscription->isActive();</code></pre>
 
