@@ -8,6 +8,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 
 	protected $properties = array();
 	protected $_id;
+	protected $_rawResponse = '';
 
 	abstract function getEndpointName();
 
@@ -51,9 +52,15 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		return $this->properties;
 	}
 
+	public function getRawResponseData()
+	{
+		return $this->_rawResponse;
+	}
+
 	protected function setPropertiesFromResponse($response = '')
 	{
 		if (!empty($response)) {
+			$this->_rawResponse = $response;
 			$this->properties = $this->preparePropertiesFromResponse($response);
 		} else {
 			throw new Exception('Empty response');

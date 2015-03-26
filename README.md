@@ -162,14 +162,11 @@ $token =  $tokenModel->create(array(
 ####Charge
 <pre><code>$charge = new Paymentwall_Charge();
 $charge->create(array(
-	// if generated via backend
-	//'token' => $token->getToken(),
-	// if generated via brick.js
-	'token' => $_POST['brick_token'],
+	'token' => $token->getToken(),
 	'email' => $_POST['email'],
 	'currency' => 'USD',
 	'amount' => 10,
-	'fingerprint' => $_POST['brick_fingerprint'],
+	'fingerprint' => $_POST['fingerprint'],
 	'description' => 'Order #123'
 ));
 
@@ -200,14 +197,11 @@ echo $charge->isRefunded();</code></pre>
 
 <pre><code>$subscription = new Paymentwall_Subscription();
 $subscription->create(array(
-	// if generated via backend
-	//'token' => $token->getToken(),
-	// if generated via brick.js
-	'token' => $_POST['brick_token'],
+	'token' => $token->getToken(),
 	'email' => $_POST['email'],
 	'currency' => 'USD',
 	'amount' => 10,
-	'fingerprint' => $_POST['brick_fingerprint'],
+	'fingerprint' => $_POST['fingerprint'],
 	'plan' => 'product_123',
 	'description' => 'Order #123',
 	'period' => 'week',
