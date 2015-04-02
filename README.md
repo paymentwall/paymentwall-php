@@ -24,11 +24,22 @@ Then use a code sample below.
 ##Digital Goods API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Using Paymentwall PHP Library v2:
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Config::getInstance()->set(array(
+    'api_type' => Paymentwall_Config::API_GOODS,
+    'public_key' => 'YOUR_PUBLIC_KEY',
+    'private_key' => 'YOUR_PRIVATE_KEY'
+));
+```
+Using Paymentwall PHP Library v1 (deprecated in v2):
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
-</code></pre>
+```
 
 ####Widget Call
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_flexible_widget_call)
@@ -74,11 +85,22 @@ if ($pingback->validate()) {
 ##Virtual Currency API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Using Paymentwall PHP Library v2:
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Config::getInstance()->set(array(
+    'api_type' => Paymentwall_Config::API_VC,
+    'public_key' => 'YOUR_PUBLIC_KEY',
+    'private_key' => 'YOUR_PRIVATE_KEY'
+));
+```
+Using Paymentwall PHP Library v1 (deprecated in v2):
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
 Paymentwall_Base::setAppKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
-</code></pre>
+```
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
@@ -108,11 +130,22 @@ if ($pingback->validate()) {
 ##Cart API
 
 ####Initializing Paymentwall
-<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Using Paymentwall PHP Library v2:
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Config::getInstance()->set(array(
+    'api_type' => Paymentwall_Config::API_CART,
+    'public_key' => 'YOUR_PUBLIC_KEY',
+    'private_key' => 'YOUR_PRIVATE_KEY'
+));
+```
+Using Paymentwall PHP Library v1 (deprecated in v2):
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
-</code></pre>
+```
 
 ####Widget Call
 <pre><code>$widget = new Paymentwall_Widget(
