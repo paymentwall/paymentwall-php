@@ -15,13 +15,64 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 	const PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED = 14;
 
 	protected $parameters;
+
+    /** @var array list of ip addresses */
 	protected $ipAddress;
+
+    /** @var array allowed HTTP_REFERER values */
+    protected $ipsWhiteList;
+
+    /** @var array list of PINGBACK_TYPE_* that require the library consumer to perform a success action */
+    protected $deliverable;
+
+    /** @var array list of the params used to calculate the signature */
+    protected $signatureParams;
+
+    /** @var string */
+    protected $calculatedSignature;
 
 	public function __construct(array $parameters, $ipAddress)
 	{
 		$this->parameters = $parameters;
-		$this->ipAddress = $ipAddress;
-	}
+        $this->setIPAddress($ipAddress);
+    }
+
+    public function setIPAddress($ipAddress)
+    {
+        $data = array_map('trim', explode(',', $ipAddress));
+        $this->ipAddress = $data;
+    }
+
+    /**
+     * define the allowed referrer list. Allows for library consumers to add ip address values needed for testing
+     * @param array $whiteList
+     */
+    public function setWhiteList($whiteList = null)
+    {
+        if (empty($whiteList)) {
+            $whiteList = [
+                '174.36.92.186',
+                '174.36.96.66',
+                '174.36.92.187',
+                '174.36.92.192',
+                '174.37.14.28',
+            ];
+        }
+        $this->ipsWhiteList = $whiteList;
+    }
+
+    /**
+     * Allows for library consumers to add ip address values needed for testing
+     * @param array|string $whiteList
+     */
+    public function addToWhiteList($whiteList)
+    {
+        $whiteList = is_array($whiteList) ? $whiteList : array($whiteList);
+        if (empty($this->ipsWhiteList)) {
+            $this->setWhiteList();
+        }
+        $this->ipsWhiteList = array_merge($this->ipsWhiteList, $whiteList);
+    }
 
 	public function validate($skipIpWhitelistCheck = false)
 	{
@@ -90,21 +141,33 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 		$signature = isset($this->parameters['sig']) ? $this->parameters['sig'] : null;
 
+        // this allows for a consumer to inspect the result of this function for integration testing
+        $this->signatureParams = $signatureParams;
+        $this->calculatedSignature = $signatureCalculated;
+
 		return $signature == $signatureCalculated;
 	}
 
-	public function isIpAddressValid()
-	{
-		$ipsWhitelist = array(
-			'174.36.92.186',
-			'174.36.96.66',
-			'174.36.92.187',
-			'174.36.92.192',
-			'174.37.14.28'
-		);
-
-		return in_array($this->ipAddress, $ipsWhitelist);
-	}
+    /**
+     * checks to see if at least one of the referring ip addresses is from a trusted source
+     * iFrame payments can have more than one referrer defined, one of them needs to be in the list
+     *
+     * @return bool
+     */
+    public function isIpAddressValid()
+    {
+        if (empty($this->ipsWhiteList)) {
+            $this->setWhiteList();
+        }
+        $isValid = FALSE;
+        foreach ($this->ipAddress as $address) {
+            if (in_array($address, $this->ipsWhiteList)) {
+                $isValid = TRUE;
+                break;
+            }
+        }
+        return $isValid;
+    }
 
 	public function isParametersValid()
 	{
@@ -215,13 +278,28 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 		return $this->getReferenceId() . '_' . $this->getType();
 	}
 
+    /**
+     * allows a library consumer to override the default deliverable constraints
+     * @param array $list
+     */
+    public function setDeliverable($list = null)
+    {
+        if (empty($list)) {
+            $list = [
+                self::PINGBACK_TYPE_REGULAR,
+                self::PINGBACK_TYPE_GOODWILL,
+                self::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED,
+            ];
+        }
+        $this->deliverable = $list;
+    }
+
 	public function isDeliverable()
 	{
-		return (
-			$this->getType() === self::PINGBACK_TYPE_REGULAR ||
-			$this->getType() === self::PINGBACK_TYPE_GOODWILL ||
-			$this->getType() === self::PINGBACK_TYPE_RISK_REVIEWED_ACCEPTED
-		);
+        if (empty($this->deliverable)) {
+            $this->setDeliverable();
+        }
+		return (in_array($this->getType(), $this->deliverable));
 	}
 
 	public function isCancelable()
