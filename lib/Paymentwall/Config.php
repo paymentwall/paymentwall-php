@@ -10,7 +10,7 @@ class Paymentwall_Config
 	const API_GOODS	= 2;
 	const API_CART	= 3;
 
-	protected $apiType = 2;
+	protected $apiType = self::API_GOODS;
 	protected $publicKey;
 	protected $privateKey;
 	protected $apiBaseUrl = self::API_BASE_URL;
