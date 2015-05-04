@@ -25,8 +25,7 @@
 	"require": {
 		"php": ">=5.2",
 		"ext-curl": "*",
-		"ext-json": "*",
-		"behat/behat": "2.4.*@stable"
+		"ext-json": "*"
 	},
 	"config": {
 		"bin-dir": "bin/"
