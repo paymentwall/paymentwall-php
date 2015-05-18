@@ -6,7 +6,7 @@ class Paymentwall_Card
 
 	public function __construct($details = array())
 	{
-		$this->fields = $details;
+		$this->fields = (array) $details;
 	}
 
 	public function __get($property)

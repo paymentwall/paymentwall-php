@@ -1,6 +1,6 @@
 <?php
 
-class Paymentwall_Subscription extends Paymentwall_ApiObject implements Paymentwall_ApiObjectInterface
+class Paymentwall_Subscription extends Paymentwall_ApiObject
 {
 	public function getId()
 	{
@@ -30,11 +30,6 @@ class Paymentwall_Subscription extends Paymentwall_ApiObject implements Paymentw
 	public function getEndpointName()
 	{
 		return self::API_OBJECT_SUBSCRIPTION;
-	}
-
-	public function getCard()
-	{
-		return new Paymentwall_Card($this->card);
 	}
 
 	public function get()

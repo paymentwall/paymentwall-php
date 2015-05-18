@@ -61,7 +61,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 	{
 		if (!empty($response)) {
 			$this->_rawResponse = $response;
-			$this->properties = $this->preparePropertiesFromResponse($response);
+			$this->properties = (array) $this->preparePropertiesFromResponse($response);
 		} else {
 			throw new Exception('Empty response');
 		}
@@ -74,7 +74,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 
 	protected function preparePropertiesFromResponse($string = '')
 	{
-		return json_decode($string, true);
+		return json_decode($string, false);
 	}
 
 	protected function getApiBaseHeader()

@@ -32,6 +32,11 @@ class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_Ap
 		return $this->refunded;
 	}
 
+	public function setPropertiesFromResponse($response = '') {
+		parent::setPropertiesFromResponse($response);
+		$this->card = new Paymentwall_Card($this->card);
+	}
+
 	public function getEndpointName()
 	{
 		return self::API_OBJECT_CHARGE;
