@@ -85,6 +85,13 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 		}
 
+        // CURL_SSLVERSION_TLSv1_2 is defined in libcurl version 7.34 or later
+        // but unless PHP has been compiled with the correct libcurl headers it
+        // won't be defined in your PHP instance.  PHP > 5.5.19 or > 5.6.3
+        if (! defined('CURL_SSLVERSION_TLSv1_2')) {
+            define('CURL_SSLVERSION_TLSv1_2', 6);
+        }
+
 		curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
 		curl_setopt($curl, CURLOPT_URL, $url);
