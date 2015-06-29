@@ -85,6 +85,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 		}
 
+		curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
 		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $httpVerb);
 		curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_TIMEOUT, 60);
