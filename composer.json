@@ -1,7 +1,7 @@
 {
 	"name": "paymentwall/paymentwall-php",
 	"description": "Paymentwall PHP Library. Paymentwall is the leading digital payments platform for globally monetizing digital goods and services.",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"type": "library",
 	"homepage": "http://paymentwall.com?source=gh",
 	"keywords": [
@@ -26,6 +26,9 @@
 		"php": ">=5.2",
 		"ext-curl": "*",
 		"ext-json": "*"
+	},
+	"require-dev": {
+		"behat/behat": "~2.5"
 	},
 	"config": {
 		"bin-dir": "bin/"

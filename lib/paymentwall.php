@@ -26,11 +26,11 @@ require_once(dirname(__FILE__) . '/Paymentwall/ApiObject.php');
 
 require_once(dirname(__FILE__) . '/Paymentwall/ApiObjectInterface.php');
 
-require_once (dirname(__FILE__) . '/Paymentwall/OneTimeToken.php');
+require_once(dirname(__FILE__) . '/Paymentwall/OneTimeToken.php');
 
-require_once (dirname(__FILE__) . '/Paymentwall/Charge.php');
+require_once(dirname(__FILE__) . '/Paymentwall/Charge.php');
 
-require_once (dirname(__FILE__) . '/Paymentwall/Subscription.php');
+require_once(dirname(__FILE__) . '/Paymentwall/Subscription.php');
 
 require_once(dirname(__FILE__) . '/Paymentwall/HttpAction.php');
 
@@ -49,3 +49,7 @@ require_once(dirname(__FILE__) . '/Paymentwall/Response/Interface.php');
 require_once(dirname(__FILE__) . '/Paymentwall/Response/Success.php');
 
 require_once(dirname(__FILE__) . '/Paymentwall/Response/Error.php');
+
+require_once(dirname(__FILE__) . '/Paymentwall/GenerericApiObject.php');
+
+require_once(dirname(__FILE__) . '/Paymentwall/Delivery.php');
