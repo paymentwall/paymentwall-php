@@ -2,6 +2,7 @@
 
 abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 {
+	const API_BRICK_SUBPATH			= 'brick';
 	const API_OBJECT_CHARGE 		= 'charge';
 	const API_OBJECT_SUBSCRIPTION 	= 'subscription';
 	const API_OBJECT_ONE_TIME_TOKEN = 'token';
@@ -9,6 +10,9 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 	protected $properties = array();
 	protected $_id;
 	protected $_rawResponse = '';
+	protected $brickSubEndpoints = array(
+		self::API_OBJECT_CHARGE, self::API_OBJECT_SUBSCRIPTION, self::API_OBJECT_ONE_TIME_TOKEN
+	);
 
 	abstract function getEndpointName();
 
@@ -38,7 +42,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		if ($this->getEndpointName() === self::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
 			return Paymentwall_OneTimeToken::GATEWAY_TOKENIZATION_URL;
 		} else {
-			return $this->getApiBaseUrl() . '/brick/' . $this->getEndpointName();
+			return $this->getApiBaseUrl() . $this->getSubPath() . '/' . $this->getEndpointName();
 		}
 	}
 
@@ -65,6 +69,13 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		} else {
 			throw new Exception('Empty response');
 		}
+	}
+
+	protected function getSubPath()
+	{
+		return (in_array($this->getEndpointName(), $this->brickSubEndpoints))
+				? '/' . self::API_BRICK_SUBPATH
+				: '';
 	}
 
 	protected function getPropertiesFromResponse()
