@@ -119,7 +119,7 @@ echo $widget->getHtmlCode();
 ####Pingback Processing
 
 <pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
-Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
@@ -170,7 +170,7 @@ echo $widget->getHtmlCode();</code></pre>
 ####Pingback Processing
 
 <pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
-Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
