@@ -5,6 +5,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 	protected $apiObject;
 	protected $apiParams = array();
 	protected $apiHeaders = array();
+	protected $responseLogInformation = array();
 
 	public function __construct($object, $params = array(), $headers = array())
 	{
@@ -91,12 +92,23 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl, CURLOPT_HEADER, true);
 
 		$response = curl_exec($curl);
 
+		$headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+		$header = substr($response, 0, $headerSize);
+		$body = substr($response, $headerSize);
+
+		$this->responseLogInformation = array(
+			'header' => $header,
+			'body' => $body,
+			'status' => curl_getinfo($curl, CURLINFO_HTTP_CODE)
+		);
+		
 		curl_close($curl);
 
-		return $this->prepareResponse($response);
+		return $this->prepareResponse($body);
 	}
 
 	protected function getLibraryDefaultRequestHeader()
@@ -107,5 +119,9 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 	protected function prepareResponse($string = '')
 	{
 		return preg_replace('/\x{FEFF}/u', '', $string);
+	}
+
+	public function getResponseLogInformation() {
+		return $this->responseLogInformation;
 	}
 }
