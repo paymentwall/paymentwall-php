@@ -10,6 +10,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 	protected $properties = array();
 	protected $_id;
 	protected $_rawResponse = '';
+	protected $_responseLogInformation = array();
 	protected $brickSubEndpoints = array(
 		self::API_OBJECT_CHARGE, self::API_OBJECT_SUBSCRIPTION, self::API_OBJECT_ONE_TIME_TOKEN
 	);
@@ -99,9 +100,18 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		$httpAction = new Paymentwall_HttpAction($this, array('id' => $this->_id), array(
 			$this->getApiBaseHeader()
 		));
+		$this->_responseLogInformation = $httpAction->getResponseLogInformation();
 		$this->setPropertiesFromResponse(
 			$method == 'get' ? $httpAction->get($actionUrl) : $httpAction->post($actionUrl)
 		);
+
 		return $this;
 	}
+
+	protected function getResponseLogInformation()
+	{
+		return $this->_responseLogInformation;
+	}
+
+
 }
