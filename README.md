@@ -69,7 +69,11 @@ echo $widget->getHtmlCode();
 ####Pingback Processing
 
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
-<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
+Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $productId = $pingback->getProduct()->getId();
   if ($pingback->isDeliverable()) {
@@ -114,7 +118,11 @@ echo $widget->getHtmlCode();
 
 ####Pingback Processing
 
-<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Base::setApiType(Paymentwall_Base::API_VC);
+Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $virtualCurrency = $pingback->getVirtualCurrencyAmount();
   if ($pingback->isDeliverable()) {
@@ -161,7 +169,11 @@ echo $widget->getHtmlCode();</code></pre>
 
 ####Pingback Processing
 
-<pre><code>$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+<pre><code>require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Base::setApiType(Paymentwall_Base::API_CART);
+Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
+Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $products = $pingback->getProducts();
   if ($pingback->isDeliverable()) {
