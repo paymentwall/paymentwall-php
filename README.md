@@ -195,14 +195,17 @@ if ($pingback->validate()) {
 ));</code></pre>
 
 ####Create a one-time token
-<pre><code>$tokenModel = new Paymentwall_OneTimeToken();
+```php
+$tokenModel = new Paymentwall_OneTimeToken();
 $token =  $tokenModel->create(array(
 	'public_key' => Paymentwall_Config::getInstance()->getPublicKey(),
 	'card[number]' => '4242424242424242',
 	'card[exp_month]' => '11',
 	'card[exp_year]' => '19',
 	'card[cvv]' => '123'
-));</code></pre>
+));
+// send token to charge via $token->getToken();
+```
 
 ####Charge
 <pre><code>$charge = new Paymentwall_Charge();
