@@ -108,7 +108,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		return $this;
 	}
 
-	protected function getResponseLogInformation()
+	public function getResponseLogInformation()
 	{
 		return $this->_responseLogInformation;
 	}
