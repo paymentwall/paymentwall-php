@@ -196,7 +196,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 		$result = array();
 		$productIds = $this->getParameter('goodsid');
 
-		if (!empty($productIds)) {
+		if (!empty($productIds) && is_array($productIds)) {
 			foreach ($productIds as $Id) {
 				$result[] = new Paymentwall_Product($Id);
 			}
