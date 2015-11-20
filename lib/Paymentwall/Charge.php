@@ -44,7 +44,7 @@ class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_Ap
 
 	public function getCard()
 	{
-		return new Paymentwall_Card($this->card);
+		return $this->card;
 	}
 
 	public function get()
