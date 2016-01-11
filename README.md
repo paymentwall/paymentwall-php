@@ -278,10 +278,10 @@ $subscription->create(array(
 	'period' => 'week',
 	'period_duration' => 2,
 	// if trial, add following parameters
-        'trial[amount]' => 1,
-        'trial[currency]' => 'USD',
-        'trial[period]'   => 'month',
-        'trial[period_duration]' => 1
+	'trial[amount]' => 1,
+	'trial[currency]' => 'USD',
+	'trial[period]'   => 'month',
+	'trial[period_duration]' => 1
 ));
 
 echo $subscription->getId();
