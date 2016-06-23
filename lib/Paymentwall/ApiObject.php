@@ -47,10 +47,63 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		}
 	}
 
-	public function getPublicData()
+	/**
+	 * Returns raw data about the response that can be presented to the end-user: 
+	 * 	success => 0 or 1
+	 *	error => 
+	 *		message 	- human-readable error message
+	 *		code 		- error code, see https://www.paymentwall.com/us/documentation/Brick/2968#error
+	 * 	secure => 
+	 *		formHTML 	- needed to complete 3D Secure step, HTML of the form to be submitted to the user to redirect him to the bank page
+	 *
+	 * @return array 
+	 *				
+	 */
+	public function _getPublicData()
 	{
-		$responseModel = Paymentwall_Response_Factory::get($this->getPropertiesFromResponse());
-		return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';
+		/*$responseModel = Paymentwall_Response_Factory::get($this->getPropertiesFromResponse());
+		return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';*/
+
+		/**
+		 * @todo encapsulate this into Paymentwall_Response_Factory better; right now it returns success=1 for 3ds case
+		 */
+		$response = $this->getPropertiesFromResponse();
+		$result = array();
+		if (isset($response['type']) && $response['type'] == 'Error') {
+			$result = array(
+				'success' => 0,
+				'error' => array(
+					'message' => $response['error'],
+					'code' => $response['code']
+				)
+			);
+		}
+		elseif (!empty($response['secure'])) {
+			$result = array(
+				'success' => 0,
+				'secure' => $response['secure']
+			);
+		}
+		elseif ($this->isSuccessful()) {
+			$result['success'] = 1;
+		}
+		else {
+			$result = array(
+				'success' => 0,
+				'error' => array(
+					'message' => 'Internal error'
+				)
+			);
+		}
+		return $result;
+	}
+
+	/**
+	 * @return string json encoded result of ApiObject::getPublicData()
+	 */
+	public function getPublicData() 
+	{
+		return json_encode($this->_getPublicData());
 	}
 
 	public function getProperties() {
