@@ -1,9 +1,9 @@
 {
 	"name": "paymentwall/paymentwall-php",
 	"description": "Paymentwall PHP Library. Paymentwall is the leading digital payments platform for globally monetizing digital goods and services.",
-	"version": "2.1.0",
+	"version": "2.2.0",
 	"type": "library",
-	"homepage": "http://paymentwall.com?source=gh",
+	"homepage": "https://www.paymentwall.com/?source=gh",
 	"keywords": [
 		"paymentwall",
 		"api",
