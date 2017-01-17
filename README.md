@@ -82,7 +82,9 @@ if ($pingback->validate()) {
   // deliver the product
   } else if ($pingback->isCancelable()) {
   // withdraw the product
-  } 
+  } else if ($pingback->isUnderReview()) {
+  // set "pending" status to order  
+  }
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
@@ -133,8 +135,9 @@ if ($pingback->validate()) {
   if ($pingback->isDeliverable()) {
   // deliver the virtual currency
   } else if ($pingback->isCancelable()) {
-  // withdraw the virual currency
-  } 
+  // withdraw the virtual currency
+  } else if ($pingback->isUnderReview()) {
+  // set "pending" status to order
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
@@ -189,6 +192,8 @@ if ($pingback->validate()) {
   // deliver products from the cart
   } else if ($pingback->isCancelable()) {
   // withdraw products from the cart
+  } else if ($pingback->isUnderReview()) {
+  // set "pending" status to order
   } 
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
@@ -306,7 +311,7 @@ echo $widgetSignatureModel->calculate(
 );
 ```
 
-###Singature calculation - Pingback
+###Signature calculation - Pingback
 
 ```php
 $pingbackSignatureModel = new Paymentwall_Signature_Pingback();
