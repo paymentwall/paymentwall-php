@@ -138,6 +138,7 @@ if ($pingback->validate()) {
   // withdraw the virtual currency
   } else if ($pingback->isUnderReview()) {
   // set "pending" status to order
+  }
   echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
 } else {
   echo $pingback->getErrorSummary();
