@@ -65,7 +65,7 @@ Scenario: check Digital Goods negative pingback signature v1 with correct signat
   Then Pingback validation result should be "true"
 
 
-Scenario: check Digital Goods pingback signature v1 with correct signature
+Scenario: check Virtual Currency pingback signature v1 with correct signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
   And Secret key "6274def95b105f1c92d341a8d3bc2e77"
   And API type "1"
@@ -85,7 +85,7 @@ Scenario: check Virtual Currency pingback signature v1 with wrong signature
   When Pingback is constructed
   Then Pingback validation result should be "false"
 
-Scenario: check Digital Goods pingback signature v2 with correct signature
+Scenario: check Virtual Currency pingback signature v2 with correct signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
   And Secret key "6274def95b105f1c92d341a8d3bc2e77"
   And API type "1"
@@ -106,7 +106,7 @@ Scenario: check Virtual Currency pingback signature v2 with wrong signature
   Then Pingback validation result should be "false"
 
 
-Scenario: check Digital Goods pingback signature v3 with correct signature
+Scenario: check Virtual Currency pingback signature v3 with correct signature
   Given Public key "c10c60d07a2f4549a17902d683eb0b11"
   And Secret key "6274def95b105f1c92d341a8d3bc2e77"
   And API type "1"
