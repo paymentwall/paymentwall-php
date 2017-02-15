@@ -31,8 +31,10 @@
 		"behat/behat": "2.4.*@stable"
 	},
 	"scripts": {
-		"@composer install",
-		"test": "vendor/behat/behat/bin/behat"
+		"test": [
+			"@composer install",
+			"vendor/behat/behat/bin/behat"
+		]
     },
 	"config": {
 		"bin-dir": "bin/"
