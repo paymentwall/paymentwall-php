@@ -1,16 +1,16 @@
-#About Paymentwall
+# About Paymentwall
 [Paymentwall](http://paymentwall.com/?source=gh) is the leading digital payments platform for globally monetizing digital goods and services. Paymentwall assists game publishers, dating sites, rewards sites, SaaS companies and many other verticals to monetize their digital content and services. 
 Merchants can plugin Paymentwall's API to accept payments from over 100 different methods including credit cards, debit cards, bank transfers, SMS/Mobile payments, prepaid cards, eWallets, landline payments and others. 
 
 To sign up for a Paymentwall Merchant Account, [click here](http://paymentwall.com/signup/merchant?source=gh).
 
-#Paymentwall PHP Library
+# Paymentwall PHP Library
 This library allows developers to use [Paymentwall APIs](http://paymentwall.com/en/documentation/API-Documentation/722?source=gh) (Virtual Currency, Digital Goods featuring recurring billing, and Virtual Cart).
 
 To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant Account so you can setup an Application designed for your site.
 To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
 
-#Installation
+# Installation
 To install the library in your environment, you can download the [ZIP archive](https://github.com/paymentwall/paymentwall-php/archive/master.zip), unzip it and place into your project.
 
 Alternatively, you can run:
@@ -19,11 +19,11 @@ Alternatively, you can run:
 
 Then use a code sample below.
 
-#Code Samples 
+# Code Samples 
 
-##Digital Goods API
+## Digital Goods API
 
-####Initializing Paymentwall
+#### Initializing Paymentwall
 Using Paymentwall PHP Library v2:
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
@@ -41,7 +41,7 @@ Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymen
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 ```
 
-####Widget Call
+#### Widget Call
 [Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_flexible_widget_call)
 
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
@@ -67,7 +67,7 @@ $widget = new Paymentwall_Widget(
 echo $widget->getHtmlCode();
 ```
 
-####Pingback Processing
+#### Pingback Processing
 
 The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
 ```php
@@ -91,9 +91,9 @@ if ($pingback->validate()) {
 }
 ```
 
-##Virtual Currency API
+## Virtual Currency API
 
-####Initializing Paymentwall
+#### Initializing Paymentwall
 Using Paymentwall PHP Library v2:
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
@@ -111,7 +111,7 @@ Paymentwall_Base::setAppKey('YOUR_PUBLIC_KEY'); // available in your Paymentwall
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 ```
 
-####Widget Call
+#### Widget Call
 ```php
 $widget = new Paymentwall_Widget(
 	'user40012', // id of the end-user who's making the payment
@@ -122,7 +122,7 @@ $widget = new Paymentwall_Widget(
 echo $widget->getHtmlCode();
 ```
 
-####Pingback Processing
+#### Pingback Processing
 
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
@@ -145,9 +145,9 @@ if ($pingback->validate()) {
 }
 ```
 
-##Cart API
+## Cart API
 
-####Initializing Paymentwall
+#### Initializing Paymentwall
 Using Paymentwall PHP Library v2:
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
@@ -165,7 +165,7 @@ Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymen
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 ```
 
-####Widget Call
+#### Widget Call
 ```php
 $widget = new Paymentwall_Widget(
 	'user40012', // id of the end-user who's making the payment
@@ -179,7 +179,7 @@ $widget = new Paymentwall_Widget(
 echo $widget->getHtmlCode();
 ```
 
-####Pingback Processing
+#### Pingback Processing
 
 ```php
 require_once('/path/to/paymentwall-php/lib/paymentwall.php');
@@ -202,9 +202,9 @@ if ($pingback->validate()) {
 }
 ```
 
-##Brick
+## Brick
 
-####Initializing Paymentwall
+#### Initializing Paymentwall
 ```php
 Paymentwall_Config::getInstance()->set(array(
 	'public_key' => 'YOUR_PUBLIC_KEY',
@@ -212,7 +212,7 @@ Paymentwall_Config::getInstance()->set(array(
 ));
 ```
 
-####Create a one-time token
+#### Create a one-time token
 ```php
 $tokenModel = new Paymentwall_OneTimeToken();
 $token =  $tokenModel->create(array(
@@ -225,7 +225,7 @@ $token =  $tokenModel->create(array(
 // send token to charge via $token->getToken();
 ```
 
-####Charge
+#### Charge
 ```php
 $charge = new Paymentwall_Charge();
 $charge->create(array(
@@ -257,7 +257,7 @@ if ($charge->isSuccessful()) {
 echo $response; // need for JS communication
 ```
 
-####Charge - refund
+#### Charge - refund
 
 ```php
 $charge = new Paymentwall_Charge('CHARGE_ID');
@@ -266,7 +266,7 @@ $charge->refund();
 echo $charge->isRefunded();
 ```
 
-####Subscription
+#### Subscription
 
 ```php
 $subscription = new Paymentwall_Subscription();
@@ -293,7 +293,7 @@ $subscription->create(array(
 echo $subscription->getId();
 ```
 
-####Subscription - cancel
+#### Subscription - cancel
 
 ```php
 $subscription = new Paymentwall_Subscription('SUBSCRIPTION_ID');
@@ -302,7 +302,7 @@ $subscription->cancel();
 echo $subscription->isActive();
 ```
 
-###Signature calculation - Widget
+### Signature calculation - Widget
 
 ```php
 $widgetSignatureModel = new Paymentwall_Signature_Widget();
@@ -312,7 +312,7 @@ echo $widgetSignatureModel->calculate(
 );
 ```
 
-###Signature calculation - Pingback
+### Signature calculation - Pingback
 
 ```php
 $pingbackSignatureModel = new Paymentwall_Signature_Pingback();
