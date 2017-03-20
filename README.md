@@ -10,7 +10,7 @@ This library allows developers to use [Paymentwall APIs](http://paymentwall.com/
 To use Paymentwall, all you need to do is to sign up for a Paymentwall Merchant Account so you can setup an Application designed for your site.
 To open your merchant account and set up an application, you can [sign up here](http://paymentwall.com/signup/merchant?source=gh).
 
-#Installation
+# Installation
 To install the library in your environment, you can download the [ZIP archive](https://github.com/paymentwall/paymentwall-php/archive/master.zip), unzip it and place into your project.
 
 Alternatively, you can run:
