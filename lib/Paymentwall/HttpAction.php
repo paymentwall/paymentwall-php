@@ -83,7 +83,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		}
 
 		if (!empty($params)) {
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($params));
 		}
 
         // CURL_SSLVERSION_TLSv1_2 is defined in libcurl version 7.34 or later
