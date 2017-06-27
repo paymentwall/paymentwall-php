@@ -49,7 +49,7 @@ The widget is a payment page hosted by Paymentwall that embeds the entire paymen
 ```php
 $widget = new Paymentwall_Widget(
 	'user40012',   // id of the end-user who's making the payment
-	'pw',          // widget code, e.g. fp; can be picked inside of your merchant account
+	'pw',          // widget code, e.g. pw; can be picked inside of your merchant account
 	array(         // product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
 		new Paymentwall_Product(
 			'product301',                           // id of the product in your system
