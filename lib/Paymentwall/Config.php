@@ -83,6 +83,9 @@ class Paymentwall_Config
 		}
 	}
 
+	/**
+        * @return $this Returns class instance.
+        */
 	public static function getInstance()
 	{
 		if (!isset(self::$instance)) {
