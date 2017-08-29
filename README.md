@@ -321,3 +321,145 @@ echo $pingbackSignatureModel->calculate(
 	1 // signature version
 );
 ```
+
+## Mobiamo
+
+#### Initializing Paymentwall
+```php
+Paymentwall_Config::getInstance()->set(array(
+	'public_key' => 'YOUR_PUBLIC_KEY',
+	'private_key' => 'YOUR_PRIVATE_KEY'
+));
+```
+
+#### Get a token
+```php
+$model = new Paymentwall_Mobiamo();
+$tokenParams = [
+	'uid' => 'test'
+]
+$response = $model->getToken($tokenParams);
+if (!empty($response['success'])) {
+	//store this token and expire time (default is 86400s) to use in all next requests
+	//example of success response: 
+		[
+			'success' => 1, 
+			'token' => 'randomString', 
+			'expire_time' => 86400
+		]
+	var_dump($response['token']);
+	var_dump($response['expire_time']);
+} else {
+	var_dump($response['error']);
+	var_dump($response['code']);
+}
+```
+
+#### Init payment
+```php
+$model = new Paymentwall_Mobiamo();
+$initParams = [
+	'uid' => 'test', 
+	'amount' => 1, 
+	'currency' => 'GBP', //currency of payment in ISO 4217 format
+	'country' => 'GB', //country of payment in ISO alpha-2 format
+	'product_id' => 123, //product id of payment
+	'product_name' => 'test_product_name', //product name of payment
+	'msisdn' => '447821677123', //optional - phone number of user in internaltional format
+	'carrier' => '19', //mandatory in some countries - Given id of user's operator
+	'mcc' => '262', //optional - mobile country code of user
+	'mnc' => '007', //optional - mobile netword code of user
+	'is_recurring' => 1, //optional and only available in some countries - value: 1/0 - determine if this payment is recurring subscription
+	'period' => 'd', //mandatory if is_recurring = 1 - value: d (day) - w (week) - m (month) - period of the recurring
+	'period_value' => 1 //mandatory if is_recurring = 1 - value: positive number - value of the recurring period
+];
+//token returned from get token step above
+$response = $model->initPayment($token, $initParams);
+if (!empty($response['success'])) {
+	/** example of success response: 
+		[
+			'success' => true,
+			'ref' => 'w118678712', //reference id of payment.
+			'flow' => 'code', //next flow of this payment. values can be: code/pinless - user send sms contain keyword to shortcode in instructions/ msisdn - user input phone number / redirect - redirect user to redirect_url in intructions
+			'price' => [
+				'amount' => 1,
+				'currency' => 'GBP',
+				'formatted' => 'GBP 1.00',
+				'carriers' => [
+					  0 => [
+					    'id' => 19,
+					    'name' => 'O2',
+					  ],
+					],
+				],
+			'instructions' => [
+				'keyword' => 'test_keyword', //return if flow = code/pinless - sms message content for user to send
+				'shortcode' => '123456', //return if flow = code/pinless - the number user should send message to
+				'redirect_url' => 'http://google.com' //return if flow = redirect - url user should be redirected to
+			]
+			'product_name' => 'test_product_name',
+		]
+	*/
+	//Store the parameter ref
+} else {
+	var_dump($response['error']);
+	var_dump($response['code']);
+}
+```
+
+#### Process payment (Use this request if previous response has flow = code/msisdn)
+```php
+$model = new Paymentwall_Mobiamo();
+$processParams = [
+	'uid' => 'test', 
+	'ref' => 'w118678712', //reference id returned from init request 
+	'flow' => 'code', //flow returned from init request
+	'data' => 'ABCDEF' //value can be: code user received after sending message / phone number of user
+];
+//token returned from get token step above
+$response = $model->processPayment($token, $processParams);
+if (!empty($response['success'])) {
+	/** example of success response: 
+		[
+			'success' => true,
+			'flow' => 'redirect', //Only return if this payment requires next processing step. values can be: code - user send keyword to shortcode in instructions/ msisdn - user input phone number / redirect - redirect user to redirect_url in intructions / 			
+			'instructions' => [
+				'keyword' => 'test_keyword', //return if flow = code/pinless - sms message content for user to send
+				'shortcode' => '123456', //return if flow = code/pinless - the number user should send message to
+				'redirect_url' => 'http://google.com' //return if flow = redirect - url user should be redirected to
+			]
+		]
+	*/
+} else {
+	var_dump($response['error']);
+	var_dump($response['code']);
+}
+```
+
+#### Get payment info
+```php
+$model = new Paymentwall_Mobiamo();
+$getPaymentParams = [
+	'uid' => 'test', 
+	'ref' => 'w118678712', //reference id returned from init request 
+];
+//token returned from get token step above
+$response = $model->processPayment($token, $getPaymentParams);
+if (!empty($response['success'])) {
+	/** example of success response: 
+		[
+			'success' => true,
+			'completed' => true, //value: true/false - indicate this payment was already successfull or not
+			'amount' => 1,
+			'currency' => "GBP",
+			'country' => "GB",
+			'product_name' => "test_product_name",
+			'msisdn' => "447821677123",
+			'ref' => "w118678712"
+		]
+	*/
+} else {
+	var_dump($response['error']);
+	var_dump($response['code']);
+}
+```
