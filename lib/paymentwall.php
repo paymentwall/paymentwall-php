@@ -51,3 +51,5 @@ require_once(dirname(__FILE__) . '/Paymentwall/Response/Success.php');
 require_once(dirname(__FILE__) . '/Paymentwall/Response/Error.php');
 
 require_once(dirname(__FILE__) . '/Paymentwall/GenerericApiObject.php');
+
+require_once(dirname(__FILE__) . '/Paymentwall/Mobiamo.php');
