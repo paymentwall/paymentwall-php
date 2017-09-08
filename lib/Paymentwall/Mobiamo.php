@@ -15,7 +15,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 	    ];
 	    $params = array_merge($defaultParams, $params);
 	    $params['sign'] = $this->calculateSignature($params);
-	    $this->doApiAction('token', 'get', $params);
+	    $this->doApiAction('token', 'post', $params);
 	    return $this->getProperties();
 	}
 
@@ -36,7 +36,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 	public function getPaymentInfo($token, $params){
 		$this->token = $token;
 		$params['key'] = $this->getConfig()->getPublicKey();
-		$this->doApiAction('get-payment', 'get', $params);
+		$this->doApiAction('get-payment', 'post', $params);
 		return $this->getProperties();
 	}
 
