@@ -1,122 +1,22 @@
 <?php
-
-abstract class Paymentwall_Base
+/**
+ * Class Paymentwall_Base
+ * @deprecated
+ */
+class Paymentwall_Base extends Paymentwall_Config
 {
-	/**
-	 * Paymentwall library version
-	 */
-	const VERSION = '1.0.0';
-
-	/**
-	 * API types
-	 */
-	const API_VC = 1;
-	const API_GOODS = 2;
-	const API_CART = 3;
-
-	/**
-	 * Controllers for APIs
-	 */
-	const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY = 'ps';
-	const CONTROLLER_PAYMENT_DIGITAL_GOODS = 'subscription';
-	const CONTROLLER_PAYMENT_CART = 'cart';
-
-	/**
-	 * Signature versions
-	 */
-	const DEFAULT_SIGNATURE_VERSION = 3;
-	const SIGNATURE_VERSION_1 = 1;
-	const SIGNATURE_VERSION_2 = 2;
-	const SIGNATURE_VERSION_3 = 3;
-
-	protected $errors = array();
-
-	/**
-	 * Paymentwall API type
-	 * @param int $apiType
-	 */
-	public static $apiType;
-
-	/**
-	 * Paymentwall application key - can be found in your merchant area
-	 * @param string $appKey
-	 */
-	public static $appKey;
-
-	/**
-	 * Paymentwall secret key - can be found in your merchant area
-	 * @param string $secretKey
-	 */
-	public static $secretKey;
-
-	/**
-	 * @param int $apiType API type, Paymentwall_Base::API_VC for Virtual Currency, Paymentwall_Base::API_GOODS for Digital Goods
-	 * Paymentwall_Base::API_CART for Cart, more details at http://paymentwall.com/documentation
-	 */ 
-	public static function setApiType($apiType)
+	public static function setApiType($apiType = 0)
 	{
-		self::$apiType = $apiType;
+		return self::getInstance()->setLocalApiType($apiType);
 	}
 
-	public static function getApiType()
+	public static function setAppKey($appKey = '')
 	{
-		return self::$apiType;
+		return self::getInstance()->setPublicKey($appKey);
 	}
 
-	/**
-	 * @param string $appKey application key of your application, can be found inside of your Paymentwall Merchant Account
-	 */ 
-	public static function setAppKey($appKey)
+	public static function setSecretKey($secretKey = '')
 	{
-		self::$appKey = $appKey;
-	}
-
-	public static function getAppKey()
-	{
-		return self::$appKey;
-	}
-
-	/**
-	 * @param string $secretKey secret key of your application, can be found inside of your Paymentwall Merchant Account
-	 */ 
-	public static function setSecretKey($secretKey)
-	{
-		self::$secretKey = $secretKey;
-	}
-
-	public static function getSecretKey()
-	{
-		return self::$secretKey;
-	}
-
-	/**
-	 * Fill the array with the errors found at execution
-	 *
-	 * @param $err
-	 * @return int
-	 */
-	protected function appendToErrors($err)
-	{
-		return array_push($this->errors, $err);
-	}
-
-	/**
-	 * Return errors
-	 *
-	 * @return array
-	 */
-	public function getErrors()
-	{
-		return $this->errors;
-	}
-
-	/**
-	 * Return error summary 
-	 *
-	 * @return string
-	 */
-	public function getErrorSummary()
-	{
-		return implode("\n", $this->getErrors());
+		return self::getInstance()->setPrivateKey($secretKey);
 	}
 }

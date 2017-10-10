@@ -1,56 +1,35 @@
 <?php
 
-class Paymentwall_Widget extends Paymentwall_Base
+class Paymentwall_Widget extends Paymentwall_Instance
 {
-	/**
-	 * Widget call URL
-	 */
-	const BASE_URL = 'https://api.paymentwall.com/api';
+	const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
+	const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
+	const CONTROLLER_PAYMENT_CHECKOUT           = 'v1/checkout/orders';
+	const CONTROLLER_PAYMENT_CART				= 'cart';
 
 	protected $userId;
 	protected $widgetCode;
 	protected $products;
 	protected $extraParams;
 
-	/**
-	 * @param string $userId identifier of the end-user who is viewing the widget
-	 * @param string $widgetCode e.g. p1 or p1_1, can be found inside of your Paymentwall Merchant account in the Widgets section
-	 * @param array $products array that consists of Paymentwall_Product entities; for Flexible Widget Call use array of 1 product
-	 * @param array $extraParams associative array of additional params that will be included into the widget URL, 
-	 * e.g. 'sign_version' or 'email'. Full list of parameters for each API is available at http://paymentwall.com/documentation
-	 */
-	public function __construct($userId, $widgetCode, $products = array(), $extraParams = array()) {
+	public function __construct($userId, $widgetCode = '', $products = array(), $extraParams = array()) {
 		$this->userId = $userId;
 		$this->widgetCode = $widgetCode;
 		$this->products = $products;
 		$this->extraParams = $extraParams;
 	}
 
-	/**
-	 * Get default signature version for this API type
-	 * 
-	 * @return int
-	 */
-	public function getDefaultSignatureVersion() {
-		return self::getApiType() != self::API_CART ? self::DEFAULT_SIGNATURE_VERSION : self::SIGNATURE_VERSION_2;
-	}
-
-	/**
-	 * Return URL for the widget
-	 *
-	 * @return string
-	 */
 	public function getUrl()
 	{
 		$params = array(
-			'key' => self::getAppKey(),
+			'key' => $this->getPublicKey(),
 			'uid' => $this->userId,
 			'widget' => $this->widgetCode
 		);
 
 		$productsNumber = count($this->products);
 
-		if (self::getApiType() == self::API_GOODS) {
+		if ($this->getApiType() == Paymentwall_Config::API_GOODS || $this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
 
 			if (!empty($this->products)) {
 
@@ -95,7 +74,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 			}
 
-		} else if (self::getApiType() == self::API_CART) {
+		} else if ($this->getApiType() == Paymentwall_Config::API_CART) {
 
 			$index = 0;
 			foreach ($this->products as $product) {
@@ -113,7 +92,7 @@ class Paymentwall_Widget extends Paymentwall_Base
 			unset($index);
 		}
 
-		$params['sign_version'] = $signatureVersion = self::getDefaultSignatureVersion();
+		$params['sign_version'] = $signatureVersion = $this->getDefaultSignatureVersion();
 
 		if (!empty($this->extraParams['sign_version'])) {
 			$signatureVersion = $params['sign_version'] = $this->extraParams['sign_version'];
@@ -121,20 +100,17 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 		$params = array_merge($params, $this->extraParams);
 
-		$params['sign'] = $this->calculateSignature($params, self::getSecretKey(), $signatureVersion);
+		$widgetSignatureModel = new Paymentwall_Signature_Widget();
+		$params['sign'] = $widgetSignatureModel->calculate(
+			$params,
+			$signatureVersion
+		);
 
-		return self::BASE_URL . '/' . self::buildController($this->widgetCode) . '?' . http_build_query($params);
+		return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
 	}
 
-	/**
-	 * Return HTML code for the widget
-	 *
-	 * @param array $attributes associative array of additional HTML attributes, e.g. array('width' => '100%')
-	 * @return string
-	 */
 	public function getHtmlCode($attributes = array())
 	{
-
 		$defaultAttributes = array(
 			'frameborder' => '0',
 			'width' => '750',
@@ -152,85 +128,31 @@ class Paymentwall_Widget extends Paymentwall_Base
 
 	}
 
-	/**
-	 * Build controller URL depending on API type
-	 *
-	 * @param string $widget code of the widget
-	 * @param bool $flexibleCall
-	 * @return string
-	 */
-	protected function buildController($widget, $flexibleCall = false)
-	{
-		if (self::getApiType() == self::API_VC) {
-
-			if (!preg_match('/^w|s|mw/', $widget)) {
-				return self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;
-			}
-
-		} else if (self::getApiType() == self::API_GOODS) {
-
-			if (!$flexibleCall) {
-				if (!preg_match('/^w|s|mw/', $widget)) {
-					return self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
-				}
-			} else {
-				return self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
-			}
-
-		} else {
-
-			return self::CONTROLLER_PAYMENT_CART;
-
-		}
+	protected function getDefaultSignatureVersion() {
+		return $this->getApiType() != Paymentwall_Config::API_CART ? Paymentwall_Signature_Abstract::DEFAULT_VERSION : Paymentwall_Signature_Abstract::VERSION_TWO;
 	}
 
-	/**
-	 * Build signature for the widget specified
-	 *
-	 * @param array $params
-	 * @param string $secret Paymentwall Secret Key
-	 * @param int $version Paymentwall Signature Version
-	 * @return string
-	 */
-	protected function calculateSignature($params, $secret, $version)
+	protected function buildController($widget = '')
 	{
-		$baseString = '';
+		$controller = null;
+		$isPaymentWidget = !preg_match('/^w|s|mw/', $widget);
 
-		if ($version == self::SIGNATURE_VERSION_1) {
-			// TODO: throw exception if no uid parameter is present
-
-			$baseString .= isset($params['uid']) ? $params['uid'] : '';
-			$baseString .= $secret;
-
-			return md5($baseString);
-
+		if ($this->getApiType()== Paymentwall_Config::API_VC) {
+			if ($isPaymentWidget) {
+				$controller = self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;	
+			}
+		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+			/**
+			 * @todo cover case with offer widget for digital goods for non-flexible widget call
+			 */
+			$controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
+		} else if ($this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
+			$controller = self::CONTROLLER_PAYMENT_CHECKOUT;
 		} else {
-
-			if (is_array($params)) {
-				ksort($params);
-				foreach ($params as &$p) {
-					if (is_array($p)) {
-						ksort($p);
-					}
-				}
-			}
-
-			foreach ($params as $key => $value) {
-				if (is_array($value)) {
-					foreach ($value as $k => $v) {
-						$baseString .= $key . '[' . $k . ']' . '=' . $v;
-					}
-				} else {
-					$baseString .= $key . '=' . $value;
-				}
-			}
-
-			$baseString .= $secret;
-
-			if ($version == self::SIGNATURE_VERSION_2) {
-				return md5($baseString);
-			}
-			return hash('sha256', $baseString);
+			$controller = self::CONTROLLER_PAYMENT_CART;
 		}
+		
+
+		return $controller;
 	}
 }
