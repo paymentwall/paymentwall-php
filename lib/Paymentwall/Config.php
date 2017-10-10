@@ -5,10 +5,11 @@ class Paymentwall_Config
 	const VERSION = '2.0.0';
 
 	const API_BASE_URL = 'https://api.paymentwall.com/api';
-
+	const CHECKOUT_API_BASE_URL = 'https://api.paymentwall.com';
 	const API_VC	= 1;
 	const API_GOODS	= 2;
 	const API_CART	= 3;
+	const API_CHECKOUT = 4;
 
 	protected $apiType = self::API_GOODS;
 	protected $publicKey;
@@ -19,7 +20,7 @@ class Paymentwall_Config
 
 	public function getApiBaseUrl()
 	{
-		return $this->apiBaseUrl;
+		return $this->getLocalApiType() == self::API_CHECKOUT ? self::CHECKOUT_API_BASE_URL : self::API_BASE_URL;
 	}
 
 	public function setApiBaseUrl($url = '')

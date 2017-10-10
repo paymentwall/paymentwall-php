@@ -4,6 +4,7 @@ class Paymentwall_Widget extends Paymentwall_Instance
 {
 	const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
 	const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
+	const CONTROLLER_PAYMENT_CHECKOUT           = 'v1/checkout/orders';
 	const CONTROLLER_PAYMENT_CART				= 'cart';
 
 	protected $userId;
@@ -28,7 +29,7 @@ class Paymentwall_Widget extends Paymentwall_Instance
 
 		$productsNumber = count($this->products);
 
-		if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+		if ($this->getApiType() == Paymentwall_Config::API_GOODS || $this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
 
 			if (!empty($this->products)) {
 
@@ -145,9 +146,12 @@ class Paymentwall_Widget extends Paymentwall_Instance
 			 * @todo cover case with offer widget for digital goods for non-flexible widget call
 			 */
 			$controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
+		} else if ($this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
+			$controller = self::CONTROLLER_PAYMENT_CHECKOUT;
 		} else {
 			$controller = self::CONTROLLER_PAYMENT_CART;
 		}
+		
 
 		return $controller;
 	}
