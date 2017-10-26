@@ -166,6 +166,7 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 ```
 
 #### Widget Call
+Stored products call example (when products are stored in Paymentwall):  
 ```php
 $widget = new Paymentwall_Widget(
 	'user40012', // id of the end-user who's making the payment
@@ -175,6 +176,21 @@ $widget = new Paymentwall_Widget(
 		new Paymentwall_Product('product607', 7.77, 'EUR')  // second product in cart
 	),
 	array('email' => 'user@hostname.com') // additional params
+);
+echo $widget->getHtmlCode();
+```
+
+Non-stored products call example (when products are not stored in Paymentwall):
+
+```php
+$widget = new Paymentwall_Widget(
+	'user40012', // id of the end-user who's making the payment
+	'p1_1',      // widget code, e.g. p1; can be picked inside of your merchant account,
+	array(
+		new Paymentwall_Product('product301', 3.33, 'EUR', 'Product 1'), // first product in cart
+		new Paymentwall_Product('product607', 7.77, 'EUR', 'Product 2')  // second product in cart
+	),
+	array('email' => 'user@hostname.com', 'flexible_cart_api' => 1) // additional params
 );
 echo $widget->getHtmlCode();
 ```
