@@ -85,6 +85,9 @@ class Paymentwall_Widget extends Paymentwall_Instance
 				if (isset($product->currencyCode)) {
 					$params['currencies[' . $index . ']'] = $product->getCurrencyCode();
 				}
+				if (isset($product->name)) {
+					$params['names[' . $index . ']'] = $product->getName();
+				}
 
 				$index++;
 			}
