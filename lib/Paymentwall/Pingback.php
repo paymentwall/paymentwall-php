@@ -105,7 +105,31 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 			'174.37.14.28'
 		);
 
-		return in_array($this->ipAddress, $ipsWhitelist);
+		$rangesWhitelist = array(
+			'216.127.71.0/24'
+		);
+
+		if (in_array($this->ipAddress, $ipsWhitelist)) {
+			return true;
+		}
+		
+		foreach ($rangesWhitelist as $range) {
+			if (isCidrMatched($this->ipAddress, $range)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public function isCidrMatched($ip, $range)
+	{
+	    list($subnet, $bits) = explode('/', $range);
+	    $ip = ip2long($ip);
+	    $subnet = ip2long($subnet);
+	    $mask = -1 << (32 - $bits);
+	    $subnet &= $mask;
+	    return ($ip & $mask) == $subnet;
 	}
 
 	public function isParametersValid()
@@ -237,4 +261,6 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 	public function isUnderReview() {
 		return $this->getType() === self::PINGBACK_TYPE_RISK_UNDER_REVIEW;
 	}
+
+
 }
