@@ -114,7 +114,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 		}
 		
 		foreach ($rangesWhitelist as $range) {
-			if (isCidrMatched($this->ipAddress, $range)) {
+			if ($this->isCidrMatched($this->ipAddress, $range)) {
 				return true;
 			}
 		}
