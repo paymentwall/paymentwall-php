@@ -4,6 +4,7 @@ class Paymentwall_Widget extends Paymentwall_Instance
 {
 	const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
 	const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
+	const CONTROLLER_PAYMENT_CHECKOUT           = 'v1/checkout/orders';
 	const CONTROLLER_PAYMENT_CART				= 'cart';
 
 	protected $userId;
@@ -28,7 +29,9 @@ class Paymentwall_Widget extends Paymentwall_Instance
 
 		$productsNumber = count($this->products);
 
-		if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+		$apiTypes = array(Paymentwall_Config::API_GOODS, Paymentwall_Config::API_CHECKOUT);
+
+		if (in_array($this->getApiType(), $apiTypes)) {
 
 			if (!empty($this->products)) {
 
@@ -108,7 +111,11 @@ class Paymentwall_Widget extends Paymentwall_Instance
 			$signatureVersion
 		);
 
-		return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
+        $baseUrl = function () {
+            return $this->getApiType() == Paymentwall_Config::API_CHECKOUT ? $this->getBaseUrl() : $this->getApiBaseUrl() ;
+        };
+	
+        return $baseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
 	}
 
 	public function getHtmlCode($attributes = array())
@@ -134,24 +141,26 @@ class Paymentwall_Widget extends Paymentwall_Instance
 		return $this->getApiType() != Paymentwall_Config::API_CART ? Paymentwall_Signature_Abstract::DEFAULT_VERSION : Paymentwall_Signature_Abstract::VERSION_TWO;
 	}
 
-	protected function buildController($widget = '')
-	{
-		$controller = null;
-		$isPaymentWidget = !preg_match('/^w|s|mw/', $widget);
+    protected function buildController($widget = '')
+    {
+        $controller = null;
+        $isPaymentWidget = !preg_match('/^w|s|mw/', $widget);
 
-		if ($this->getApiType()== Paymentwall_Config::API_VC) {
-			if ($isPaymentWidget) {
-				$controller = self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;	
-			}
-		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
-			/**
-			 * @todo cover case with offer widget for digital goods for non-flexible widget call
-			 */
-			$controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
-		} else {
-			$controller = self::CONTROLLER_PAYMENT_CART;
-		}
-
-		return $controller;
-	}
+        if ($this->getApiType()== Paymentwall_Config::API_VC) {
+            if ($isPaymentWidget) {
+                $controller = self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;	
+            }
+        } else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+            /**
+             * @todo cover case with offer widget for digital goods for non-flexible widget call
+             */
+            $controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
+        } else if ($this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
+            $controller = self::CONTROLLER_PAYMENT_CHECKOUT;
+        } else {
+            $controller = self::CONTROLLER_PAYMENT_CART;
+        }
+        
+        return $controller;
+    }
 }

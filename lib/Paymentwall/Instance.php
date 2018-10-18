@@ -18,6 +18,11 @@ abstract class Paymentwall_Instance
 		return $this->config;
 	}
 
+	protected function getBaseUrl()
+	{
+		return $this->getConfig()->getBaseUrl();
+	}
+
 	protected function getApiBaseUrl()
 	{
 		return $this->getConfig()->getApiBaseUrl();

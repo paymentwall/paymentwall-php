@@ -64,6 +64,9 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 			$signatureParams = array('uid', 'goodsid', 'slength', 'speriod', 'type', 'ref');
 
+		} else if ($this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
+			$signatureParams = array('uid', 'goodsid', 'slength', 'speriod', 'type', 'ref');
+
 		} else { // API_CART
 
 			$signatureParams = array('uid', 'goodsid', 'type', 'ref');
@@ -139,6 +142,8 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 		if ($this->getApiType() == Paymentwall_Config::API_VC) {
 			$requiredParams = array('uid', 'currency', 'type', 'ref', 'sig');
 		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+			$requiredParams = array('uid', 'goodsid', 'type', 'ref', 'sig');
+		} else if ($this->getApiType() == Paymentwall_Config::API_CHECKOUT) {
 			$requiredParams = array('uid', 'goodsid', 'type', 'ref', 'sig');
 		} else { // Cart API
 			$requiredParams = array('uid', 'goodsid', 'type', 'ref', 'sig');

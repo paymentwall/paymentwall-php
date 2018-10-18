@@ -42,7 +42,7 @@ Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentw
 ```
 
 #### Widget Call
-[Web API details](http://www.paymentwall.com/en/documentation/Digital-Goods-API/710#paymentwall_widget_call_flexible_widget_call)
+[Web API details](https://docs.paymentwall.com/integration/widget/digital-goods#widget-call)
 
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
@@ -75,6 +75,72 @@ require_once('/path/to/paymentwall-php/lib/paymentwall.php');
 Paymentwall_Base::setApiType(Paymentwall_Base::API_GOODS);
 Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymentwall merchant area
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
+$pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
+if ($pingback->validate()) {
+  $productId = $pingback->getProduct()->getId();
+  if ($pingback->isDeliverable()) {
+  // deliver the product
+  } else if ($pingback->isCancelable()) {
+  // withdraw the product
+  } else if ($pingback->isUnderReview()) {
+  // set "pending" status to order  
+  }
+  echo 'OK'; // Paymentwall expects response to be OK, otherwise the pingback will be resent
+} else {
+  echo $pingback->getErrorSummary();
+}
+```
+
+## Digital Checkout API
+
+#### Initializing Paymentwall
+
+Using Paymentwall PHP Library v2:
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Config::getInstance()->set(array(
+    'api_type' => Paymentwall_Config::API_CHECKOUT,
+    'public_key' => 'YOUR_PUBLIC_KEY',
+    'private_key' => 'YOUR_PRIVATE_KEY'
+));
+```
+
+#### Widget Call
+[Web API details](https://docs.paymentwall.com/integration/widget/digital-goods#widget-call)
+
+The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
+
+```php
+$widget = new Paymentwall_Widget(
+	'user40012',   // id of the end-user who's making the payment
+	'pw',          // widget code, e.g. pw; can be picked inside of your merchant account
+	array(         // product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
+		new Paymentwall_Product(
+			'product301',                           // id of the product in your system
+			9.99,                                   // price
+			'USD',                                  // currency code
+			'Gold Membership',                      // product name
+			Paymentwall_Product::TYPE_SUBSCRIPTION, // this is a time-based product; for one-time products, use Paymentwall_Product::TYPE_FIXED and omit the following 3 array elements
+			1,                                      // duration is 1
+			Paymentwall_Product::PERIOD_TYPE_MONTH, //               month
+			true                                    // recurring
+		)
+  	),
+	array('email' => 'user@hostname.com')           // additional parameters
+);
+echo $widget->getHtmlCode();
+```
+
+#### Pingback Processing
+
+The Pingback is a webhook notifying about a payment being made. Pingbacks are sent via HTTP/HTTPS to your servers. To process pingbacks use the following code:
+```php
+require_once('/path/to/paymentwall-php/lib/paymentwall.php');
+Paymentwall_Config::getInstance()->set(array(
+    'api_type' => Paymentwall_Config::API_CHECKOUT,
+    'public_key' => 'YOUR_PUBLIC_KEY',
+    'private_key' => 'YOUR_PRIVATE_KEY'
+));
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
   $productId = $pingback->getProduct()->getId();
