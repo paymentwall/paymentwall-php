@@ -2,156 +2,159 @@
 
 class Paymentwall_Widget extends Paymentwall_Instance
 {
-	const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
-	const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
-	const CONTROLLER_PAYMENT_CART				= 'cart';
+    const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
+    const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
+    const CONTROLLER_PAYMENT_CART				= 'cart';
 
-	protected $userId;
-	protected $widgetCode;
-	protected $products;
-	protected $extraParams;
+    protected $userId;
+    protected $widgetCode;
+    protected $products;
+    protected $extraParams;
 
-	public function __construct($userId, $widgetCode = '', $products = array(), $extraParams = array()) {
-		$this->userId = $userId;
-		$this->widgetCode = $widgetCode;
-		$this->products = $products;
-		$this->extraParams = $extraParams;
-	}
+    public function __construct($userId, $widgetCode = '', $products = array(), $extraParams = array()) {
+        $this->userId = $userId;
+        $this->widgetCode = $widgetCode;
+        $this->products = $products;
+        $this->extraParams = $extraParams;
+    }
 
-	public function getUrl()
-	{
-		$params = array(
-			'key' => $this->getPublicKey(),
-			'uid' => $this->userId,
-			'widget' => $this->widgetCode
-		);
+    public function getUrl()
+    {
+        $params = array(
+            'key' => $this->getPublicKey(),
+            'uid' => $this->userId,
+            'widget' => $this->widgetCode
+        );
 
-		$productsNumber = count($this->products);
+        $productsNumber = count($this->products);
 
-		if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+        if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
 
-			if (!empty($this->products)) {
+            if (!empty($this->products)) {
 
-				if ($productsNumber == 1) {
+                if ($productsNumber == 1) {
 
-					$product = current($this->products);
+                    $product = current($this->products);
 
-					if ($product->getTrialProduct() instanceof Paymentwall_Product) {
-						$postTrialProduct = $product;
-						$product = $product->getTrialProduct();
-					}
+                    if ($product->getTrialProduct() instanceof Paymentwall_Product) {
+                        $postTrialProduct = $product;
+                        $product = $product->getTrialProduct();
+                    }
 
-					$params['amount'] = $product->getAmount();
-					$params['currencyCode'] = $product->getCurrencyCode();
-					$params['ag_name'] = $product->getName();
-					$params['ag_external_id'] = $product->getId();
-					$params['ag_type'] = $product->getType();
+                    $params['amount'] = $product->getAmount();
+                    $params['currencyCode'] = $product->getCurrencyCode();
+                    $params['ag_name'] = $product->getName();
+                    $params['ag_external_id'] = $product->getId();
+                    $params['ag_type'] = $product->getType();
 
-					if ($product->getType() == Paymentwall_Product::TYPE_SUBSCRIPTION) {
-						$params['ag_period_length'] = $product->getPeriodLength();
-						$params['ag_period_type'] = $product->getPeriodType();
-						if ($product->isRecurring()) {
+                    if ($product->getType() == Paymentwall_Product::TYPE_SUBSCRIPTION) {
+                        $params['ag_period_length'] = $product->getPeriodLength();
+                        $params['ag_period_type'] = $product->getPeriodType();
+                        if ($product->isRecurring()) {
 
-							$params['ag_recurring'] = intval($product->isRecurring());
+                            $params['ag_recurring'] = intval($product->isRecurring());
 
-							if (isset($postTrialProduct)) {
-								$params['ag_trial'] = 1;
-								$params['ag_post_trial_external_id'] = $postTrialProduct->getId();
-								$params['ag_post_trial_period_length'] = $postTrialProduct->getPeriodLength();
-								$params['ag_post_trial_period_type'] = $postTrialProduct->getPeriodType();
-								$params['ag_post_trial_name'] = $postTrialProduct->getName();
-								$params['post_trial_amount'] = $postTrialProduct->getAmount();
-								$params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
-							}
+                            if (isset($postTrialProduct)) {
+                                $params['ag_trial'] = 1;
+                                $params['ag_post_trial_external_id'] = $postTrialProduct->getId();
+                                $params['ag_post_trial_period_length'] = $postTrialProduct->getPeriodLength();
+                                $params['ag_post_trial_period_type'] = $postTrialProduct->getPeriodType();
+                                $params['ag_post_trial_name'] = $postTrialProduct->getName();
+                                $params['post_trial_amount'] = $postTrialProduct->getAmount();
+                                $params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
+                            }
 
-						}
-					}
+                        }
+                    }
 
-				} else {
-					//TODO: $this->appendToErrors('Only 1 product is allowed in flexible widget call');
-				}
+                } else {
+                    //TODO: $this->appendToErrors('Only 1 product is allowed in flexible widget call');
+                }
 
-			}
+            }
 
-		} else if ($this->getApiType() == Paymentwall_Config::API_CART) {
+        } else if ($this->getApiType() == Paymentwall_Config::API_CART) {
 
-			$index = 0;
-			foreach ($this->products as $product) {
-				$params['external_ids[' . $index . ']'] = $product->getId();
+            $external_ids = array();
+            $prices       = array();
+            $currencies   = array();
+            $names        = array();
+            foreach ($this->products as $product) {
+                $external_ids[] = $product->getId();
+                $prices[]       = $product->amount ?: 0;
+                $currencies[]   = $product->currencyCode ?: '';
+                $names[]        = $product->name ?: '';
+            }
+            $params['external_ids'] = $external_ids;
+            if (!empty($prices)) {
+                $params['prices'] = $prices;
+            }
+            if (!empty($currencies)) {
+                $params['currencies'] = $currencies;
+            }
+            if (array_filter($names)) {
+                $params['names'] = $names;
+            }
+        }
 
-				if (isset($product->amount)) {
-					$params['prices[' . $index . ']'] = $product->getAmount();
-				}
-				if (isset($product->currencyCode)) {
-					$params['currencies[' . $index . ']'] = $product->getCurrencyCode();
-				}
-				if (isset($product->name)) {
-					$params['names[' . $index . ']'] = $product->getName();
-				}
+        $params['sign_version'] = $signatureVersion = $this->getDefaultSignatureVersion();
 
-				$index++;
-			}
-			unset($index);
-		}
+        if (!empty($this->extraParams['sign_version'])) {
+            $signatureVersion = $params['sign_version'] = $this->extraParams['sign_version'];
+        }
 
-		$params['sign_version'] = $signatureVersion = $this->getDefaultSignatureVersion();
+        $params = array_merge($params, $this->extraParams);
 
-		if (!empty($this->extraParams['sign_version'])) {
-			$signatureVersion = $params['sign_version'] = $this->extraParams['sign_version'];
-		}
+        $widgetSignatureModel = new Paymentwall_Signature_Widget();
+        $params['sign'] = $widgetSignatureModel->calculate(
+            $params,
+            $signatureVersion
+        );
 
-		$params = array_merge($params, $this->extraParams);
+        return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
+    }
 
-		$widgetSignatureModel = new Paymentwall_Signature_Widget();
-		$params['sign'] = $widgetSignatureModel->calculate(
-			$params,
-			$signatureVersion
-		);
+    public function getHtmlCode($attributes = array())
+    {
+        $defaultAttributes = array(
+            'frameborder' => '0',
+            'width' => '750',
+            'height' => '800'
+        );
 
-		return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
-	}
+        $attributes = array_merge($defaultAttributes, $attributes);
 
-	public function getHtmlCode($attributes = array())
-	{
-		$defaultAttributes = array(
-			'frameborder' => '0',
-			'width' => '750',
-			'height' => '800'
-		);
+        $attributesQuery = '';
+        foreach ($attributes as $attr => $value) {
+            $attributesQuery .= ' ' . $attr . '="' . $value . '"';
+        }
 
-		$attributes = array_merge($defaultAttributes, $attributes);
+        return '<iframe src="' . $this->getUrl() . '" ' . $attributesQuery . '></iframe>';
 
-		$attributesQuery = '';
-		foreach ($attributes as $attr => $value) {
-			$attributesQuery .= ' ' . $attr . '="' . $value . '"';
-		}
+    }
 
-		return '<iframe src="' . $this->getUrl() . '" ' . $attributesQuery . '></iframe>';
+    protected function getDefaultSignatureVersion() {
+        return $this->getApiType() != Paymentwall_Config::API_CART ? Paymentwall_Signature_Abstract::DEFAULT_VERSION : Paymentwall_Signature_Abstract::VERSION_TWO;
+    }
 
-	}
+    protected function buildController($widget = '')
+    {
+        $controller = null;
+        $isPaymentWidget = !preg_match('/^w|s|mw/', $widget);
 
-	protected function getDefaultSignatureVersion() {
-		return $this->getApiType() != Paymentwall_Config::API_CART ? Paymentwall_Signature_Abstract::DEFAULT_VERSION : Paymentwall_Signature_Abstract::VERSION_TWO;
-	}
+        if ($this->getApiType()== Paymentwall_Config::API_VC) {
+            if ($isPaymentWidget) {
+                $controller = self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;
+            }
+        } else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+            /**
+             * @todo cover case with offer widget for digital goods for non-flexible widget call
+             */
+            $controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
+        } else {
+            $controller = self::CONTROLLER_PAYMENT_CART;
+        }
 
-	protected function buildController($widget = '')
-	{
-		$controller = null;
-		$isPaymentWidget = !preg_match('/^w|s|mw/', $widget);
-
-		if ($this->getApiType()== Paymentwall_Config::API_VC) {
-			if ($isPaymentWidget) {
-				$controller = self::CONTROLLER_PAYMENT_VIRTUAL_CURRENCY;	
-			}
-		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
-			/**
-			 * @todo cover case with offer widget for digital goods for non-flexible widget call
-			 */
-			$controller = self::CONTROLLER_PAYMENT_DIGITAL_GOODS;
-		} else {
-			$controller = self::CONTROLLER_PAYMENT_CART;
-		}
-
-		return $controller;
-	}
+        return $controller;
+    }
 }
