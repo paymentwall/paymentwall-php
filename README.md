@@ -77,6 +77,9 @@ Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymen
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
+  
+  // check if $pingback->getPingbackUniqueId() was already processed to avoid duplicate product delivery
+  
   $productId = $pingback->getProduct()->getId();
   if ($pingback->isDeliverable()) {
   // deliver the product
@@ -131,6 +134,9 @@ Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymen
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
+
+  // check if $pingback->getPingbackUniqueId() was already processed to avoid duplicate product delivery
+  
   $virtualCurrency = $pingback->getVirtualCurrencyAmount();
   if ($pingback->isDeliverable()) {
   // deliver the virtual currency
@@ -204,6 +210,9 @@ Paymentwall_Base::setAppKey('YOUR_APPLICATION_KEY'); // available in your Paymen
 Paymentwall_Base::setSecretKey('YOUR_SECRET_KEY'); // available in your Paymentwall merchant area
 $pingback = new Paymentwall_Pingback($_GET, $_SERVER['REMOTE_ADDR']);
 if ($pingback->validate()) {
+  
+  // check if $pingback->getPingbackUniqueId() was already processed to avoid duplicate product delivery
+  
   $products = $pingback->getProducts();
   if ($pingback->isDeliverable()) {
   // deliver products from the cart
