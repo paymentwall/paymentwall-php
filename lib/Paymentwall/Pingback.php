@@ -42,7 +42,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 				}
 
 			} else {
-				$this->appendToErrors('IP address is not whitelisted');
+				$this->appendToErrors('IP address ' . $this->ipAddress . ' is not whitelisted');
 			}
 
 		} else {
@@ -102,7 +102,9 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 			'174.36.96.66',
 			'174.36.92.187',
 			'174.36.92.192',
-			'174.37.14.28'
+			'174.37.14.28',
+			'172.70.126.45',
+			'172.70.178.77'
 		);
 
 		$rangesWhitelist = array(
