@@ -1,6 +1,6 @@
 <?php
 
-class Paymentwall_Product
+class Paymentwall_Product extends stdClass
 {
 	const TYPE_SUBSCRIPTION = 'subscription';
 	const TYPE_FIXED = 'fixed';
