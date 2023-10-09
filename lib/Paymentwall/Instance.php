@@ -3,7 +3,7 @@
 abstract class Paymentwall_Instance
 {
 	protected $config;
-	protected $errors = array();
+	protected $errors = [];
 
 	public function getErrorSummary()
 	{

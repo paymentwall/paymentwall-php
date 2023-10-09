@@ -2,6 +2,8 @@
 
 class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_ApiObjectInterface
 {
+	public $card;
+	
 	public function getId()
 	{
 		return $this->id;

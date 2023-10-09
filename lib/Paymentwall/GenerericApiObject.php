@@ -38,7 +38,7 @@ class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
 	 *
 	 * @return array
 	 */
-	public function post($params = array(), $headers = array())
+	public function post($params = [], $headers = [])
 	{
 		if (empty($params)) {
 			return null;
@@ -46,7 +46,7 @@ class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
 
 		$this->httpAction->setApiParams($params);
 
-		$this->httpAction->setApiHeaders(array_merge(array($this->getApiBaseHeader()), $headers));
+		$this->httpAction->setApiHeaders(array_merge([$this->getApiBaseHeader()], $headers));
 
 		return (array) $this->preparePropertiesFromResponse(
 			$this->httpAction->post(

@@ -9,19 +9,19 @@ class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implement
 			return $this->wrapInternalError();
 		}
 
-		$response = array(
+		$response = [
 			'success' => 0,
 			'error' => $this->getErrorMessageAndCode($this->response)
-		);
+		];
 
 		return json_encode($response);
 	}
 
 	public function getErrorMessageAndCode($response)
 	{
-		return array(
+		return [
 			'message' => $response['error'],
 			'code' => $response['code']
-		);
+		];
 	}
 }

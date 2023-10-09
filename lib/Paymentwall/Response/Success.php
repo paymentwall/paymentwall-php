@@ -8,9 +8,9 @@ class Paymentwall_Response_Success extends Paymentwall_Response_Abstract impleme
 			return $this->wrapInternalError();
 		}
 
-		$response = array(
+		$response = [
 			'success' => 1
-		);
+		];
 
 		return json_encode($response);
 	}
