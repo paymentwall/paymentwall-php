@@ -4,19 +4,19 @@ abstract class Paymentwall_Response_Abstract
 {
 	protected $response;
 
-	public function __construct($response = array())
+	public function __construct($response = [])
 	{
 		$this->response = $response;
 	}
 
 	protected function wrapInternalError()
 	{
-		$response = array(
+		$response = [
 			'success' => 0,
-			'error' => array(
+			'error' => [
 				'message' => 'Internal error'
-			)
-		);
+			]
+		];
 		return json_encode($response);
 	}
 }

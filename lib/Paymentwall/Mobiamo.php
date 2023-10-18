@@ -40,7 +40,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 		return $this->getProperties();
 	}
 
-	protected function calculateSignature($params = array())
+	protected function calculateSignature($params = [])
 	{
 		$baseString = '';
 		$this->ksortMultiDimensional($params);
@@ -52,7 +52,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 		return md5($baseString);
 	}
 
-	protected function prepareParams($params = array(), $baseString = '')
+	protected function prepareParams($params = [], $baseString = '')
 	{
 		foreach ($params as $key => $value) {
 			if (is_array($value)) {
@@ -66,7 +66,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 		return $baseString;
 	}
 
-	protected function ksortMultiDimensional(&$params = array())
+	protected function ksortMultiDimensional(&$params = [])
 	{
 		if (is_array($params)) {
 			ksort($params);
