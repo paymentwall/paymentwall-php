@@ -10,6 +10,16 @@ class Paymentwall_Product
 	const PERIOD_TYPE_MONTH = 'month';
 	const PERIOD_TYPE_YEAR = 'year';
 
+	public $productId;
+	public $amount;
+	public $currencyCode;
+	public $name;
+	public $productType;
+	public $periodLength;
+	public $periodType;
+	public $recurring;
+	public $trialProduct;
+	
 	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
 	{
 		$this->productId = $productId;

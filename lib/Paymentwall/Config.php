@@ -67,7 +67,7 @@ class Paymentwall_Config
 		return strpos($this->getPublicKey(), 't_') === 0;
 	}
 
-	public function set($config = array())
+	public function set($config = [])
 	{
 		if (isset($config['api_base_url'])) {
 			$this->setApiBaseUrl($config['api_base_url']);

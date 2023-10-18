@@ -31,7 +31,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 		if ($this->isParametersValid()) {
 
-			if ($this->isIpAddressValid() || $skipIpWhitelistCheck) {
+			if ($skipIpWhitelistCheck || $this->isIpAddressValid()) {
 
 				if ($this->isSignatureValid()) {
 
@@ -54,19 +54,19 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 	public function isSignatureValid()
 	{
-		$signatureParamsToSign = array();
+		$signatureParamsToSign = [];
 
 		if ($this->getApiType() == Paymentwall_Config::API_VC) {
 
-			$signatureParams = array('uid', 'currency', 'type', 'ref');
+			$signatureParams = ['uid', 'currency', 'type', 'ref'];
 
 		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
 
-			$signatureParams = array('uid', 'goodsid', 'slength', 'speriod', 'type', 'ref');
+			$signatureParams = ['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref'];
 
 		} else { // API_CART
 
-			$signatureParams = array('uid', 'goodsid', 'type', 'ref');
+			$signatureParams = ['uid', 'goodsid', 'type', 'ref'];
 
 			$this->parameters['sign_version'] = Paymentwall_Signature_Abstract::VERSION_TWO;
 
@@ -97,24 +97,24 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 	public function isIpAddressValid()
 	{
-		$ipsWhitelist = array(
+		$ipsWhitelist = [
 			'174.36.92.186',
 			'174.36.96.66',
 			'174.36.92.187',
 			'174.36.92.192',
 			'174.37.14.28'
-		);
+		];
 
-		$rangesWhitelist = array(
+		$rangesWhitelist = [
 			'216.127.71.0/24'
-		);
+		];
 
 		if (in_array($this->ipAddress, $ipsWhitelist)) {
 			return true;
 		}
 		
 		foreach ($rangesWhitelist as $range) {
-			if (isCidrMatched($this->ipAddress, $range)) {
+			if ($this->isCidrMatched($this->ipAddress, $range)) {
 				return true;
 			}
 		}
@@ -137,11 +137,11 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 		$errorsNumber = 0;
 
 		if ($this->getApiType() == Paymentwall_Config::API_VC) {
-			$requiredParams = array('uid', 'currency', 'type', 'ref', 'sig');
+			$requiredParams = ['uid', 'currency', 'type', 'ref', 'sig'];
 		} else if ($this->getApiType() == Paymentwall_Config::API_GOODS) {
-			$requiredParams = array('uid', 'goodsid', 'type', 'ref', 'sig');
+			$requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig'];
 		} else { // Cart API
-			$requiredParams = array('uid', 'goodsid', 'type', 'ref', 'sig');
+			$requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig'];
 		}
 
 		foreach ($requiredParams as $field) {
@@ -166,11 +166,11 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
 	public function getTypeVerbal() {
 		$typeVerbal = '';
-		$pingbackTypes = array(
+		$pingbackTypes = [
 			self::PINGBACK_TYPE_SUBSCRIPTION_CANCELLATION => 'user_subscription_cancellation',
 			self::PINGBACK_TYPE_SUBSCRIPTION_EXPIRED => 'user_subscription_expired',
 			self::PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED => 'user_subscription_payment_failed'
-		);
+		];
 
 		if (!empty($this->parameters['type'])) {
 			if (array_key_exists($this->parameters['type'], $pingbackTypes)) {
@@ -219,7 +219,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 	}
 
 	public function getProducts() {
-		$result = array();
+		$result = [];
 		$productIds = $this->getParameter('goodsid');
 
 		if (!empty($productIds) && is_array($productIds)) {

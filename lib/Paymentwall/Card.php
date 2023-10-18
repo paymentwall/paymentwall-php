@@ -2,9 +2,14 @@
 
 class Paymentwall_Card
 {
-	protected $fields = array();
+	protected $fields = [];
+	public $token;
+	public $type;
+	public $last4;
+	public $exp_month;
+	public $exp_year;
 
-	public function __construct($details = array())
+	public function __construct($details = [])
 	{
 		$this->fields = (array) $details;
 	}
