@@ -2,7 +2,7 @@
 
 class Paymentwall_Signature_Pingback extends Paymentwall_Signature_Abstract
 {
-	public function process($params = array(), $version = 0)
+	public function process($params = [], $version = 0)
 	{
 		$baseString = '';
 
@@ -23,7 +23,7 @@ class Paymentwall_Signature_Pingback extends Paymentwall_Signature_Abstract
 		return md5($baseString);
 	}
 
-	public function prepareParams($params = array(), $baseString = '')
+	public function prepareParams($params = [], $baseString = '')
 	{
 		foreach ($params as $key => $value) {
 			if (is_array($value)) {

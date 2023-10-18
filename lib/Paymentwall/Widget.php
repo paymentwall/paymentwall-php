@@ -11,7 +11,7 @@ class Paymentwall_Widget extends Paymentwall_Instance
     protected $products;
     protected $extraParams;
 
-    public function __construct($userId, $widgetCode = '', $products = array(), $extraParams = array()) {
+    public function __construct($userId, $widgetCode = '', $products = [], $extraParams = []) {
         $this->userId = $userId;
         $this->widgetCode = $widgetCode;
         $this->products = $products;
@@ -20,11 +20,11 @@ class Paymentwall_Widget extends Paymentwall_Instance
 
     public function getUrl()
     {
-        $params = array(
+        $params = [
             'key' => $this->getPublicKey(),
             'uid' => $this->userId,
             'widget' => $this->widgetCode
-        );
+        ];
 
         $productsNumber = count($this->products);
 
@@ -75,10 +75,10 @@ class Paymentwall_Widget extends Paymentwall_Instance
 
         } else if ($this->getApiType() == Paymentwall_Config::API_CART) {
 
-            $external_ids = array();
-            $prices       = array();
-            $currencies   = array();
-            $names        = array();
+            $external_ids = [];
+            $prices       = [];
+            $currencies   = [];
+            $names        = [];
             foreach ($this->products as $product) {
                 $external_ids[] = $product->getId();
                 $prices[]       = $product->amount ?: 0;
@@ -114,13 +114,13 @@ class Paymentwall_Widget extends Paymentwall_Instance
         return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
     }
 
-    public function getHtmlCode($attributes = array())
+    public function getHtmlCode($attributes = [])
     {
-        $defaultAttributes = array(
+        $defaultAttributes = [
             'frameborder' => '0',
             'width' => '750',
             'height' => '800'
-        );
+        ];
 
         $attributes = array_merge($defaultAttributes, $attributes);
 

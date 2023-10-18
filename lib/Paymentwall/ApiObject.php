@@ -7,13 +7,13 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 	const API_OBJECT_SUBSCRIPTION 	= 'subscription';
 	const API_OBJECT_ONE_TIME_TOKEN = 'token';
 
-	protected $properties = array();
+	protected $properties = [];
 	protected $_id;
 	protected $_rawResponse = '';
-	protected $_responseLogInformation = array();
-	protected $brickSubEndpoints = array(
+	protected $_responseLogInformation = [];
+	protected $brickSubEndpoints = [
 		self::API_OBJECT_CHARGE, self::API_OBJECT_SUBSCRIPTION, self::API_OBJECT_ONE_TIME_TOKEN
-	);
+	];
 
 	abstract function getEndpointName();
 
@@ -24,11 +24,11 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		}
 	}
 
-	public final function create($params = array())
+	public final function create($params = [])
 	{
-		$httpAction = new Paymentwall_HttpAction($this, $params, array(
+		$httpAction = new Paymentwall_HttpAction($this, $params, [
 			$this->getApiBaseHeader()
-		));
+		]);
 		$this->setPropertiesFromResponse($httpAction->run());
 		return $this;
 	}
@@ -68,32 +68,32 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 		 * @todo encapsulate this into Paymentwall_Response_Factory better; right now it returns success=1 for 3ds case
 		 */
 		$response = $this->getPropertiesFromResponse();
-		$result = array();
+		$result = [];
 		if (isset($response['type']) && $response['type'] == 'Error') {
-			$result = array(
+			$result = [
 				'success' => 0,
-				'error' => array(
+				'error' => [
 					'message' => $response['error'],
 					'code' => $response['code']
-				)
-			);
+				]
+			];
 		}
 		elseif (!empty($response['secure'])) {
-			$result = array(
+			$result = [
 				'success' => 0,
 				'secure' => $response['secure']
-			);
+			];
 		}
 		elseif ($this->isSuccessful()) {
 			$result['success'] = 1;
 		}
 		else {
-			$result = array(
+			$result = [
 				'success' => 0,
-				'error' => array(
+				'error' => [
 					'message' => 'Internal error'
-				)
-			);
+				]
+			];
 		}
 		return $result;
 	}
@@ -150,9 +150,9 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 	protected function doApiAction($action = '', $method = 'post')
 	{
 		$actionUrl = $this->getApiUrl() . '/' . $this->_id . '/' . $action;
-		$httpAction = new Paymentwall_HttpAction($this, array('id' => $this->_id), array(
+		$httpAction = new Paymentwall_HttpAction($this, ['id' => $this->_id], [
 			$this->getApiBaseHeader()
-		));
+		]);
 		$this->_responseLogInformation = $httpAction->getResponseLogInformation();
 		$this->setPropertiesFromResponse(
 			$method == 'get' ? $httpAction->get($actionUrl) : $httpAction->post($actionUrl)

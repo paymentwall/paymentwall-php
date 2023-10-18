@@ -3,11 +3,11 @@
 class Paymentwall_HttpAction extends Paymentwall_Instance
 {
 	protected $apiObject;
-	protected $apiParams = array();
-	protected $apiHeaders = array();
-	protected $responseLogInformation = array();
+	protected $apiParams = [];
+	protected $apiHeaders = [];
+	protected $responseLogInformation = [];
 
-	public function __construct($object, $params = array(), $headers = array())
+	public function __construct($object, $params = [], $headers = [])
 	{
 		$this->setApiObject($object);
 		$this->setApiParams($params);
@@ -29,7 +29,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		return $this->apiParams;
 	}
 
-	public function setApiParams($params = array())
+	public function setApiParams($params = [])
 	{
 		$this->apiParams = $params;
 	}
@@ -39,7 +39,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		return $this->apiHeaders;
 	}
 
-	public function setApiHeaders($headers = array())
+	public function setApiHeaders($headers = [])
 	{
 		$this->apiHeaders = $headers;
 	}
@@ -70,13 +70,13 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		return $this->request('GET', $url, $this->getApiParams(), $this->getApiHeaders());
 	}
 
-	protected function request($httpVerb = '', $url = '', $params = array(), $customHeaders = array())
+	protected function request($httpVerb = '', $url = '', $params = [], $customHeaders = [])
 	{
 		$curl = curl_init();
 
-		$headers = array(
+		$headers = [
 			$this->getLibraryDefaultRequestHeader()
-		);
+		];
 
 		if (!empty($customHeaders)) {
 			$headers = array_merge($headers, $customHeaders);
@@ -108,11 +108,11 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 		$header = substr($response, 0, $headerSize);
 		$body = substr($response, $headerSize);
 
-		$this->responseLogInformation = array(
+		$this->responseLogInformation = [
 			'header' => $header,
 			'body' => $body,
 			'status' => curl_getinfo($curl, CURLINFO_HTTP_CODE)
-		);
+		];
 		
 		curl_close($curl);
 
