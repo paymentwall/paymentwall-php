@@ -20,7 +20,7 @@ To install the library in your environment, you have several options:
 
 2. Git Clone:
    - Use the following command to clone the repository: 
-   <code>git clone git://github.com/paymentwall/paymentwall-php.git</code>
+   <code>git clone git@github.com:paymentwall/paymentwall-php.git</code>
 
 3. Composer: 
    - <code>composer require paymentwall/paymentwall-php</code>
