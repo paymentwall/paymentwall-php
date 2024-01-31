@@ -8,11 +8,11 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 	}
 	
 	public function getToken($params){
-	    $defaultParams = [
+	    $defaultParams = array(
 	    	'key' => $this->getConfig()->getPublicKey(),
 		    'ts' => time(),
 		    'sign_version' => Paymentwall_Signature_Abstract::VERSION_TWO
-	    ];
+	    );
 	    $params = array_merge($defaultParams, $params);
 	    $params['sign'] = $this->calculateSignature($params);
 	    $this->doApiAction('token', 'post', $params);
@@ -87,7 +87,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject {
 		}
 	}
 
-	protected function doApiAction($action = '', $method = 'post', $params = [])
+	protected function doApiAction($action = '', $method = 'post', $params = array())
 	{
 		$actionUrl = $this->getApiUrl() . '/' . $action;
 		$httpAction = new Paymentwall_HttpAction($this, $params, [$this->getApiBaseHeader()]);
