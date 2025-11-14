@@ -10,6 +10,3 @@ Vagrantfile
 composer.phar
 vendor/
 composer.lock
-
-# Behat
-behat*

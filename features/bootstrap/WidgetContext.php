@@ -1,16 +1,27 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
-class WidgetContext extends BehatContext
+
+class WidgetContext implements Context
 {
-    public function __construct(array $parameters)
+    private $productName = 'Test Default Product Name';
+    private $widgetSignatureVersion = null;
+    private $widgetCode = 'p10';
+    private $languageCode = null;
+    private $widget = null;
+    private $widgetHtmlContent = null;
+
+    /** @var FeatureContext */
+    private $featureContext;
+
+    #[\Behat\Hook\BeforeScenario]
+    public function gatherContexts(BeforeScenarioScope $scope)
     {
-        // Initialize your context here
-        $this->productName = 'Test Default Product Name';
-        $this->widgetSignatureVersion = null;
-        $this->widgetCode = 'p10';
-        $this->languageCode = null;
+        $environment = $scope->getEnvironment();
+
+        $this->featureContext = $environment->getContext(FeatureContext::class);
     }
 
     protected function getWidgetSignatureVersion() {
@@ -30,7 +41,7 @@ class WidgetContext extends BehatContext
     }
 
     protected function getProduct() {
-        switch ($this->getMainContext()->apiType) {
+        switch ($this->featureContext->apiType) {
             case (Paymentwall_Base::API_GOODS):
                 /**
                  * @todo implement subscriptions, trial, no product

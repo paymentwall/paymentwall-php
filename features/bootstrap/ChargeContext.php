@@ -1,15 +1,12 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
 
-class ChargeContext extends BehatContext
+class ChargeContext implements Context
 {
-    public function __construct(array $parameters)
-    {
-        $this->token = NULL;
-        $this->chargeId = NULL;
-        $this->cvv = '123';
-    }
+    private $token = null;
+    private $chargeId = null;
+    private $cvv= '123';
 
     /**
      * @Given /^CVV code "([^"]*)"$/
