@@ -2,5 +2,5 @@
 
 interface Paymentwall_ApiObjectInterface
 {
-	public function getCard();
+    public function getCard();
 }

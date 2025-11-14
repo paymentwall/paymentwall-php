@@ -2,5 +2,5 @@
 
 interface Paymentwall_Response_Interface
 {
-	public function process();
+    public function process();
 }

@@ -8,11 +8,11 @@ class PingbackContext implements Context
     private $pingbackIpAddress = null;
     private $pingback = null;
 
-	/**
-	* @Given /^Pingback GET parameters "([^"]*)"$/
-	*/
+    /**
+    * @Given /^Pingback GET parameters "([^"]*)"$/
+    */
     public function pingbackGetParameters($parameters)
-    {   
+    {
         parse_str($parameters, $this->pingbackParameters);
     }
 
@@ -37,7 +37,7 @@ class PingbackContext implements Context
      */
     public function pingbackValidationResultShouldBe($value)
     {
-    	$validate = $this->pingback->validate();
+        $validate = $this->pingback->validate();
         if ($validate !== $value) {
             throw new Exception(
                 'Pingback Validation returns ' . var_export($validate, true) . (!$validate ? ("\r\nErrors:" . $this->pingback->getErrorSummary()) : '')
@@ -51,7 +51,7 @@ class PingbackContext implements Context
     public function pingbackMethodShouldReturn($method, $value)
     {
         if ($this->pingback->$method() !== $value) {
-        	throw new Exception(
+            throw new Exception(
                 'Pingback method ' . $method . ' returned ' . var_export($value, true)
             );
         }

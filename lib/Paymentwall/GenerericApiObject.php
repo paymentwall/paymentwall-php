@@ -2,56 +2,56 @@
 
 class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
 {
-	/**
-	 * API type
-	 *
-	 * @var string
-	 */
-	protected $api;
+    /**
+     * API type
+     *
+     * @var string
+     */
+    protected $api;
 
-	/**
-	 * Paymentwall_HttpAction object
-	 *
-	 * @var \Paymentwall_HttpAction
-	 */
-	protected $httpAction;
+    /**
+     * Paymentwall_HttpAction object
+     *
+     * @var \Paymentwall_HttpAction
+     */
+    protected $httpAction;
 
-	/**
-	 * @see \Paymentwall_ApiObject
-	 */
-	public function getEndpointName()
-	{
-		return $this->api;
-	}
+    /**
+     * @see \Paymentwall_ApiObject
+     */
+    public function getEndpointName()
+    {
+        return $this->api;
+    }
 
-	public function __construct($type)
-	{
-		$this->api = $type;
-		$this->httpAction = new Paymentwall_HttpAction($this);
-	}
+    public function __construct($type)
+    {
+        $this->api = $type;
+        $this->httpAction = new Paymentwall_HttpAction($this);
+    }
 
-	/**
-	 * Make post request
-	 *
-	 * @param array $params
-	 * @param array $headers
-	 *
-	 * @return array
-	 */
-	public function post($params = [], $headers = [])
-	{
-		if (empty($params)) {
-			return null;
-		}
+    /**
+     * Make post request
+     *
+     * @param array $params
+     * @param array $headers
+     *
+     * @return array
+     */
+    public function post($params = [], $headers = [])
+    {
+        if (empty($params)) {
+            return null;
+        }
 
-		$this->httpAction->setApiParams($params);
+        $this->httpAction->setApiParams($params);
 
-		$this->httpAction->setApiHeaders(array_merge([$this->getApiBaseHeader()], $headers));
+        $this->httpAction->setApiHeaders(array_merge([$this->getApiBaseHeader()], $headers));
 
-		return (array) $this->preparePropertiesFromResponse(
-			$this->httpAction->post(
-				$this->getApiUrl()
-			)
-		);
-	}
+        return (array) $this->preparePropertiesFromResponse(
+            $this->httpAction->post(
+                $this->getApiUrl()
+            )
+        );
+    }
 }

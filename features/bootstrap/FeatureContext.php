@@ -1,11 +1,6 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\Context,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Context;
 
 require_once('lib/paymentwall.php');
 
@@ -44,9 +39,9 @@ class FeatureContext implements Context
      */
     public function privateKey($privateKey)
     {
-        Paymentwall_Config::getInstance()->set(array(
-            'private_key' => $privateKey
-        ));
+        Paymentwall_Config::getInstance()->set([
+            'private_key' => $privateKey,
+        ]);
     }
 
     /**

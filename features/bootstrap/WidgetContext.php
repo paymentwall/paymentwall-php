@@ -3,7 +3,6 @@
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
-
 class WidgetContext implements Context
 {
     private $productName = 'Test Default Product Name';
@@ -24,46 +23,51 @@ class WidgetContext implements Context
         $this->featureContext = $environment->getContext(FeatureContext::class);
     }
 
-    protected function getWidgetSignatureVersion() {
+    protected function getWidgetSignatureVersion()
+    {
         return $this->widgetSignatureVersion;
     }
 
-    protected function getUserId() {
+    protected function getUserId()
+    {
         return 'test_user';
     }
 
-    protected function getWidgetCode() {
+    protected function getWidgetCode()
+    {
         return $this->widgetCode;
     }
 
-    protected function getLanguageCode() {
+    protected function getLanguageCode()
+    {
         return $this->languageCode;
     }
 
-    protected function getProduct() {
+    protected function getProduct()
+    {
         switch ($this->featureContext->apiType) {
             case (Paymentwall_Base::API_GOODS):
                 /**
                  * @todo implement subscriptions, trial, no product
                  */
-                return array(
+                return [
                     new Paymentwall_Product(
-                        'product301',                           
-                        9.99,                                   
-                        'USD',                                  
+                        'product301',
+                        9.99,
+                        'USD',
                         $this->productName,
                         Paymentwall_Product::TYPE_FIXED
-                    )
-                );
+                    ),
+                ];
 
             case (Paymentwall_Base::API_VC):
-                return array();
+                return [];
 
             case (Paymentwall_Base::API_CART):
                 /**
                  * @todo implement custom IDs and prices
                  */
-                return array();
+                return [];
         }
     }
 
@@ -108,11 +112,11 @@ class WidgetContext implements Context
             $this->getUserId(),
             $this->getWidgetCode(),
             $this->getProduct(),
-            array(
-                'email' => 'user@hostname.com', 
+            [
+                'email' => 'user@hostname.com',
                 'sign_version' => $this->getWidgetSignatureVersion(),
-                'lang' => $this->getLanguageCode()
-            )
+                'lang' => $this->getLanguageCode(),
+            ]
         );
     }
 

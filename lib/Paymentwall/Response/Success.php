@@ -2,16 +2,16 @@
 
 class Paymentwall_Response_Success extends Paymentwall_Response_Abstract implements Paymentwall_Response_Interface
 {
-	public function process()
-	{
-		if (!isset($this->response)) {
-			return $this->wrapInternalError();
-		}
+    public function process()
+    {
+        if (!isset($this->response)) {
+            return $this->wrapInternalError();
+        }
 
-		$response = [
-			'success' => 1
-		];
+        $response = [
+            'success' => 1,
+        ];
 
-		return json_encode($response);
-	}
+        return json_encode($response);
+    }
 }

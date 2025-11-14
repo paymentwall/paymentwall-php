@@ -6,7 +6,7 @@ class ChargeContext implements Context
 {
     private $token = null;
     private $chargeId = null;
-    private $cvv= '123';
+    private $cvv = '123';
 
     /**
      * @Given /^CVV code "([^"]*)"$/
@@ -31,7 +31,7 @@ class ChargeContext implements Context
     {
         $tokenModel = new Paymentwall_OneTimeToken();
         $this->token = $tokenModel->create($this->getTestDetailsForOneTimeToken())->getToken();
-        if (strpos($this->token, 'ot_') === FALSE) {
+        if (strpos($this->token, 'ot_') === false) {
             throw new Exception($this->token->getPublicData());
         }
     }
@@ -64,8 +64,8 @@ class ChargeContext implements Context
     public function iSeeThisErrorMessage($errorMessage = '')
     {
         $charge = $this->getChargeObject();
-        $errors = json_decode($charge->getPublicData(), TRUE);
-        if (strpos($errorMessage, $errors['error']['message']) === FALSE) {
+        $errors = json_decode($charge->getPublicData(), true);
+        if (strpos($errorMessage, $errors['error']['message']) === false) {
             throw new Exception($charge->getPublicData());
         }
     }
@@ -78,32 +78,32 @@ class ChargeContext implements Context
 
     protected function getTestDetailsForCharge()
     {
-        return array(
+        return [
             'token' => $this->token,
             'email' => 'test@user.com',
             'currency' => 'USD',
             'amount' => 9.99,
             'browser_domain' => 'https://www.paymentwall.com',
             'browser_ip' => '72.229.28.185',
-            'description' => 'Test Charge'
-        );
+            'description' => 'Test Charge',
+        ];
     }
 
     protected function getTestDetailsForOneTimeToken()
     {
         return array_merge(
-            array('public_key' => Paymentwall_Config::getInstance()->getPublicKey()),
+            ['public_key' => Paymentwall_Config::getInstance()->getPublicKey()],
             $this->getTestCardDetails()
         );
     }
 
     protected function getTestCardDetails()
     {
-        return array(
+        return [
             'card[number]' => '4242424242424242',
             'card[exp_month]' => '11',
             'card[exp_year]' => '19',
-            'card[cvv]' => $this->cvv
-        );
+            'card[cvv]' => $this->cvv,
+        ];
     }
 }

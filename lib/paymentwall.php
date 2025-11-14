@@ -1,11 +1,11 @@
 <?php
 
 if (!function_exists('curl_init')) {
-	throw new Exception('CURL PHP extension is required');
+    throw new Exception('CURL PHP extension is required');
 }
 
 if (!function_exists('json_decode')) {
-	throw new Exception('JSON PHP extension is required');
+    throw new Exception('JSON PHP extension is required');
 }
 
 require_once(dirname(__FILE__) . '/Paymentwall/Instance.php');
