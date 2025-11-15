@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall\Signature;
 
 class Widget extends Signature

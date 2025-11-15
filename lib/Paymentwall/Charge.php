@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall;
 
 class Charge extends ApiObject implements ApiObjectInterface

@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall;
 
 class Widget extends Instance

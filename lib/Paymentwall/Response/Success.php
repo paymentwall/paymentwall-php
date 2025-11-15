@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall\Response;
 
 class Success extends Response implements ResponseInterface

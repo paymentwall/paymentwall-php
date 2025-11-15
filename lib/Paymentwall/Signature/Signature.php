@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall\Signature;
 
 abstract class Signature extends \Paymentwall\Instance

@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall\Response;
 
 class Factory

@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall;
 
 class OneTimeToken extends ApiObject

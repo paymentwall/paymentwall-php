@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall\Signature;
 
 class Pingback extends Signature

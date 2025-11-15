@@ -1,4 +1,5 @@
 <?php
+
 namespace Paymentwall;
 
 class GenerericApiObject extends ApiObject
