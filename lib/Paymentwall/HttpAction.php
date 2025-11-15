@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_HttpAction extends Paymentwall_Instance
+class HttpAction extends Instance
 {
     protected $apiObject;
     protected $apiParams = [];
@@ -19,7 +20,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
         return $this->apiObject;
     }
 
-    public function setApiObject(Paymentwall_ApiObject $apiObject)
+    public function setApiObject(ApiObject $apiObject)
     {
         $this->apiObject = $apiObject;
     }
@@ -48,14 +49,14 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
     {
         $result = null;
 
-        if ($this->getApiObject() instanceof Paymentwall_ApiObject) {
+        if ($this->getApiObject() instanceof ApiObject) {
             $result = $this->apiObjectPostRequest($this->getApiObject());
         }
 
         return $result;
     }
 
-    public function apiObjectPostRequest(Paymentwall_ApiObject $object)
+    public function apiObjectPostRequest(ApiObject $object)
     {
         return $this->request('POST', $object->getApiUrl(), $this->getApiParams(), $this->getApiHeaders());
     }

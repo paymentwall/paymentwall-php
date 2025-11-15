@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Mobiamo extends Paymentwall_ApiObject
+class Mobiamo extends ApiObject
 {
     protected $token;
     public const API_OBJECT_MOBIAMO = 'mobiamo';
@@ -14,7 +15,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject
         $defaultParams = [
             'key' => $this->getConfig()->getPublicKey(),
             'ts' => time(),
-            'sign_version' => Paymentwall_Signature_Abstract::VERSION_TWO,
+            'sign_version' => \Paymentwall\Signature\Abstract::VERSION_TWO,
         ];
         $params = array_merge($defaultParams, $params);
         $params['sign'] = $this->calculateSignature($params);
@@ -87,7 +88,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject
     public function getApiUrl()
     {
         if ($this->getEndpointName() === self::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
-            return Paymentwall_OneTimeToken::GATEWAY_TOKENIZATION_URL;
+            return OneTimeToken::GATEWAY_TOKENIZATION_URL;
         } else {
             return $this->getApiBaseUrl() . '/' .  $this->getEndpointName();
         }
@@ -96,7 +97,7 @@ class Paymentwall_Mobiamo extends Paymentwall_ApiObject
     protected function doApiAction($action = '', $method = 'post', $params = [])
     {
         $actionUrl = $this->getApiUrl() . '/' . $action;
-        $httpAction = new Paymentwall_HttpAction($this, $params, [$this->getApiBaseHeader()]);
+        $httpAction = new HttpAction($this, $params, [$this->getApiBaseHeader()]);
         $this->setPropertiesFromResponse(
             $method == 'get' ? $httpAction->get($actionUrl) : $httpAction->post($actionUrl)
         );

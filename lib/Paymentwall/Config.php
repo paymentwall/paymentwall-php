@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Config
+class Config
 {
     public const VERSION = '2.0.0';
 

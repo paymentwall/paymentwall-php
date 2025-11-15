@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_OneTimeToken extends Paymentwall_ApiObject
+class OneTimeToken extends ApiObject
 {
     public const GATEWAY_TOKENIZATION_URL = 'https://pwgateway.com/api/token';
 

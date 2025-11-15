@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Pingback extends Paymentwall_Instance
+class Pingback extends Instance
 {
     public const PINGBACK_TYPE_REGULAR = 0;
     public const PINGBACK_TYPE_GOODWILL = 1;
@@ -56,11 +57,11 @@ class Paymentwall_Pingback extends Paymentwall_Instance
     {
         $signatureParamsToSign = [];
 
-        if ($this->getApiType() == Paymentwall_Config::API_VC) {
+        if ($this->getApiType() == Config::API_VC) {
 
             $signatureParams = ['uid', 'currency', 'type', 'ref'];
 
-        } elseif ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+        } elseif ($this->getApiType() == Config::API_GOODS) {
 
             $signatureParams = ['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref'];
 
@@ -68,23 +69,23 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
             $signatureParams = ['uid', 'goodsid', 'type', 'ref'];
 
-            $this->parameters['sign_version'] = Paymentwall_Signature_Abstract::VERSION_TWO;
+            $this->parameters['sign_version'] = Signature\Signature::VERSION_TWO;
 
         }
 
-        if (empty($this->parameters['sign_version']) || $this->parameters['sign_version'] == Paymentwall_Signature_Abstract::VERSION_ONE) {
+        if (empty($this->parameters['sign_version']) || $this->parameters['sign_version'] == Signature\Signature::VERSION_ONE) {
 
             foreach ($signatureParams as $field) {
                 $signatureParamsToSign[$field] = isset($this->parameters[$field]) ? $this->parameters[$field] : null;
             }
 
-            $this->parameters['sign_version'] = Paymentwall_Signature_Abstract::VERSION_ONE;
+            $this->parameters['sign_version'] = Signature\Signature::VERSION_ONE;
 
         } else {
             $signatureParamsToSign = $this->parameters;
         }
 
-        $pingbackSignatureModel = new Paymentwall_Signature_Pingback();
+        $pingbackSignatureModel = new Signature\Pingback();
         $signatureCalculated = $pingbackSignatureModel->calculate(
             $signatureParamsToSign,
             $this->parameters['sign_version']
@@ -136,9 +137,9 @@ class Paymentwall_Pingback extends Paymentwall_Instance
     {
         $errorsNumber = 0;
 
-        if ($this->getApiType() == Paymentwall_Config::API_VC) {
+        if ($this->getApiType() == Config::API_VC) {
             $requiredParams = ['uid', 'currency', 'type', 'ref', 'sig'];
-        } elseif ($this->getApiType() == Paymentwall_Config::API_GOODS) {
+        } elseif ($this->getApiType() == Config::API_GOODS) {
             $requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig'];
         } else { // Cart API
             $requiredParams = ['uid', 'goodsid', 'type', 'ref', 'sig'];
@@ -209,12 +210,12 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
     public function getProduct()
     {
-        return new Paymentwall_Product(
+        return new Product(
             $this->getProductId(),
             0,
             null,
             null,
-            $this->getProductPeriodLength() > 0 ? Paymentwall_Product::TYPE_SUBSCRIPTION : Paymentwall_Product::TYPE_FIXED,
+            $this->getProductPeriodLength() > 0 ? Product::TYPE_SUBSCRIPTION : Product::TYPE_FIXED,
             $this->getProductPeriodLength(),
             $this->getProductPeriodType()
         );
@@ -227,7 +228,7 @@ class Paymentwall_Pingback extends Paymentwall_Instance
 
         if (!empty($productIds) && is_array($productIds)) {
             foreach ($productIds as $Id) {
-                $result[] = new Paymentwall_Product($Id);
+                $result[] = new Product($Id);
             }
         }
 

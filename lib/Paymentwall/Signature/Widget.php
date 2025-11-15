@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall\Signature;
 
-class Paymentwall_Signature_Widget extends Paymentwall_Signature_Abstract
+class Widget extends Signature
 {
     public function process($params = [], $version = 0)
     {

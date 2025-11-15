@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall\Signature;
 
-class Paymentwall_Signature_Pingback extends Paymentwall_Signature_Abstract
+class Pingback extends Signature
 {
     public function process($params = [], $version = 0)
     {

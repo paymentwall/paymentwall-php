@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_ApiObjectInterface
+class Charge extends ApiObject implements ApiObjectInterface
 {
     public $card;
 
@@ -37,7 +38,7 @@ class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_Ap
     public function setPropertiesFromResponse($response = '')
     {
         parent::setPropertiesFromResponse($response);
-        $this->card = new Paymentwall_Card($this->card);
+        $this->card = new Card($this->card);
     }
 
     public function getEndpointName()
@@ -47,7 +48,7 @@ class Paymentwall_Charge extends Paymentwall_ApiObject implements Paymentwall_Ap
 
     public function getCard()
     {
-        return new Paymentwall_Card($this->card);
+        return new Card($this->card);
     }
 
     public function get()

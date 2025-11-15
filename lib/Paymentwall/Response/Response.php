@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall\Response;
 
-abstract class Paymentwall_Response_Abstract
+abstract class Response
 {
     protected $response;
 

@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
+class GenerericApiObject extends ApiObject
 {
     /**
      * API type
@@ -10,14 +11,14 @@ class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
     protected $api;
 
     /**
-     * Paymentwall_HttpAction object
+     * HttpAction object
      *
-     * @var \Paymentwall_HttpAction
+     * @var \Paymentwall\HttpAction
      */
     protected $httpAction;
 
     /**
-     * @see \Paymentwall_ApiObject
+     * @see \ApiObject
      */
     public function getEndpointName()
     {
@@ -27,7 +28,7 @@ class Paymentwall_GenerericApiObject extends Paymentwall_ApiObject
     public function __construct($type)
     {
         $this->api = $type;
-        $this->httpAction = new Paymentwall_HttpAction($this);
+        $this->httpAction = new HttpAction($this);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+namespace Paymentwall;
+
 use Behat\Behat\Context\Context;
 
 class ChargeContext implements Context
@@ -29,10 +31,10 @@ class ChargeContext implements Context
     */
     public function testTokenIsRetrieved()
     {
-        $tokenModel = new Paymentwall_OneTimeToken();
+        $tokenModel = new OneTimeToken();
         $this->token = $tokenModel->create($this->getTestDetailsForOneTimeToken())->getToken();
         if (strpos($this->token, 'ot_') === false) {
-            throw new Exception($this->token->getPublicData());
+            throw new \Exception($this->token->getPublicData());
         }
     }
 
@@ -43,7 +45,7 @@ class ChargeContext implements Context
     {
         $charge = $this->getChargeObject();
         if (!$charge->isSuccessful()) {
-            throw new Exception($charge->getPublicData());
+            throw new \Exception($charge->getPublicData());
         }
     }
 
@@ -52,9 +54,9 @@ class ChargeContext implements Context
     */
     public function chargeShouldBeRefunded()
     {
-        $chargeToBeRefunded = new Paymentwall_Charge($this->chargeId);
+        $chargeToBeRefunded = new Charge($this->chargeId);
         if (!$chargeToBeRefunded->refund()->isRefunded()) {
-            throw new Exception($chargeToBeRefunded->getPublicData());
+            throw new \Exception($chargeToBeRefunded->getPublicData());
         }
     }
 
@@ -66,13 +68,13 @@ class ChargeContext implements Context
         $charge = $this->getChargeObject();
         $errors = json_decode($charge->getPublicData(), true);
         if (strpos($errorMessage, $errors['error']['message']) === false) {
-            throw new Exception($charge->getPublicData());
+            throw new \Exception($charge->getPublicData());
         }
     }
 
     protected function getChargeObject()
     {
-        $chargeModel = new Paymentwall_Charge();
+        $chargeModel = new Charge();
         return $chargeModel->create($this->getTestDetailsForCharge());
     }
 
@@ -92,7 +94,7 @@ class ChargeContext implements Context
     protected function getTestDetailsForOneTimeToken()
     {
         return array_merge(
-            ['public_key' => Paymentwall_Config::getInstance()->getPublicKey()],
+            ['public_key' => Config::getInstance()->getPublicKey()],
             $this->getTestCardDetails()
         );
     }

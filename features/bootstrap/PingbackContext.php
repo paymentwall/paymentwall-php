@@ -1,5 +1,7 @@
 <?php
 
+namespace Paymentwall;
+
 use Behat\Behat\Context\Context;
 
 class PingbackContext implements Context
@@ -29,7 +31,7 @@ class PingbackContext implements Context
      */
     public function pingbackIsConstructed()
     {
-        $this->pingback = new Paymentwall_Pingback($this->pingbackParameters, $this->pingbackIpAddress);
+        $this->pingback = new Pingback($this->pingbackParameters, $this->pingbackIpAddress);
     }
 
     /**
@@ -39,7 +41,7 @@ class PingbackContext implements Context
     {
         $validate = $this->pingback->validate();
         if ($validate !== $value) {
-            throw new Exception(
+            throw new \Exception(
                 'Pingback Validation returns ' . var_export($validate, true) . (!$validate ? ("\r\nErrors:" . $this->pingback->getErrorSummary()) : '')
             );
         }
@@ -51,7 +53,7 @@ class PingbackContext implements Context
     public function pingbackMethodShouldReturn($method, $value)
     {
         if ($this->pingback->$method() !== $value) {
-            throw new Exception(
+            throw new \Exception(
                 'Pingback method ' . $method . ' returned ' . var_export($value, true)
             );
         }

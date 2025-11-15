@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Card
+class Card
 {
     protected $fields = [];
     public $token;

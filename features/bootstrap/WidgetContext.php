@@ -1,5 +1,7 @@
 <?php
 
+namespace Paymentwall;
+
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
@@ -46,24 +48,24 @@ class WidgetContext implements Context
     protected function getProduct()
     {
         switch ($this->featureContext->apiType) {
-            case (Paymentwall_Base::API_GOODS):
+            case (Base::API_GOODS):
                 /**
                  * @todo implement subscriptions, trial, no product
                  */
                 return [
-                    new Paymentwall_Product(
+                    new Product(
                         'product301',
                         9.99,
                         'USD',
                         $this->productName,
-                        Paymentwall_Product::TYPE_FIXED
+                        Product::TYPE_FIXED
                     ),
                 ];
 
-            case (Paymentwall_Base::API_VC):
+            case (Base::API_VC):
                 return [];
 
-            case (Paymentwall_Base::API_CART):
+            case (Base::API_CART):
                 /**
                  * @todo implement custom IDs and prices
                  */
@@ -108,7 +110,7 @@ class WidgetContext implements Context
      */
     public function widgetIsConstructed()
     {
-        $this->widget = new Paymentwall_Widget(
+        $this->widget = new Widget(
             $this->getUserId(),
             $this->getWidgetCode(),
             $this->getProduct(),
@@ -134,7 +136,7 @@ class WidgetContext implements Context
     public function widgetHtmlContentShouldNotContain($phrase)
     {
         if (strpos($this->widgetHtmlContent, $phrase) !== false) {
-            throw new Exception(
+            throw new \Exception(
                 'Widget HTML content contains "' . $phrase . '"'
             );
         }
@@ -146,7 +148,7 @@ class WidgetContext implements Context
     public function widgetHtmlContentShouldContain($phrase)
     {
         if (strpos($this->widgetHtmlContent, $phrase) === false) {
-            throw new Exception(
+            throw new \Exception(
                 'Widget HTML content doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() .')'
             );
         }
@@ -158,7 +160,7 @@ class WidgetContext implements Context
     public function widgetUrlShouldNotContain($phrase)
     {
         if (strpos($this->widget->getUrl(), $phrase) !== false) {
-            throw new Exception(
+            throw new \Exception(
                 'Widget URL contains "' . $phrase . '"'
             );
         }
@@ -170,7 +172,7 @@ class WidgetContext implements Context
     public function widgetUrlShouldContain($phrase)
     {
         if (strpos($this->widget->getUrl(), $phrase) === false) {
-            throw new Exception(
+            throw new \Exception(
                 'Widget URL doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() .')'
             );
         }

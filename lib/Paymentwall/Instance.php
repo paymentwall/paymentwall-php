@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-abstract class Paymentwall_Instance
+abstract class Instance
 {
     protected $config;
     protected $errors = [];
@@ -13,7 +14,7 @@ abstract class Paymentwall_Instance
     protected function getConfig()
     {
         if (!isset($this->config)) {
-            $this->config = Paymentwall_Config::getInstance();
+            $this->config = Config::getInstance();
         }
         return $this->config;
     }

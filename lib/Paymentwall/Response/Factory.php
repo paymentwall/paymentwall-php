@@ -1,8 +1,9 @@
 <?php
+namespace Paymentwall\Response;
 
-class Paymentwall_Response_Factory
+class Factory
 {
-    public const CLASS_NAME_PREFIX = 'Paymentwall_Response_';
+    public const CLASS_NAME_PREFIX = '';
 
     public const RESPONSE_SUCCESS = 'success';
     public const RESPONSE_ERROR = 'error';
@@ -19,6 +20,7 @@ class Paymentwall_Response_Factory
     public static function getClassName($response = [])
     {
         $responseType = (isset($response['type']) && $response['type'] == 'Error') ? self::RESPONSE_ERROR : self::RESPONSE_SUCCESS;
-        return self::CLASS_NAME_PREFIX . ucfirst($responseType);
+        // Build fully qualified class name within this namespace
+        return __NAMESPACE__ . '\\' . ucfirst($responseType);
     }
 }

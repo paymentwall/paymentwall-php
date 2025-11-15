@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall\Response;
 
-class Paymentwall_Response_Error extends Paymentwall_Response_Abstract implements Paymentwall_Response_Interface
+class Error extends Response implements ResponseInterface
 {
     public function process()
     {

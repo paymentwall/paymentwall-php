@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-class Paymentwall_Product
+class Product
 {
     public const TYPE_SUBSCRIPTION = 'subscription';
     public const TYPE_FIXED = 'fixed';
@@ -20,7 +21,7 @@ class Paymentwall_Product
     public $recurring;
     public $trialProduct;
 
-    public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
+    public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Product $trialProduct = null)
     {
         $this->productId = $productId;
         $this->amount = round($amount, 2);
@@ -30,7 +31,7 @@ class Paymentwall_Product
         $this->periodLength = $periodLength;
         $this->periodType = $periodType;
         $this->recurring = $recurring;
-        $this->trialProduct = ($productType == Paymentwall_Product::TYPE_SUBSCRIPTION && $recurring) ? $trialProduct : null;
+        $this->trialProduct = ($productType == Product::TYPE_SUBSCRIPTION && $recurring) ? $trialProduct : null;
     }
 
     public function getId()

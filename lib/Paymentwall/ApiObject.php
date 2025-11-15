@@ -1,6 +1,7 @@
 <?php
+namespace Paymentwall;
 
-abstract class Paymentwall_ApiObject extends Paymentwall_Instance
+abstract class ApiObject extends Instance
 {
     public const API_BRICK_SUBPATH			= 'brick';
     public const API_OBJECT_CHARGE 		= 'charge';
@@ -26,7 +27,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
 
     final public function create($params = [])
     {
-        $httpAction = new Paymentwall_HttpAction($this, $params, [
+        $httpAction = new HttpAction($this, $params, [
             $this->getApiBaseHeader(),
         ]);
         $this->setPropertiesFromResponse($httpAction->run());
@@ -41,7 +42,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
     public function getApiUrl()
     {
         if ($this->getEndpointName() === self::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
-            return Paymentwall_OneTimeToken::GATEWAY_TOKENIZATION_URL;
+            return OneTimeToken::GATEWAY_TOKENIZATION_URL;
         } else {
             return $this->getApiBaseUrl() . $this->getSubPath() . '/' . $this->getEndpointName();
         }
@@ -61,11 +62,11 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
      */
     public function _getPublicData()
     {
-        /*$responseModel = Paymentwall_Response_Factory::get($this->getPropertiesFromResponse());
+        /*$responseModel = Factory::get($this->getPropertiesFromResponse());
         return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';*/
 
         /**
-         * @todo encapsulate this into Paymentwall_Response_Factory better; right now it returns success=1 for 3ds case
+         * @todo encapsulate this into Factory better; right now it returns success=1 for 3ds case
          */
         $response = $this->getPropertiesFromResponse();
         $result = [];
@@ -119,7 +120,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
             $this->_rawResponse = $response;
             $this->properties = (array) $this->preparePropertiesFromResponse($response);
         } else {
-            throw new Exception('Empty response');
+            throw new \Exception('Empty response');
         }
     }
 
@@ -148,7 +149,7 @@ abstract class Paymentwall_ApiObject extends Paymentwall_Instance
     protected function doApiAction($action = '', $method = 'post')
     {
         $actionUrl = $this->getApiUrl() . '/' . $this->_id . '/' . $action;
-        $httpAction = new Paymentwall_HttpAction($this, ['id' => $this->_id], [
+        $httpAction = new HttpAction($this, ['id' => $this->_id], [
             $this->getApiBaseHeader(),
         ]);
         $this->_responseLogInformation = $httpAction->getResponseLogInformation();

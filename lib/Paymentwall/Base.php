@@ -1,10 +1,11 @@
 <?php
+namespace Paymentwall;
 
 /**
- * Class Paymentwall_Base
+ * Class Base
  * @deprecated
  */
-class Paymentwall_Base extends Paymentwall_Config
+class Base extends Config
 {
     public static function setApiType($apiType = 0)
     {
