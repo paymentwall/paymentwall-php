@@ -33,7 +33,7 @@ class ChargeContext implements Context
     {
         $tokenModel = new OneTimeToken();
         $this->token = $tokenModel->create($this->getTestDetailsForOneTimeToken())->getToken();
-        if (strpos($this->token, 'ot_') === false) {
+        if (!str_contains($this->token, 'ot_')) {
             throw new \Exception($this->token->getPublicData());
         }
     }
@@ -67,7 +67,7 @@ class ChargeContext implements Context
     {
         $charge = $this->getChargeObject();
         $errors = json_decode($charge->getPublicData(), true);
-        if (strpos($errorMessage, $errors['error']['message']) === false) {
+        if (!str_contains($errorMessage, $errors['error']['message'])) {
             throw new \Exception($charge->getPublicData());
         }
     }

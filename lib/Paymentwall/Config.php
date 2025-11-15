@@ -66,7 +66,7 @@ class Config
 
     public function isTest()
     {
-        return strpos($this->getPublicKey(), 't_') === 0;
+        return str_starts_with($this->getPublicKey(), 't_');
     }
 
     public function set($config = [])
@@ -91,7 +91,7 @@ class Config
     public static function getInstance()
     {
         if (!isset(self::$instance)) {
-            $className = __CLASS__;
+            $className = self::class;
             self::$instance = new $className();
         }
         return self::$instance;

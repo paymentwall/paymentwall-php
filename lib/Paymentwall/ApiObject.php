@@ -37,7 +37,7 @@ abstract class ApiObject extends Instance
 
     public function __get($property)
     {
-        return isset($this->properties[$property]) ? $this->properties[$property] : null;
+        return $this->properties[$property] ?? null;
     }
 
     public function getApiUrl()

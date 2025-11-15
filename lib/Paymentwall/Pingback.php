@@ -64,7 +64,7 @@ class Pingback extends Instance
 
         if (empty($this->parameters['sign_version']) || $this->parameters['sign_version'] == Signature\Signature::VERSION_ONE) {
             foreach ($signatureParams as $field) {
-                $signatureParamsToSign[$field] = isset($this->parameters[$field]) ? $this->parameters[$field] : null;
+                $signatureParamsToSign[$field] = $this->parameters[$field] ?? null;
             }
 
             $this->parameters['sign_version'] = Signature\Signature::VERSION_ONE;
@@ -78,7 +78,7 @@ class Pingback extends Instance
             $this->parameters['sign_version']
         );
 
-        $signature = isset($this->parameters['sig']) ? $this->parameters['sig'] : null;
+        $signature = $this->parameters['sig'] ?? null;
 
         return $signature == $signatureCalculated;
     }
@@ -112,7 +112,7 @@ class Pingback extends Instance
 
     public function isCidrMatched($ip, $range)
     {
-        list($subnet, $bits) = explode('/', $range);
+        [$subnet, $bits] = explode('/', $range);
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
         $mask = -1 << (32 - $bits);
@@ -144,7 +144,7 @@ class Pingback extends Instance
 
     public function getParameter($param)
     {
-        return isset($this->parameters[$param]) ? $this->parameters[$param] : null;
+        return $this->parameters[$param] ?? null;
     }
 
     public function getType()

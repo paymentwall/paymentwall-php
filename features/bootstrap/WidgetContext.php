@@ -135,7 +135,7 @@ class WidgetContext implements Context
      */
     public function widgetHtmlContentShouldNotContain($phrase)
     {
-        if (strpos($this->widgetHtmlContent, $phrase) !== false) {
+        if (str_contains($this->widgetHtmlContent, $phrase)) {
             throw new \Exception(
                 'Widget HTML content contains "' . $phrase . '"'
             );
@@ -147,7 +147,7 @@ class WidgetContext implements Context
      */
     public function widgetHtmlContentShouldContain($phrase)
     {
-        if (strpos($this->widgetHtmlContent, $phrase) === false) {
+        if (!str_contains($this->widgetHtmlContent, $phrase)) {
             throw new \Exception(
                 'Widget HTML content doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() . ')'
             );
@@ -159,7 +159,7 @@ class WidgetContext implements Context
      */
     public function widgetUrlShouldNotContain($phrase)
     {
-        if (strpos($this->widget->getUrl(), $phrase) !== false) {
+        if (str_contains($this->widget->getUrl(), $phrase)) {
             throw new \Exception(
                 'Widget URL contains "' . $phrase . '"'
             );
@@ -171,7 +171,7 @@ class WidgetContext implements Context
      */
     public function widgetUrlShouldContain($phrase)
     {
-        if (strpos($this->widget->getUrl(), $phrase) === false) {
+        if (!str_contains($this->widget->getUrl(), $phrase)) {
             throw new \Exception(
                 'Widget URL doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() . ')'
             );

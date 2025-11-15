@@ -9,7 +9,7 @@ class Widget extends Signature
         $baseString = '';
 
         if ($version == self::VERSION_ONE) {
-            $baseString .= isset($params['uid']) ? $params['uid'] : '';
+            $baseString .= $params['uid'] ?? '';
             $baseString .= $this->getConfig()->getPrivateKey();
 
             return md5($baseString);

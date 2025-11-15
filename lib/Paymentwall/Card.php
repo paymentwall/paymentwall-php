@@ -18,7 +18,7 @@ class Card
 
     public function __get($property)
     {
-        return isset($this->fields[$property]) ? $this->fields[$property] : null;
+        return $this->fields[$property] ?? null;
     }
 
     public function getToken()

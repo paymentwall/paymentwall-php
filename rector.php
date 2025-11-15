@@ -11,4 +11,5 @@ return RectorConfig::configure()
     ->withRootFiles()
     ->withIndent()
     ->withPhpSets(php84: true)
+    ->withSkip([\Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector::class])
     ;
