@@ -31,7 +31,8 @@
     "require-dev": {
         "behat/behat": "~3.0",
         "friendsofphp/php-cs-fixer": "~3.0",
-        "rector/rector": "~2.0"
+        "rector/rector": "~2.0",
+        "squizlabs/php_codesniffer": "~4.0"
     },
     "scripts": {
         "test": [
