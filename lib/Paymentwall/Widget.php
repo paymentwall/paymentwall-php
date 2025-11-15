@@ -4,9 +4,9 @@ namespace Paymentwall;
 
 class Widget extends Instance
 {
-    public const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY	= 'ps';
-    public const CONTROLLER_PAYMENT_DIGITAL_GOODS		= 'subscription';
-    public const CONTROLLER_PAYMENT_CART				= 'cart';
+    public const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY    = 'ps';
+    public const CONTROLLER_PAYMENT_DIGITAL_GOODS       = 'subscription';
+    public const CONTROLLER_PAYMENT_CART                = 'cart';
 
     protected $userId;
     protected $widgetCode;
@@ -32,11 +32,8 @@ class Widget extends Instance
         $productsNumber = count($this->products);
 
         if ($this->getApiType() == Config::API_GOODS) {
-
             if (!empty($this->products)) {
-
                 if ($productsNumber == 1) {
-
                     $product = current($this->products);
 
                     if ($product->getTrialProduct() instanceof Product) {
@@ -54,7 +51,6 @@ class Widget extends Instance
                         $params['ag_period_length'] = $product->getPeriodLength();
                         $params['ag_period_type'] = $product->getPeriodType();
                         if ($product->isRecurring()) {
-
                             $params['ag_recurring'] = intval($product->isRecurring());
 
                             if (isset($postTrialProduct)) {
@@ -66,18 +62,13 @@ class Widget extends Instance
                                 $params['post_trial_amount'] = $postTrialProduct->getAmount();
                                 $params['post_trial_currencyCode'] = $postTrialProduct->getCurrencyCode();
                             }
-
                         }
                     }
-
                 } else {
                     //TODO: $this->appendToErrors('Only 1 product is allowed in flexible widget call');
                 }
-
             }
-
         } elseif ($this->getApiType() == Config::API_CART) {
-
             $external_ids = [];
             $prices       = [];
             $currencies   = [];
@@ -133,7 +124,6 @@ class Widget extends Instance
         }
 
         return '<iframe src="' . $this->getUrl() . '" ' . $attributesQuery . '></iframe>';
-
     }
 
     protected function getDefaultSignatureVersion()

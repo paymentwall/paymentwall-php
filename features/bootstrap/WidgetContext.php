@@ -149,7 +149,7 @@ class WidgetContext implements Context
     {
         if (strpos($this->widgetHtmlContent, $phrase) === false) {
             throw new \Exception(
-                'Widget HTML content doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() .')'
+                'Widget HTML content doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() . ')'
             );
         }
     }
@@ -173,7 +173,7 @@ class WidgetContext implements Context
     {
         if (strpos($this->widget->getUrl(), $phrase) === false) {
             throw new \Exception(
-                'Widget URL doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() .')'
+                'Widget URL doesn\'t contain "' . $phrase . '" (URL: ' . $this->widget->getUrl() . ')'
             );
         }
     }

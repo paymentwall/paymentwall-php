@@ -4,9 +4,9 @@ namespace Paymentwall;
 
 abstract class ApiObject extends Instance
 {
-    public const API_BRICK_SUBPATH			= 'brick';
-    public const API_OBJECT_CHARGE 		= 'charge';
-    public const API_OBJECT_SUBSCRIPTION 	= 'subscription';
+    public const API_BRICK_SUBPATH          = 'brick';
+    public const API_OBJECT_CHARGE      = 'charge';
+    public const API_OBJECT_SUBSCRIPTION    = 'subscription';
     public const API_OBJECT_ONE_TIME_TOKEN = 'token';
 
     protected $properties = [];
@@ -51,12 +51,12 @@ abstract class ApiObject extends Instance
 
     /**
      * Returns raw data about the response that can be presented to the end-user:
-     * 	success => 0 or 1
-     *	error =>
-     *		message 	- human-readable error message
-     *		code 		- error code, see https://www.paymentwall.com/us/documentation/Brick/2968#error
-     * 	secure =>
-     *		formHTML 	- needed to complete 3D Secure step, HTML of the form to be submitted to the user to redirect him to the bank page
+     *  success => 0 or 1
+     *  error =>
+     *      message     - human-readable error message
+     *      code        - error code, see https://www.paymentwall.com/us/documentation/Brick/2968#error
+     *  secure =>
+     *      formHTML    - needed to complete 3D Secure step, HTML of the form to be submitted to the user to redirect him to the bank page
      *
      * @return array
      *
@@ -165,6 +165,4 @@ abstract class ApiObject extends Instance
     {
         return $this->_responseLogInformation;
     }
-
-
 }

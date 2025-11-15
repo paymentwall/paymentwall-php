@@ -8,9 +8,9 @@ class Config
 
     public const API_BASE_URL = 'https://api.paymentwall.com/api';
 
-    public const API_VC	= 1;
-    public const API_GOODS	= 2;
-    public const API_CART	= 3;
+    public const API_VC = 1;
+    public const API_GOODS  = 2;
+    public const API_CART   = 3;
 
     protected $apiType = self::API_GOODS;
     protected $publicKey;

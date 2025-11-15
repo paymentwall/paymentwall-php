@@ -32,21 +32,15 @@ class Pingback extends Instance
         $validated = false;
 
         if ($this->isParametersValid()) {
-
             if ($skipIpWhitelistCheck || $this->isIpAddressValid()) {
-
                 if ($this->isSignatureValid()) {
-
                     $validated = true;
-
                 } else {
                     $this->appendToErrors('Wrong signature');
                 }
-
             } else {
                 $this->appendToErrors('IP address is not whitelisted');
             }
-
         } else {
             $this->appendToErrors('Missing parameters');
         }
@@ -59,29 +53,21 @@ class Pingback extends Instance
         $signatureParamsToSign = [];
 
         if ($this->getApiType() == Config::API_VC) {
-
             $signatureParams = ['uid', 'currency', 'type', 'ref'];
-
         } elseif ($this->getApiType() == Config::API_GOODS) {
-
             $signatureParams = ['uid', 'goodsid', 'slength', 'speriod', 'type', 'ref'];
-
         } else { // API_CART
-
             $signatureParams = ['uid', 'goodsid', 'type', 'ref'];
 
             $this->parameters['sign_version'] = Signature\Signature::VERSION_TWO;
-
         }
 
         if (empty($this->parameters['sign_version']) || $this->parameters['sign_version'] == Signature\Signature::VERSION_ONE) {
-
             foreach ($signatureParams as $field) {
                 $signatureParamsToSign[$field] = isset($this->parameters[$field]) ? $this->parameters[$field] : null;
             }
 
             $this->parameters['sign_version'] = Signature\Signature::VERSION_ONE;
-
         } else {
             $signatureParamsToSign = $this->parameters;
         }
@@ -267,6 +253,4 @@ class Pingback extends Instance
     {
         return $this->getType() === self::PINGBACK_TYPE_RISK_UNDER_REVIEW;
     }
-
-
 }
