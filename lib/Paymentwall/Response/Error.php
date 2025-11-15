@@ -3,7 +3,7 @@ namespace Paymentwall\Response;
 
 class Error extends Response implements ResponseInterface
 {
-    public function process()
+    public function process(): false|string
     {
         if (!isset($this->response)) {
             return $this->wrapInternalError();
@@ -17,7 +17,7 @@ class Error extends Response implements ResponseInterface
         return json_encode($response);
     }
 
-    public function getErrorMessageAndCode($response)
+    public function getErrorMessageAndCode(array $response): array
     {
         return [
             'message' => $response['error'],

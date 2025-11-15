@@ -3,7 +3,7 @@ namespace Paymentwall\Response;
 
 class Success extends Response implements ResponseInterface
 {
-    public function process()
+    public function process(): false|string
     {
         if (!isset($this->response)) {
             return $this->wrapInternalError();

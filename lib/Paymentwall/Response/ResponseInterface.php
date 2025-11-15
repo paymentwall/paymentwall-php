@@ -3,5 +3,5 @@ namespace Paymentwall\Response;
 
 interface ResponseInterface
 {
-    public function process();
+    public function process(): false|string;
 }

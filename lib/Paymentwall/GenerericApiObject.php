@@ -20,12 +20,12 @@ class GenerericApiObject extends ApiObject
     /**
      * @see \ApiObject
      */
-    public function getEndpointName()
+    public function getEndpointName(): string
     {
         return $this->api;
     }
 
-    public function __construct($type)
+    public function __construct(string $type)
     {
         $this->api = $type;
         $this->httpAction = new HttpAction($this);
@@ -39,7 +39,7 @@ class GenerericApiObject extends ApiObject
      *
      * @return array
      */
-    public function post($params = [], $headers = [])
+    public function post(array $params = [], array $headers = []): ?array
     {
         if (empty($params)) {
             return null;

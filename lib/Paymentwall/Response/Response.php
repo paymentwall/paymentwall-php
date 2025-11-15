@@ -3,14 +3,14 @@ namespace Paymentwall\Response;
 
 abstract class Response
 {
-    protected $response;
+    protected array $response;
 
-    public function __construct($response = [])
+    public function __construct(array $response = [])
     {
         $this->response = $response;
     }
 
-    protected function wrapInternalError()
+    protected function wrapInternalError(): false|string
     {
         $response = [
             'success' => 0,

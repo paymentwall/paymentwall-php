@@ -5,27 +5,27 @@ class OneTimeToken extends ApiObject
 {
     public const GATEWAY_TOKENIZATION_URL = 'https://pwgateway.com/api/token';
 
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->token;
     }
 
-    public function isTest()
+    public function isTest(): ?bool
     {
         return $this->test;
     }
 
-    public function isActive()
+    public function isActive(): ?bool
     {
         return $this->active;
     }
 
-    public function getExpirationTime()
+    public function getExpirationTime(): ?int
     {
         return $this->expires_in;
     }
 
-    public function getEndpointName()
+    public function getEndpointName(): string
     {
         return self::API_OBJECT_ONE_TIME_TOKEN;
     }
