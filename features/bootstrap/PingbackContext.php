@@ -6,9 +6,9 @@ use Behat\Behat\Context\Context;
 
 class PingbackContext implements Context
 {
-    private $pingbackParameters = null;
-    private $pingbackIpAddress = null;
-    private $pingback = null;
+    private array $pingbackParameters = [];
+    private string $pingbackIpAddress = '';
+    private Pingback $pingback;
 
     /**
     * @Given /^Pingback GET parameters "([^"]*)"$/

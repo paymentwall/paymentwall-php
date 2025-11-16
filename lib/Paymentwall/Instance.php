@@ -4,7 +4,7 @@ namespace Paymentwall;
 
 abstract class Instance
 {
-    protected $config;
+    protected Config $config;
     protected array $errors = [];
 
     public function getErrorSummary(): string
@@ -20,32 +20,32 @@ abstract class Instance
         return $this->config;
     }
 
-    protected function getApiBaseUrl()
+    protected function getApiBaseUrl(): string
     {
         return $this->getConfig()->getApiBaseUrl();
     }
 
-    protected function getApiType()
+    protected function getApiType(): int
     {
         return $this->getConfig()->getLocalApiType();
     }
 
-    protected function getPublicKey()
+    protected function getPublicKey(): string
     {
         return $this->getConfig()->getPublicKey();
     }
 
-    protected function getPrivateKey()
+    protected function getPrivateKey(): string
     {
         return $this->getConfig()->getPrivateKey();
     }
 
-    protected function appendToErrors($error = '')
+    protected function appendToErrors($error = ''): void
     {
         $this->errors[] = $error;
     }
 
-    protected function getErrors()
+    protected function getErrors(): array
     {
         return $this->errors;
     }

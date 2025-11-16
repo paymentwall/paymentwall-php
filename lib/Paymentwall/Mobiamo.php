@@ -6,12 +6,13 @@ class Mobiamo extends ApiObject
 {
     protected $token;
     public const API_OBJECT_MOBIAMO = 'mobiamo';
+
     public function getEndpointName(): string
     {
         return self::API_OBJECT_MOBIAMO;
     }
 
-    public function getToken($params): array
+    public function getToken(array $params): array
     {
         $defaultParams = [
             'key' => $this->getConfig()->getPublicKey(),
@@ -40,7 +41,7 @@ class Mobiamo extends ApiObject
         return $this->getProperties();
     }
 
-    public function getPaymentInfo($token, $params): array
+    public function getPaymentInfo($token, array $params): array
     {
         $this->token = $token;
         $params['key'] = $this->getConfig()->getPublicKey();
@@ -50,14 +51,9 @@ class Mobiamo extends ApiObject
 
     protected function calculateSignature(array $params = []): string
     {
-        $baseString = '';
         $this->ksortMultiDimensional($params);
 
-        $baseString = $this->prepareParams($params, $baseString);
-
-        $baseString .= $this->getConfig()->getPrivateKey();
-
-        return md5($baseString);
+        return md5($this->prepareParams($params) . $this->getConfig()->getPrivateKey());
     }
 
     protected function prepareParams(array $params = [], string $baseString = ''): string

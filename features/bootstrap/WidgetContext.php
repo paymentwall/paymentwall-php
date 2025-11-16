@@ -7,15 +7,14 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 class WidgetContext implements Context
 {
-    private $productName = 'Test Default Product Name';
-    private $widgetSignatureVersion = null;
-    private $widgetCode = 'p10';
-    private $languageCode = null;
-    private $widget = null;
-    private $widgetHtmlContent = null;
+    private string $productName = 'Test Default Product Name';
+    private int $widgetSignatureVersion;
+    private string $widgetCode = 'p10';
+    private string $languageCode = '';
+    private Widget $widget;
+    private string $widgetHtmlContent;
 
-    /** @var FeatureContext */
-    private $featureContext;
+    private FeatureContext $featureContext;
 
     #[\Behat\Hook\BeforeScenario]
     public function gatherContexts(BeforeScenarioScope $scope)
@@ -25,30 +24,10 @@ class WidgetContext implements Context
         $this->featureContext = $environment->getContext(FeatureContext::class);
     }
 
-    protected function getWidgetSignatureVersion()
-    {
-        return $this->widgetSignatureVersion;
-    }
-
-    protected function getUserId()
-    {
-        return 'test_user';
-    }
-
-    protected function getWidgetCode()
-    {
-        return $this->widgetCode;
-    }
-
-    protected function getLanguageCode()
-    {
-        return $this->languageCode;
-    }
-
-    protected function getProduct()
+    protected function getProduct(): array
     {
         switch ($this->featureContext->apiType) {
-            case (Base::API_GOODS):
+            case (Config::API_GOODS):
                 /**
                  * @todo implement subscriptions, trial, no product
                  */
@@ -62,10 +41,10 @@ class WidgetContext implements Context
                     ),
                 ];
 
-            case (Base::API_VC):
+            case (Config::API_VC):
                 return [];
 
-            case (Base::API_CART):
+            case (Config::API_CART):
                 /**
                  * @todo implement custom IDs and prices
                  */
@@ -76,7 +55,7 @@ class WidgetContext implements Context
     /**
      * @Given /^Widget signature version "([^"]*)"$/
      */
-    public function widgetSignatureVersion($signatureVersion)
+    public function widgetSignatureVersion(int $signatureVersion): void
     {
         $this->widgetSignatureVersion = $signatureVersion;
     }
@@ -84,7 +63,7 @@ class WidgetContext implements Context
     /**
      * @Given /^Widget code "([^"]*)"$/
      */
-    public function widgetCode($widgetCode)
+    public function widgetCode(string $widgetCode): void
     {
         $this->widgetCode = $widgetCode;
     }
@@ -92,7 +71,7 @@ class WidgetContext implements Context
     /**
      * @Given /^Language code "([^"]*)"$/
      */
-    public function languageCode($languageCode)
+    public function languageCode(string $languageCode): void
     {
         $this->languageCode = $languageCode;
     }
@@ -100,7 +79,7 @@ class WidgetContext implements Context
     /**
      * @Given /^Product name "([^"]*)"$/
      */
-    public function productName($productName)
+    public function productName(string $productName): void
     {
         $this->productName = $productName;
     }
@@ -108,16 +87,16 @@ class WidgetContext implements Context
     /**
      * @When /^Widget is constructed$/
      */
-    public function widgetIsConstructed()
+    public function widgetIsConstructed(): void
     {
         $this->widget = new Widget(
-            $this->getUserId(),
-            $this->getWidgetCode(),
+            'test_user',
+            $this->widgetCode,
             $this->getProduct(),
             [
                 'email' => 'user@hostname.com',
-                'sign_version' => $this->getWidgetSignatureVersion(),
-                'lang' => $this->getLanguageCode(),
+                'sign_version' => $this->widgetSignatureVersion,
+                'lang' => $this->languageCode,
             ]
         );
     }

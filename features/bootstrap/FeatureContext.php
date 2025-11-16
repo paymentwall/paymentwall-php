@@ -9,28 +9,28 @@ use Behat\Behat\Context\Context;
  */
 class FeatureContext implements Context
 {
-    public $apiType;
+    public int $apiType;
 
     /**
      * @Given /^Public key "([^"]*)"$/
      */
-    public function publicKey($publicKey)
+    public function publicKey($publicKey): void
     {
-        Base::setAppKey($publicKey);
+        Config::getInstance()->setPublicKey($publicKey);
     }
 
     /**
      * @Given /^Secret key "([^"]*)"$/
      */
-    public function secretKey($secretKey)
+    public function secretKey($secretKey): void
     {
-        Base::setSecretKey($secretKey);
+        Config::getInstance()->setPrivateKey($secretKey);
     }
 
     /**
      * @Given /^Private key "([^"]*)"$/
      */
-    public function privateKey($privateKey)
+    public function privateKey($privateKey): void
     {
         Config::getInstance()->set([
             'private_key' => $privateKey,
@@ -40,9 +40,9 @@ class FeatureContext implements Context
     /**
      * @Given /^API type "([^"]*)"$/
      */
-    public function apiType($apiType)
+    public function apiType($apiType): void
     {
-        Base::setApiType($apiType);
+        Config::getInstance()->setLocalApiType($apiType);
         $this->apiType = $apiType;
     }
 }
