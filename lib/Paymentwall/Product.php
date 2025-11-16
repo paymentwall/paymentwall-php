@@ -22,7 +22,17 @@ class Product
     public $recurring;
     public $trialProduct;
 
-    public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Product $trialProduct = null)
+    public function __construct(
+        string $productId,
+        $amount = 0.0,
+        ?string $currencyCode = null,
+        ?string $name = null,
+        string $productType = self::TYPE_FIXED,
+        int $periodLength = 0,
+        ?string $periodType = null,
+        $recurring = false,
+        ?Product $trialProduct = null
+    )
     {
         $this->productId = $productId;
         $this->amount = round($amount, 2);
@@ -35,22 +45,22 @@ class Product
         $this->trialProduct = ($productType == Product::TYPE_SUBSCRIPTION && $recurring) ? $trialProduct : null;
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->productId;
     }
 
-    public function getAmount()
+    public function getAmount(): string
     {
         return $this->amount;
     }
 
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->currencyCode;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -60,17 +70,17 @@ class Product
         return $this->productType;
     }
 
-    public function getPeriodType()
+    public function getPeriodType(): string
     {
         return $this->periodType;
     }
 
-    public function getPeriodLength()
+    public function getPeriodLength(): int
     {
         return $this->periodLength;
     }
 
-    public function isRecurring()
+    public function isRecurring(): bool
     {
         return $this->recurring;
     }

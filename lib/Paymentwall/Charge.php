@@ -16,7 +16,7 @@ class Charge extends ApiObject implements ApiObjectInterface
         return $this->test;
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return $this->object == self::API_OBJECT_CHARGE;
     }
@@ -26,7 +26,7 @@ class Charge extends ApiObject implements ApiObjectInterface
         return $this->captured;
     }
 
-    public function isUnderReview()
+    public function isUnderReview(): bool
     {
         return $this->risk == 'pending';
     }
@@ -36,38 +36,38 @@ class Charge extends ApiObject implements ApiObjectInterface
         return $this->refunded;
     }
 
-    public function setPropertiesFromResponse($response = '')
+    public function setPropertiesFromResponse(string $response = ''): void
     {
         parent::setPropertiesFromResponse($response);
         $this->card = new Card($this->card);
     }
 
-    public function getEndpointName()
+    public function getEndpointName(): string
     {
         return self::API_OBJECT_CHARGE;
     }
 
-    public function getCard()
+    public function getCard(): Card
     {
         return new Card($this->card);
     }
 
-    public function get()
+    public function get(): self
     {
         return $this->doApiAction('', 'get');
     }
 
-    public function refund()
+    public function refund(): self
     {
         return $this->doApiAction('refund');
     }
 
-    public function capture()
+    public function capture(): self
     {
         return $this->doApiAction('capture');
     }
 
-    public function void()
+    public function void(): self
     {
         return $this->doApiAction('void');
     }

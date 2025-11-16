@@ -4,7 +4,7 @@ namespace Paymentwall\Signature;
 
 class Widget extends Signature
 {
-    public function process($params = [], $version = 0)
+    public function process(array $params = [], int $version = 0): string
     {
         $baseString = '';
 
@@ -28,7 +28,7 @@ class Widget extends Signature
         }
     }
 
-    public function prepareParams($params = [], $baseString = '')
+    public function prepareParams($params = [], $baseString = ''): string
     {
         foreach ($params as $key => $value) {
             if (!isset($value)) {

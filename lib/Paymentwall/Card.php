@@ -16,7 +16,7 @@ class Card
         $this->fields = (array) $details;
     }
 
-    public function __get($property)
+    public function __get($property): mixed
     {
         return $this->fields[$property] ?? null;
     }

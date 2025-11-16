@@ -4,7 +4,7 @@ namespace Paymentwall\Signature;
 
 class Pingback extends Signature
 {
-    public function process($params = [], $version = 0)
+    public function process(array $params = [], int $version = 0): string
     {
         $baseString = '';
 
@@ -25,7 +25,7 @@ class Pingback extends Signature
         return md5($baseString);
     }
 
-    public function prepareParams($params = [], $baseString = '')
+    public function prepareParams(array $params = [], string $baseString = ''): string
     {
         foreach ($params as $key => $value) {
             if (is_array($value)) {

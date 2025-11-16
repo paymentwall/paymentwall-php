@@ -4,19 +4,7 @@ namespace Paymentwall;
 
 class GenerericApiObject extends ApiObject
 {
-    /**
-     * API type
-     *
-     * @var string
-     */
-    protected $api;
-
-    /**
-     * HttpAction object
-     *
-     * @var \Paymentwall\HttpAction
-     */
-    protected $httpAction;
+    protected HttpAction $httpAction;
 
     /**
      * @see \ApiObject
@@ -26,20 +14,11 @@ class GenerericApiObject extends ApiObject
         return $this->api;
     }
 
-    public function __construct(string $type)
+    public function __construct(protected string $api)
     {
-        $this->api = $type;
         $this->httpAction = new HttpAction($this);
     }
 
-    /**
-     * Make post request
-     *
-     * @param array $params
-     * @param array $headers
-     *
-     * @return array
-     */
     public function post(array $params = [], array $headers = []): ?array
     {
         if (empty($params)) {

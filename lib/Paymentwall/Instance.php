@@ -5,14 +5,14 @@ namespace Paymentwall;
 abstract class Instance
 {
     protected $config;
-    protected $errors = [];
+    protected array $errors = [];
 
-    public function getErrorSummary()
+    public function getErrorSummary(): string
     {
         return implode("\n", $this->getErrors());
     }
 
-    protected function getConfig()
+    protected function getConfig(): Config
     {
         if (!isset($this->config)) {
             $this->config = Config::getInstance();

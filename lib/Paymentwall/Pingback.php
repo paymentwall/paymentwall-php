@@ -18,16 +18,11 @@ class Pingback extends Instance
     public const PINGBACK_TYPE_SUBSCRIPTION_EXPIRED = 13;
     public const PINGBACK_TYPE_SUBSCRIPTION_PAYMENT_FAILED = 14;
 
-    protected $parameters;
-    protected $ipAddress;
-
-    public function __construct(array $parameters, $ipAddress)
+    public function __construct(protected array $parameters, protected string $ipAddress)
     {
-        $this->parameters = $parameters;
-        $this->ipAddress = $ipAddress;
     }
 
-    public function validate($skipIpWhitelistCheck = false)
+    public function validate(bool $skipIpWhitelistCheck = false): bool
     {
         $validated = false;
 
@@ -48,7 +43,7 @@ class Pingback extends Instance
         return $validated;
     }
 
-    public function isSignatureValid()
+    public function isSignatureValid(): bool
     {
         $signatureParamsToSign = [];
 
@@ -83,7 +78,7 @@ class Pingback extends Instance
         return $signature == $signatureCalculated;
     }
 
-    public function isIpAddressValid()
+    public function isIpAddressValid(): bool
     {
         $ipsWhitelist = [
             '174.36.92.186',
@@ -110,7 +105,7 @@ class Pingback extends Instance
         return false;
     }
 
-    public function isCidrMatched($ip, $range)
+    public function isCidrMatched($ip, $range): bool
     {
         [$subnet, $bits] = explode('/', $range);
         $ip = ip2long($ip);
@@ -120,7 +115,7 @@ class Pingback extends Instance
         return ($ip & $mask) == $subnet;
     }
 
-    public function isParametersValid()
+    public function isParametersValid(): bool
     {
         $errorsNumber = 0;
 
@@ -142,17 +137,17 @@ class Pingback extends Instance
         return $errorsNumber == 0;
     }
 
-    public function getParameter($param)
+    public function getParameter($param): mixed
     {
         return $this->parameters[$param] ?? null;
     }
 
-    public function getType()
+    public function getType(): ?int
     {
         return isset($this->parameters['type']) ? intval($this->parameters['type']) : null;
     }
 
-    public function getTypeVerbal()
+    public function getTypeVerbal(): string
     {
         $typeVerbal = '';
         $pingbackTypes = [
@@ -170,32 +165,32 @@ class Pingback extends Instance
         return $typeVerbal;
     }
 
-    public function getUserId()
+    public function getUserId(): string
     {
         return $this->getParameter('uid');
     }
 
-    public function getVirtualCurrencyAmount()
+    public function getVirtualCurrencyAmount(): string
     {
         return $this->getParameter('currency');
     }
 
-    public function getProductId()
+    public function getProductId(): string
     {
         return $this->getParameter('goodsid');
     }
 
-    public function getProductPeriodLength()
+    public function getProductPeriodLength(): string
     {
         return $this->getParameter('slength');
     }
 
-    public function getProductPeriodType()
+    public function getProductPeriodType(): string
     {
         return $this->getParameter('speriod');
     }
 
-    public function getProduct()
+    public function getProduct(): Product
     {
         return new Product(
             $this->getProductId(),
@@ -208,7 +203,7 @@ class Pingback extends Instance
         );
     }
 
-    public function getProducts()
+    public function getProducts(): array
     {
         $result = [];
         $productIds = $this->getParameter('goodsid');
@@ -222,17 +217,17 @@ class Pingback extends Instance
         return $result;
     }
 
-    public function getReferenceId()
+    public function getReferenceId(): string
     {
         return $this->getParameter('ref');
     }
 
-    public function getPingbackUniqueId()
+    public function getPingbackUniqueId(): string
     {
         return $this->getReferenceId() . '_' . $this->getType();
     }
 
-    public function isDeliverable()
+    public function isDeliverable(): bool
     {
         return (
             $this->getType() === self::PINGBACK_TYPE_REGULAR ||
@@ -241,7 +236,7 @@ class Pingback extends Instance
         );
     }
 
-    public function isCancelable()
+    public function isCancelable(): bool
     {
         return (
             $this->getType() === self::PINGBACK_TYPE_NEGATIVE
@@ -249,7 +244,7 @@ class Pingback extends Instance
         );
     }
 
-    public function isUnderReview()
+    public function isUnderReview(): bool
     {
         return $this->getType() === self::PINGBACK_TYPE_RISK_UNDER_REVIEW;
     }

@@ -4,49 +4,43 @@ namespace Paymentwall;
 
 class HttpAction extends Instance
 {
-    protected $apiObject;
-    protected $apiParams = [];
-    protected $apiHeaders = [];
-    protected $responseLogInformation = [];
+    protected array $responseLogInformation = [];
 
-    public function __construct($object, $params = [], $headers = [])
+    public function __construct(protected ApiObject $apiObject, protected array $apiParams = [], protected array $apiHeaders = [])
     {
-        $this->setApiObject($object);
-        $this->setApiParams($params);
-        $this->setApiHeaders($headers);
     }
 
-    public function getApiObject()
+    public function getApiObject(): ApiObject
     {
         return $this->apiObject;
     }
 
-    public function setApiObject(ApiObject $apiObject)
+    public function setApiObject(ApiObject $apiObject): void
     {
         $this->apiObject = $apiObject;
     }
 
-    public function getApiParams()
+    public function getApiParams(): array
     {
         return $this->apiParams;
     }
 
-    public function setApiParams($params = [])
+    public function setApiParams(array $params = []): void
     {
         $this->apiParams = $params;
     }
 
-    public function getApiHeaders()
+    public function getApiHeaders(): array
     {
         return $this->apiHeaders;
     }
 
-    public function setApiHeaders($headers = [])
+    public function setApiHeaders(array $headers = []): void
     {
         $this->apiHeaders = $headers;
     }
 
-    public function run()
+    public function run(): ?string
     {
         $result = null;
 
@@ -57,22 +51,22 @@ class HttpAction extends Instance
         return $result;
     }
 
-    public function apiObjectPostRequest(ApiObject $object)
+    public function apiObjectPostRequest(ApiObject $object): string
     {
         return $this->request('POST', $object->getApiUrl(), $this->getApiParams(), $this->getApiHeaders());
     }
 
-    public function post($url = '')
+    public function post(string $url = ''): string
     {
         return $this->request('POST', $url, $this->getApiParams(), $this->getApiHeaders());
     }
 
-    public function get($url = '')
+    public function get(string $url = ''): string
     {
         return $this->request('GET', $url, $this->getApiParams(), $this->getApiHeaders());
     }
 
-    protected function request($httpVerb = '', $url = '', $params = [], $customHeaders = [])
+    protected function request(string $httpVerb = '', string $url = '', array $params = [], array $customHeaders = []): string
     {
         $curl = curl_init();
 
@@ -121,17 +115,17 @@ class HttpAction extends Instance
         return $this->prepareResponse($body);
     }
 
-    protected function getLibraryDefaultRequestHeader()
+    protected function getLibraryDefaultRequestHeader(): string
     {
         return 'User-Agent: Paymentwall PHP Library v. ' . $this->getConfig()->getVersion();
     }
 
-    protected function prepareResponse($string = '')
+    protected function prepareResponse(string $string = ''): string
     {
         return preg_replace('/\x{FEFF}/u', '', $string);
     }
 
-    public function getResponseLogInformation()
+    public function getResponseLogInformation(): array
     {
         return $this->responseLogInformation;
     }

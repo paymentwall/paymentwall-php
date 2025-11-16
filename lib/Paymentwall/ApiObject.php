@@ -19,14 +19,14 @@ abstract class ApiObject extends Instance
 
     abstract public function getEndpointName();
 
-    public function __construct($id = '')
+    public function __construct(string $id = '')
     {
         if (!empty($id)) {
             $this->_id = $id;
         }
     }
 
-    final public function create($params = [])
+    final public function create(array $params = []): self
     {
         $httpAction = new HttpAction($this, $params, [
             $this->getApiBaseHeader(),
@@ -35,12 +35,12 @@ abstract class ApiObject extends Instance
         return $this;
     }
 
-    public function __get($property)
+    public function __get($property): mixed
     {
         return $this->properties[$property] ?? null;
     }
 
-    public function getApiUrl()
+    public function getApiUrl(): string
     {
         if ($this->getEndpointName() === self::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
             return OneTimeToken::GATEWAY_TOKENIZATION_URL;
@@ -61,7 +61,7 @@ abstract class ApiObject extends Instance
      * @return array
      *
      */
-    public function _getPublicData()
+    public function _getPublicData(): array
     {
         /*$responseModel = Factory::get($this->getPropertiesFromResponse());
         return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';*/
@@ -100,12 +100,12 @@ abstract class ApiObject extends Instance
     /**
      * @return string json encoded result of ApiObject::getPublicData()
      */
-    public function getPublicData()
+    public function getPublicData(): string
     {
         return json_encode($this->_getPublicData());
     }
 
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
@@ -115,7 +115,7 @@ abstract class ApiObject extends Instance
         return $this->_rawResponse;
     }
 
-    protected function setPropertiesFromResponse($response = '')
+    protected function setPropertiesFromResponse(string $response = '')
     {
         if (!empty($response)) {
             $this->_rawResponse = $response;
@@ -137,17 +137,17 @@ abstract class ApiObject extends Instance
         return $this->properties;
     }
 
-    protected function preparePropertiesFromResponse($string = '')
+    protected function preparePropertiesFromResponse(string $string = '')
     {
         return json_decode($string, false);
     }
 
-    protected function getApiBaseHeader()
+    protected function getApiBaseHeader(): string
     {
         return 'X-ApiKey: ' . $this->getPrivateKey();
     }
 
-    protected function doApiAction($action = '', $method = 'post')
+    protected function doApiAction(string $action = '', string $method = 'post'): self
     {
         $actionUrl = $this->getApiUrl() . '/' . $this->_id . '/' . $action;
         $httpAction = new HttpAction($this, ['id' => $this->_id], [

@@ -8,20 +8,16 @@ class Widget extends Instance
     public const CONTROLLER_PAYMENT_DIGITAL_GOODS       = 'subscription';
     public const CONTROLLER_PAYMENT_CART                = 'cart';
 
-    protected $userId;
-    protected $widgetCode;
-    protected $products;
-    protected $extraParams;
-
-    public function __construct($userId, $widgetCode = '', $products = [], $extraParams = [])
+    public function __construct(
+        protected string $userId,
+        protected string $widgetCode = '',
+        protected array $products = [],
+        protected array $extraParams = []
+    )
     {
-        $this->userId = $userId;
-        $this->widgetCode = $widgetCode;
-        $this->products = $products;
-        $this->extraParams = $extraParams;
     }
 
-    public function getUrl()
+    public function getUrl(): string
     {
         $params = [
             'key' => $this->getPublicKey(),
@@ -108,7 +104,7 @@ class Widget extends Instance
         return $this->getApiBaseUrl() . '/' . $this->buildController($this->widgetCode) . '?' . http_build_query($params);
     }
 
-    public function getHtmlCode($attributes = [])
+    public function getHtmlCode(array $attributes = []): string
     {
         $defaultAttributes = [
             'frameborder' => '0',
@@ -126,12 +122,12 @@ class Widget extends Instance
         return '<iframe src="' . $this->getUrl() . '" ' . $attributesQuery . '></iframe>';
     }
 
-    protected function getDefaultSignatureVersion()
+    protected function getDefaultSignatureVersion(): int
     {
         return $this->getApiType() != Config::API_CART ? \Paymentwall\Signature\Signature::DEFAULT_VERSION : \Paymentwall\Signature\Signature::VERSION_TWO;
     }
 
-    protected function buildController($widget = '')
+    protected function buildController($widget = ''): ?string
     {
         $controller = null;
         $isPaymentWidget = !preg_match('/^w|s|mw/', $widget);

@@ -4,5 +4,5 @@ namespace Paymentwall;
 
 interface ApiObjectInterface
 {
-    public function getCard();
+    public function getCard(): Card;
 }

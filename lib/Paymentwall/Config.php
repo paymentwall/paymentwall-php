@@ -12,64 +12,64 @@ class Config
     public const API_GOODS  = 2;
     public const API_CART   = 3;
 
-    protected $apiType = self::API_GOODS;
-    protected $publicKey;
-    protected $privateKey;
-    protected $apiBaseUrl = self::API_BASE_URL;
+    protected int $apiType = self::API_GOODS;
+    protected string $publicKey;
+    protected string $privateKey;
+    protected string $apiBaseUrl = self::API_BASE_URL;
 
     private static $instance;
 
-    public function getApiBaseUrl()
+    public function getApiBaseUrl(): string
     {
         return $this->apiBaseUrl;
     }
 
-    public function setApiBaseUrl($url = '')
+    public function setApiBaseUrl(string $url = ''): void
     {
         $this->apiBaseUrl = $url;
     }
 
-    public function getLocalApiType()
+    public function getLocalApiType(): int
     {
         return $this->apiType;
     }
 
-    public function setLocalApiType($apiType = 0)
+    public function setLocalApiType(int $apiType = 0): void
     {
         $this->apiType = $apiType;
     }
 
-    public function getPublicKey()
+    public function getPublicKey(): string
     {
         return $this->publicKey;
     }
 
-    public function setPublicKey($key = '')
+    public function setPublicKey(string $key = ''): void
     {
         $this->publicKey = $key;
     }
 
-    public function getPrivateKey()
+    public function getPrivateKey(): string
     {
         return $this->privateKey;
     }
 
-    public function setPrivateKey($key = '')
+    public function setPrivateKey(string $key = ''): void
     {
         $this->privateKey = $key;
     }
 
-    public function getVersion()
+    public function getVersion(): string
     {
         return self::VERSION;
     }
 
-    public function isTest()
+    public function isTest(): bool
     {
         return str_starts_with($this->getPublicKey(), 't_');
     }
 
-    public function set($config = [])
+    public function set(array $config = []): void
     {
         if (isset($config['api_base_url'])) {
             $this->setApiBaseUrl($config['api_base_url']);
@@ -88,7 +88,7 @@ class Config
     /**
         * @return $this Returns class instance.
         */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (!isset(self::$instance)) {
             $className = self::class;

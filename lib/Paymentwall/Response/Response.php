@@ -4,11 +4,8 @@ namespace Paymentwall\Response;
 
 abstract class Response
 {
-    protected array $response;
-
-    public function __construct(array $response = [])
+    public function __construct(protected array $response = [])
     {
-        $this->response = $response;
     }
 
     protected function wrapInternalError(): false|string

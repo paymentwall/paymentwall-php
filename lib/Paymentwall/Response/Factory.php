@@ -11,14 +11,12 @@ class Factory
 
     public static function get($response = [])
     {
-        $responseModel = null;
-
         $responseModel = self::getClassName($response);
 
         return new $responseModel($response);
     }
 
-    public static function getClassName($response = [])
+    public static function getClassName($response = []): string
     {
         $responseType = (isset($response['type']) && $response['type'] == 'Error') ? self::RESPONSE_ERROR : self::RESPONSE_SUCCESS;
         // Build fully qualified class name within this namespace
