@@ -35,8 +35,8 @@ Then use a code sample below.
 Using Paymentwall PHP Library:
 ```php
 
-Paymentwall_Config::getInstance()->set([
-    'api_type' => Paymentwall_Config::API_GOODS,
+\Paymentwall\Config::getInstance()->set([
+    'api_type' => \Paymentwall\Config::API_GOODS,
     'public_key' => 'YOUR_PROJECT_KEY',
     'private_key' => 'YOUR_SECRET_KEY'
 ]);
@@ -48,7 +48,7 @@ Paymentwall_Config::getInstance()->set([
 The widget is a payment page hosted by Paymentwall that embeds the entire payment flow: selecting the payment method, completing the billing details, and providing customer support via the Help section. You can redirect the users to this page or embed it via iframe. Below is an example that renders an iframe with Paymentwall Widget.
 
 ```php
-$widget = new Paymentwall_Widget(
+$widget = new \Paymentwall\Widget(
     'user40012',   // id of the end-user who's making the payment
     'pw',          // widget code, e.g. pw; can be picked inside your merchant account
     [         // product details for Flexible Widget Call. To let users select the product on Paymentwall's end, leave this array empty
