@@ -1,7 +1,5 @@
 <?php
 
-namespace Paymentwall;
-
 use Behat\Behat\Context\Context;
 
 class ChargeContext implements Context
@@ -10,38 +8,30 @@ class ChargeContext implements Context
     private $chargeId = null;
     private $cvv = '123';
 
-    /**
-     * @Given /^CVV code "([^"]*)"$/
-     */
-    public function cvvCode($cvvCode)
+    #[\Behat\Step\Given('CVV code ":cvvCode"')]
+    public function cvvCode($cvvCode): void
     {
         $this->cvv = $cvvCode;
     }
 
-    /**
-     * @Given /^charge ID "([^"]*)"$/
-     */
-    public function chargeId($chargeId)
+    #[\Behat\Step\Given('charge ID ":chargeId"')]
+    public function chargeId($chargeId): void
     {
         $this->chargeId = $chargeId;
     }
 
-    /**
-    * @When /^test token is retrieved$/
-    */
-    public function testTokenIsRetrieved()
+    #[\Behat\Step\When('test token is retrieved')]
+    public function testTokenIsRetrieved(): void
     {
-        $tokenModel = new OneTimeToken();
+        $tokenModel = new \Paymentwall\OneTimeToken();
         $this->token = $tokenModel->create($this->getTestDetailsForOneTimeToken())->getToken();
         if (!str_contains($this->token, 'ot_')) {
             throw new \Exception($this->token->getPublicData());
         }
     }
 
-    /**
-    * @Then /^charge should be successful$/
-    */
-    public function chargeShouldBeSuccessful()
+    #[\Behat\Step\Then('charge should be successful')]
+    public function chargeShouldBeSuccessful(): void
     {
         $charge = $this->getChargeObject();
         if (!$charge->isSuccessful()) {
@@ -49,21 +39,17 @@ class ChargeContext implements Context
         }
     }
 
-    /**
-    * @Then /^charge should be refunded$/
-    */
-    public function chargeShouldBeRefunded()
+    #[\Behat\Step\Then('charge should be refunded')]
+    public function chargeShouldBeRefunded(): void
     {
-        $chargeToBeRefunded = new Charge($this->chargeId);
+        $chargeToBeRefunded = new \Paymentwall\Charge($this->chargeId);
         if (!$chargeToBeRefunded->refund()->isRefunded()) {
             throw new \Exception($chargeToBeRefunded->getPublicData());
         }
     }
 
-    /**
-    * @Then /^I see this error message "([^"]*)"$/
-    */
-    public function iSeeThisErrorMessage($errorMessage = '')
+    #[\Behat\Step\Then('I see this error message ":errorMessage"')]
+    public function iSeeThisErrorMessage($errorMessage = ''): void
     {
         $charge = $this->getChargeObject();
         $errors = json_decode($charge->getPublicData(), true);
@@ -72,13 +58,13 @@ class ChargeContext implements Context
         }
     }
 
-    protected function getChargeObject()
+    protected function getChargeObject(): \Paymentwall\ApiObject
     {
-        $chargeModel = new Charge();
+        $chargeModel = new \Paymentwall\Charge();
         return $chargeModel->create($this->getTestDetailsForCharge());
     }
 
-    protected function getTestDetailsForCharge()
+    protected function getTestDetailsForCharge(): array
     {
         return [
             'token' => $this->token,
@@ -91,15 +77,15 @@ class ChargeContext implements Context
         ];
     }
 
-    protected function getTestDetailsForOneTimeToken()
+    protected function getTestDetailsForOneTimeToken(): array
     {
         return array_merge(
-            ['public_key' => Config::getInstance()->getPublicKey()],
+            ['public_key' => \Paymentwall\Config::getInstance()->getPublicKey()],
             $this->getTestCardDetails()
         );
     }
 
-    protected function getTestCardDetails()
+    protected function getTestCardDetails(): array
     {
         return [
             'card[number]' => '4242424242424242',

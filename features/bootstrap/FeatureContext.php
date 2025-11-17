@@ -1,7 +1,5 @@
 <?php
 
-namespace Paymentwall;
-
 use Behat\Behat\Context\Context;
 
 /**
@@ -11,38 +9,30 @@ class FeatureContext implements Context
 {
     public int $apiType;
 
-    /**
-     * @Given /^Public key "([^"]*)"$/
-     */
+    #[\Behat\Step\Given('/^Public key "([^"]*)"$/')]
     public function publicKey($publicKey): void
     {
-        Config::getInstance()->setPublicKey($publicKey);
+        \Paymentwall\Config::getInstance()->setPublicKey($publicKey);
     }
 
-    /**
-     * @Given /^Secret key "([^"]*)"$/
-     */
+    #[\Behat\Step\Given('/^Secret key "([^"]*)"$/')]
     public function secretKey($secretKey): void
     {
-        Config::getInstance()->setPrivateKey($secretKey);
+        \Paymentwall\Config::getInstance()->setPrivateKey($secretKey);
     }
 
-    /**
-     * @Given /^Private key "([^"]*)"$/
-     */
+    #[\Behat\Step\Given('/^Private key "([^"]*)"$/')]
     public function privateKey($privateKey): void
     {
-        Config::getInstance()->set([
+        \Paymentwall\Config::getInstance()->set([
             'private_key' => $privateKey,
         ]);
     }
 
-    /**
-     * @Given /^API type "([^"]*)"$/
-     */
+    #[\Behat\Step\Given('/^API type "([^"]*)"$/')]
     public function apiType($apiType): void
     {
-        Config::getInstance()->setLocalApiType($apiType);
+        \Paymentwall\Config::getInstance()->setLocalApiType($apiType);
         $this->apiType = $apiType;
     }
 }

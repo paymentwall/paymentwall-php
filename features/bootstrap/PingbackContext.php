@@ -1,43 +1,33 @@
 <?php
 
-namespace Paymentwall;
-
 use Behat\Behat\Context\Context;
 
 class PingbackContext implements Context
 {
     private array $pingbackParameters = [];
     private string $pingbackIpAddress = '';
-    private Pingback $pingback;
+    private \Paymentwall\Pingback $pingback;
 
-    /**
-    * @Given /^Pingback GET parameters "([^"]*)"$/
-    */
-    public function pingbackGetParameters($parameters)
+    #[\Behat\Step\Given('Pingback GET parameters ":parameters"')]
+    public function pingbackGetParameters($parameters): void
     {
         parse_str($parameters, $this->pingbackParameters);
     }
 
-    /**
-     * @Given /^Pingback IP address "([^"]*)"$/
-     */
-    public function pingbackIpAddress($ipAddress)
+    #[\Behat\Step\Given('Pingback IP address ":ipAddress"')]
+    public function pingbackIpAddress($ipAddress): void
     {
         $this->pingbackIpAddress = $ipAddress;
     }
 
-    /**
-     * @When /^Pingback is constructed$/
-     */
-    public function pingbackIsConstructed()
+    #[\Behat\Step\When('Pingback is constructed')]
+    public function pingbackIsConstructed(): void
     {
-        $this->pingback = new Pingback($this->pingbackParameters, $this->pingbackIpAddress);
+        $this->pingback = new \Paymentwall\Pingback($this->pingbackParameters, $this->pingbackIpAddress);
     }
 
-    /**
-     * @Then /^Pingback validation result should be "([^"]*)"$/
-     */
-    public function pingbackValidationResultShouldBe($value)
+    #[\Behat\Step\Then('Pingback validation result should be ":value"')]
+    public function pingbackValidationResultShouldBe($value): void
     {
         $validate = $this->pingback->validate();
         if ($validate !== $value) {
@@ -47,10 +37,8 @@ class PingbackContext implements Context
         }
     }
 
-    /**
-     * @Given /^Pingback method "([^"]*)" should return "([^"]*)"$/
-     */
-    public function pingbackMethodShouldReturn($method, $value)
+    #[\Behat\Step\Given('Pingback method ":method" should return ":value"')]
+    public function pingbackMethodShouldReturn($method, $value): void
     {
         if ($this->pingback->$method() !== $value) {
             throw new \Exception(
@@ -59,10 +47,8 @@ class PingbackContext implements Context
         }
     }
 
-    /**
-     * @Transform /^(true|false)$/
-     */
-    public function castStringToBoolean($string)
+    #[\Behat\Transformation\Transform('/^(true|false)$/')]
+    public function castStringToBoolean($string): mixed
     {
         return filter_var($string, FILTER_VALIDATE_BOOLEAN);
     }

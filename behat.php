@@ -3,7 +3,6 @@
 use Behat\Config\Config;
 use Behat\Config\Profile;
 use Behat\Config\Suite;
-use Paymentwall;
 
 $profile = (new Profile('default'))
     ->withSuite(
@@ -11,10 +10,10 @@ $profile = (new Profile('default'))
             ->withPaths(
                 '%paths.base%/features',
             )->withContexts(
-                Paymentwall\ChargeContext::class,
-                Paymentwall\FeatureContext::class,
-                Paymentwall\PingbackContext::class,
-                Paymentwall\WidgetContext::class
+                ChargeContext::class,
+                FeatureContext::class,
+                PingbackContext::class,
+                WidgetContext::class
             )
     )
 ;

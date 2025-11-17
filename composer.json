@@ -45,10 +45,5 @@
             "Paymentwall\\": "lib/Paymentwall/"
         }
     },
-  "autoload-dev": {
-    "psr-4": {
-      "Paymentwall\\": "features/bootstrap"
-    }
-  },
     "minimum-stability": "dev"
 }
