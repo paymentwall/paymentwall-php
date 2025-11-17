@@ -28,6 +28,6 @@ class OneTimeToken extends ApiObject
 
     public function getEndpointName(): string
     {
-        return self::API_OBJECT_ONE_TIME_TOKEN;
+        return ApiObject::API_OBJECT_ONE_TIME_TOKEN;
     }
 }

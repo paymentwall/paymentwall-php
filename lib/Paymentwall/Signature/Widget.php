@@ -8,19 +8,19 @@ class Widget extends Signature
     {
         $baseString = '';
 
-        if ($version == self::VERSION_ONE) {
+        if ($version == Signature::VERSION_ONE) {
             $baseString .= $params['uid'] ?? '';
             $baseString .= $this->getConfig()->getPrivateKey();
 
             return md5($baseString);
         } else {
-            self::ksortMultiDimensional($params);
+            Signature::ksortMultiDimensional($params);
 
             $baseString = $this->prepareParams($params, $baseString);
 
             $baseString .= $this->getConfig()->getPrivateKey();
 
-            if ($version == self::VERSION_TWO) {
+            if ($version == Signature::VERSION_TWO) {
                 return md5($baseString);
             }
 

@@ -4,9 +4,9 @@ namespace Paymentwall;
 
 class Widget extends Instance
 {
-    public const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY    = 'ps';
-    public const CONTROLLER_PAYMENT_DIGITAL_GOODS       = 'subscription';
-    public const CONTROLLER_PAYMENT_CART                = 'cart';
+    public const CONTROLLER_PAYMENT_VIRTUAL_CURRENCY = 'ps';
+    public const CONTROLLER_PAYMENT_DIGITAL_GOODS = 'subscription';
+    public const CONTROLLER_PAYMENT_CART = 'cart';
 
     public function __construct(
         protected string $userId,

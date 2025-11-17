@@ -18,7 +18,7 @@ class Charge extends ApiObject implements ApiObjectInterface
 
     public function isSuccessful(): bool
     {
-        return $this->object == self::API_OBJECT_CHARGE;
+        return $this->object == ApiObject::API_OBJECT_CHARGE;
     }
 
     public function isCaptured()
@@ -44,7 +44,7 @@ class Charge extends ApiObject implements ApiObjectInterface
 
     public function getEndpointName(): string
     {
-        return self::API_OBJECT_CHARGE;
+        return ApiObject::API_OBJECT_CHARGE;
     }
 
     public function getCard(): Card

@@ -4,9 +4,9 @@ namespace Paymentwall;
 
 abstract class ApiObject extends Instance
 {
-    public const API_BRICK_SUBPATH          = 'brick';
-    public const API_OBJECT_CHARGE      = 'charge';
-    public const API_OBJECT_SUBSCRIPTION    = 'subscription';
+    public const API_BRICK_SUBPATH = 'brick';
+    public const API_OBJECT_CHARGE = 'charge';
+    public const API_OBJECT_SUBSCRIPTION = 'subscription';
     public const API_OBJECT_ONE_TIME_TOKEN = 'token';
 
     protected array $properties = [];

@@ -84,7 +84,7 @@ class Mobiamo extends ApiObject
 
     public function getApiUrl(): string
     {
-        if ($this->getEndpointName() === self::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
+        if ($this->getEndpointName() === ApiObject::API_OBJECT_ONE_TIME_TOKEN && !$this->getConfig()->isTest()) {
             return OneTimeToken::GATEWAY_TOKENIZATION_URL;
         } else {
             return $this->getApiBaseUrl() . '/' .  $this->getEndpointName();

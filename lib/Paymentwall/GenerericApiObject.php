@@ -7,7 +7,7 @@ class GenerericApiObject extends ApiObject
     protected HttpAction $httpAction;
 
     /**
-     * @see \ApiObject
+     * @see ApiObject
      */
     public function getEndpointName(): string
     {
@@ -24,15 +24,9 @@ class GenerericApiObject extends ApiObject
         if (empty($params)) {
             return null;
         }
-
         $this->httpAction->setApiParams($params);
-
         $this->httpAction->setApiHeaders(array_merge([$this->getApiBaseHeader()], $headers));
 
-        return (array) $this->preparePropertiesFromResponse(
-            $this->httpAction->post(
-                $this->getApiUrl()
-            )
-        );
+        return (array) $this->preparePropertiesFromResponse($this->httpAction->post($this->getApiUrl()));
     }
 }

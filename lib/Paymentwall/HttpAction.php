@@ -6,7 +6,11 @@ class HttpAction extends Instance
 {
     protected array $responseLogInformation = [];
 
-    public function __construct(protected ApiObject $apiObject, protected array $apiParams = [], protected array $apiHeaders = [])
+    public function __construct(
+        protected ApiObject $apiObject,
+        protected array $apiParams = [],
+        protected array $apiHeaders = []
+    )
     {
     }
 

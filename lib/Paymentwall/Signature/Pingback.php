@@ -10,15 +10,15 @@ class Pingback extends Signature
 
         unset($params['sig']);
 
-        if ($version == self::VERSION_TWO || $version == self::VERSION_THREE) {
-            self::ksortMultiDimensional($params);
+        if ($version == Signature::VERSION_TWO || $version == Signature::VERSION_THREE) {
+            Signature::ksortMultiDimensional($params);
         }
 
         $baseString = $this->prepareParams($params, $baseString);
 
         $baseString .= $this->getConfig()->getPrivateKey();
 
-        if ($version == self::VERSION_THREE) {
+        if ($version == Signature::VERSION_THREE) {
             return hash('sha256', $baseString);
         }
 

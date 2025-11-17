@@ -21,7 +21,7 @@ class Subscription extends ApiObject
 
     public function isSuccessful()
     {
-        return $this->object == self::API_OBJECT_SUBSCRIPTION;
+        return $this->object == ApiObject::API_OBJECT_SUBSCRIPTION;
     }
 
     public function isExpired()
@@ -31,7 +31,7 @@ class Subscription extends ApiObject
 
     public function getEndpointName()
     {
-        return self::API_OBJECT_SUBSCRIPTION;
+        return ApiObject::API_OBJECT_SUBSCRIPTION;
     }
 
     public function get()
