@@ -24,16 +24,15 @@ class Product
 
     public function __construct(
         string $productId,
-        $amount = 0.0,
+        float $amount = 0.0,
         ?string $currencyCode = null,
         ?string $name = null,
         string $productType = self::TYPE_FIXED,
         int $periodLength = 0,
         ?string $periodType = null,
-        $recurring = false,
+        bool $recurring = false,
         ?Product $trialProduct = null
-    )
-    {
+    ) {
         $this->productId = $productId;
         $this->amount = round($amount, 2);
         $this->currencyCode = $currencyCode;

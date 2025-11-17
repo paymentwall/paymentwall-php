@@ -9,11 +9,11 @@ abstract class ApiObject extends Instance
     public const API_OBJECT_SUBSCRIPTION    = 'subscription';
     public const API_OBJECT_ONE_TIME_TOKEN = 'token';
 
-    protected $properties = [];
-    protected $_id;
-    protected $_rawResponse = '';
-    protected $_responseLogInformation = [];
-    protected $brickSubEndpoints = [
+    protected array $properties = [];
+    protected string $_id;
+    protected string $_rawResponse = '';
+    protected array $_responseLogInformation = [];
+    protected array $brickSubEndpoints = [
         self::API_OBJECT_CHARGE, self::API_OBJECT_SUBSCRIPTION, self::API_OBJECT_ONE_TIME_TOKEN,
     ];
 
@@ -28,9 +28,7 @@ abstract class ApiObject extends Instance
 
     final public function create(array $params = []): self
     {
-        $httpAction = new HttpAction($this, $params, [
-            $this->getApiBaseHeader(),
-        ]);
+        $httpAction = new HttpAction($this, $params, [$this->getApiBaseHeader()]);
         $this->setPropertiesFromResponse($httpAction->run());
         return $this;
     }
@@ -63,9 +61,6 @@ abstract class ApiObject extends Instance
      */
     public function _getPublicData(): array
     {
-        /*$responseModel = Factory::get($this->getPropertiesFromResponse());
-        return $responseModel instanceof Paymentwall_Response_Interface ? $responseModel->process() : '';*/
-
         /**
          * @todo encapsulate this into Factory better; right now it returns success=1 for 3ds case
          */
@@ -110,12 +105,12 @@ abstract class ApiObject extends Instance
         return $this->properties;
     }
 
-    public function getRawResponseData()
+    public function getRawResponseData(): string
     {
         return $this->_rawResponse;
     }
 
-    protected function setPropertiesFromResponse(string $response = '')
+    protected function setPropertiesFromResponse(string $response = ''): void
     {
         if (!empty($response)) {
             $this->_rawResponse = $response;
@@ -125,14 +120,14 @@ abstract class ApiObject extends Instance
         }
     }
 
-    protected function getSubPath()
+    protected function getSubPath(): string
     {
         return (in_array($this->getEndpointName(), $this->brickSubEndpoints))
                 ? '/' . self::API_BRICK_SUBPATH
                 : '';
     }
 
-    protected function getPropertiesFromResponse()
+    protected function getPropertiesFromResponse(): array
     {
         return $this->properties;
     }
@@ -161,7 +156,7 @@ abstract class ApiObject extends Instance
         return $this;
     }
 
-    public function getResponseLogInformation()
+    public function getResponseLogInformation(): array
     {
         return $this->_responseLogInformation;
     }

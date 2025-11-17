@@ -13,8 +13,7 @@ class Widget extends Instance
         protected string $widgetCode = '',
         protected array $products = [],
         protected array $extraParams = []
-    )
-    {
+    ) {
     }
 
     public function getUrl(): string
