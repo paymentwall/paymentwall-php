@@ -4,7 +4,15 @@
 
 Official Paymentwall PHP library (v2.2.4) for integrating digital payment processing APIs. Supports Virtual Currency, Digital Goods, Cart API, Brick (credit card processing), and Mobiamo (mobile payments).
 
-**License:** MIT | **PHP:** >= 5.2 | **Extensions:** curl, json
+**License:** MIT | **PHP:** >= 5.2 (composer.json) | **Extensions:** curl, json
+
+### PHP Version Compatibility
+
+- **composer.json declares** `>=5.2`, but the codebase received PHP 8.2 compatibility fixes (explicit property declarations, `array()` to `[]` syntax, CIDR method refactoring)
+- **Library code** works on PHP 5.2 through 8.4+ (tested)
+- **Test suite (Behat 2.4)** is broken on PHP 8.x — Symfony Console signature incompatibility (`getSynopsis()` method). Tests require PHP 7.x or earlier to run, or Behat needs upgrading
+- **Current stable PHP** is 8.5 (as of 2026). PHP 8.0 and earlier are EOL
+- The `>=5.2` minimum in composer.json is outdated — in practice, users run this on PHP 7.4–8.x
 
 ## Repository Structure
 
@@ -78,6 +86,8 @@ vendor/behat/behat/bin/behat
 
 Tests use **Behat 2.4** (BDD). Feature files are in `features/`, step definitions in `features/bootstrap/`. Tests validate signature generation, pingback verification, and charge operations using hardcoded test keys (prefix `t_`).
 
+> **Known issue:** Behat 2.4 crashes on PHP 8.x with a fatal error in `InputDefinition::getSynopsis()`. To run tests, either use PHP 7.x or upgrade Behat to 3.x+ (which would require rewriting test contexts).
+
 ## Code Conventions
 
 - **Class naming:** `Paymentwall_ComponentName` (underscore-separated, PascalCase components)
@@ -103,7 +113,8 @@ Tests use **Behat 2.4** (BDD). Feature files are in `features/`, step definition
 
 - `GenerericApiObject.php` has an intentional typo in the name — do not rename it
 - `Paymentwall_Base` is deprecated; use `Paymentwall_Config` for new code
-- The library supports PHP 5.2+, so avoid modern PHP features (namespaces, traits, typed properties, union types, etc.)
+- The library targets PHP 5.2+ compatibility in composer.json — avoid namespaces, traits, typed properties, union types, enums, and other PHP 7+/8+ features
+- PHP 8.2 compatibility fixes were already applied (explicit property declarations to avoid dynamic property deprecation warnings, `array()` to `[]` modernization). Further PHP 8.x compatibility work should follow the same pattern
 - Test keys use the `t_` prefix to indicate test mode
 - When modifying signature logic, test all three versions (v1, v2, v3) across all API types
 - `lib/paymentwall.php` manually includes files in dependency order — update it if adding new classes
