@@ -113,8 +113,7 @@ class Paymentwall_HttpAction extends Paymentwall_Instance
 			'body' => $body,
 			'status' => curl_getinfo($curl, CURLINFO_HTTP_CODE)
 		];
-		
-		curl_close($curl);
+
 
 		return $this->prepareResponse($body);
 	}
