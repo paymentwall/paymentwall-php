@@ -10,7 +10,7 @@ Official Paymentwall PHP library (v2.2.4) for integrating digital payment proces
 
 - **composer.json declares** `>=5.2`, but the codebase received PHP 8.2 compatibility fixes (explicit property declarations, `array()` to `[]` syntax, CIDR method refactoring)
 - **Library code** works on PHP 5.2 through 8.4+ (tested)
-- **Test suite (Behat 2.4)** is broken on PHP 8.x — Symfony Console signature incompatibility (`getSynopsis()` method). Tests require PHP 7.x or earlier to run, or Behat needs upgrading
+- **Test suite** uses Behat 3.x, which requires PHP >= 8.1
 - **Current stable PHP** is 8.5 (as of 2026). PHP 8.0 and earlier are EOL
 - The `>=5.2` minimum in composer.json is outdated — in practice, users run this on PHP 7.4–8.x
 
@@ -48,7 +48,7 @@ features/                  # Behat BDD tests
   pingback.feature         # Pingback validation tests
   charge.feature           # Brick charge tests
   bootstrap/
-    FeatureContext.php      # Main test context (loads sub-contexts)
+    FeatureContext.php      # Main test context (shared steps)
     WidgetContext.php       # Widget test steps
     PingbackContext.php     # Pingback test steps
     ChargeContext.php       # Charge test steps
@@ -81,12 +81,12 @@ Paymentwall_Instance (abstract base)
 composer test
 
 # Or run Behat directly
-vendor/behat/behat/bin/behat
+bin/behat
 ```
 
-Tests use **Behat 2.4** (BDD). Feature files are in `features/`, step definitions in `features/bootstrap/`. Tests validate signature generation, pingback verification, and charge operations using hardcoded test keys (prefix `t_`).
+Tests use **Behat 3.x** (BDD). Feature files are in `features/`, step definitions in `features/bootstrap/`. All contexts implement `Behat\Behat\Context\Context` and are registered as peers in `behat.yml`. Tests validate signature generation, pingback verification, and charge operations using hardcoded test keys (prefix `t_`).
 
-> **Known issue:** Behat 2.4 crashes on PHP 8.x with a fatal error in `InputDefinition::getSynopsis()`. To run tests, either use PHP 7.x or upgrade Behat to 3.x+ (which would require rewriting test contexts).
+> **Note:** Charge and widget tests require network access to `api.paymentwall.com`. Pingback tests are fully local.
 
 ## Code Conventions
 

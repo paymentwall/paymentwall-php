@@ -1,10 +1,10 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
 
-class PingbackContext extends BehatContext
+class PingbackContext implements Context
 {
-    public function __construct(array $parameters)
+    public function __construct()
     {
         $this->pingbackParameters = null;
         $this->pingbackIpAddress = null;
@@ -14,7 +14,7 @@ class PingbackContext extends BehatContext
 	* @Given /^Pingback GET parameters "([^"]*)"$/
 	*/
     public function pingbackGetParameters($parameters)
-    {   
+    {
         parse_str($parameters, $this->pingbackParameters);
     }
 

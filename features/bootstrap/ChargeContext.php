@@ -1,10 +1,10 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
 
-class ChargeContext extends BehatContext
+class ChargeContext implements Context
 {
-    public function __construct(array $parameters)
+    public function __construct()
     {
         $this->token = NULL;
         $this->chargeId = NULL;

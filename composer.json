@@ -28,12 +28,13 @@
 		"ext-json": "*"
 	},
 	"require-dev": {
-		"behat/behat": "2.4.*@stable"
+		"php": ">=8.1",
+		"behat/behat": "^3.29"
 	},
 	"scripts": {
 		"test": [
 			"@composer install",
-			"vendor/behat/behat/bin/behat"
+			"bin/behat"
 		]
     },
 	"config": {

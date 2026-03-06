@@ -1,16 +1,24 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
-class WidgetContext extends BehatContext
+class WidgetContext implements Context
 {
-    public function __construct(array $parameters)
+    private $featureContext;
+
+    public function __construct()
     {
-        // Initialize your context here
         $this->productName = 'Test Default Product Name';
         $this->widgetSignatureVersion = null;
         $this->widgetCode = 'p10';
         $this->languageCode = null;
+    }
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $this->featureContext = $scope->getEnvironment()->getContext('FeatureContext');
     }
 
     protected function getWidgetSignatureVersion() {
@@ -30,16 +38,16 @@ class WidgetContext extends BehatContext
     }
 
     protected function getProduct() {
-        switch ($this->getMainContext()->apiType) {
+        switch ($this->featureContext->apiType) {
             case (Paymentwall_Base::API_GOODS):
                 /**
                  * @todo implement subscriptions, trial, no product
                  */
                 return array(
                     new Paymentwall_Product(
-                        'product301',                           
-                        9.99,                                   
-                        'USD',                                  
+                        'product301',
+                        9.99,
+                        'USD',
                         $this->productName,
                         Paymentwall_Product::TYPE_FIXED
                     )
@@ -98,7 +106,7 @@ class WidgetContext extends BehatContext
             $this->getWidgetCode(),
             $this->getProduct(),
             array(
-                'email' => 'user@hostname.com', 
+                'email' => 'user@hostname.com',
                 'sign_version' => $this->getWidgetSignatureVersion(),
                 'lang' => $this->getLanguageCode()
             )
