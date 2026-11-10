@@ -20,7 +20,10 @@ class Paymentwall_Product
 	public $recurring;
 	public $trialProduct;
 	
-	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, Paymentwall_Product $trialProduct = null)
+	/**
+	 * @param Paymentwall_Product|null $trialProduct
+	 */
+	public function __construct($productId, $amount = 0.0, $currencyCode = null, $name = null, $productType = self::TYPE_FIXED, $periodLength = 0, $periodType = null, $recurring = false, $trialProduct = null)
 	{
 		$this->productId = $productId;
 		$this->amount = round($amount, 2);
